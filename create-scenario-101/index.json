@@ -1,0 +1,40 @@
+{
+  "title": "Creating Your First Katacoda Scenario",
+  "description": "Learn how to create your first Katacoda scenario",
+  "details": {
+    "steps": [
+      {
+        "title": "Step 1 - Scenario Structure",
+        "text": "step1.md"
+      },
+      {
+        "title": "Step 2 - Scenario Syntax",
+        "text": "step2.md"
+      },
+      {
+        "title": "Step 3 - CLI",
+        "text": "step3.md"
+      },
+      {
+        "title": "Step 4 - VS Code Extension",
+        "text": "step4.md"
+      },
+      {
+        "title": "Step 5 - WebHooks",
+        "text": "step5.md"
+      }
+    ],
+    "intro": {
+      "text": "intro.md"
+    },
+    "finish": {
+      "text": "finish.md"
+    }
+  },
+  "environment": {
+    "uilayout": "editor-terminal"
+  },
+  "backend": {
+    "imageid": "node"
+  }
+}
