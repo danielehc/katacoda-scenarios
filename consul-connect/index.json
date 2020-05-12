@@ -1,0 +1,54 @@
+{
+  "title": "Consul Connect",
+  "description":
+    "Run two services and connect them securely with Consul Connect",
+  "time": "15 minutes",
+  "icon": "fa-consul",
+  "details": {
+    "steps": [
+      {
+        "title": "Start the backend counting service",
+        "text": "step1.md"
+      },
+      {
+        "title": "Start the dashboard",
+        "text": "step2.md"
+      },
+      {
+        "title": "Start the proxies",
+        "text": "step3.md"
+      },
+      {
+        "title": "Deny service connections",
+        "text": "step4.md"
+      },
+      {
+        "title": "Allow dashboard connection",
+        "text": "step5.md"
+      }
+    ],
+    "intro": {
+      "text": "intro.md",
+      "code": "courseBase.sh",
+      "credits": "https://learn.hashicorp.com/consul"
+    },
+    "finish": {
+      "text": "finish.md",
+      "credits": "https://learn.hashicorp.com/consul"
+    }
+  },
+  "environment": {
+    "uilayout": "terminal",
+    "uimessage1":
+      "\u001b[32mYour Interactive Bash Terminal. A safe place to learn and execute commands version 0.1.\u001b[m\r\n"
+  },
+  "backend": {
+    "imageid": "hashicorp-hashistack",
+    "showdashboard": true,
+    "dashboards": [
+      { "name": "Counting", "port": 9003 },
+      { "name": "Dashboard", "port": 9002 },
+      { "name": "Consul-UI", "port": 8500 }
+    ]
+  }
+}
