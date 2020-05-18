@@ -78,7 +78,12 @@
             {
               "name": "Consul UI",
               "port": 8500
+            },
+            {
+                "name": "Web frontend",
+                "port": 9090
             }
+
           ]
     },
     "backend": {

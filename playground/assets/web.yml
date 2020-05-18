@@ -35,7 +35,7 @@
             - name: "MESSAGE"
               value: "Hello World"
     
-    ---
+---
     # Service to expose web frontend
     
     apiVersion: v1
