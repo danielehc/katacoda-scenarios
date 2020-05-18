@@ -29,8 +29,14 @@
     "environment": {
         "showdashboard": true,
         "dashboard": "Dashboard",
-        "uilayout": "terminal-terminal",
-        "uimessage1": "\u001b[32mYour Interactive Bash Terminal.\u001b[m\r\n"
+        "uilayout": "editor-terminal",
+        "uimessage1": "\u001b[32mYour Interactive Bash Terminal.\u001b[m\r\n",
+        "dashboards": [
+            {
+              "name": "Consul UI",
+              "port": 8500
+            }
+          ]
     },
     "backend": {
         "port": 8080,
