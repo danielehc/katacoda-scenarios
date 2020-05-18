@@ -1,8 +1,8 @@
-#### Launch Cluster
+#### Start Minikube
 
-`launch.sh`{{execute}}
+`minikube start --wait=false`{{execute}}
 
-This will create a two node Kubernetes cluster using WeaveNet for networking.
+This will create a local Kubernetes cluster using Minikube.
 
 #### Health Check
 
