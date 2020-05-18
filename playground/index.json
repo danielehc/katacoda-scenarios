@@ -6,6 +6,13 @@
     "details": {
         "steps": [
             {
+                "title": "Provisioning Extra Course Components",
+                "text": "provision.md",
+                "courseData": "provision.courseData.sh",
+                "code": "provision.code.sh",
+                "verify": "provision.verify.sh"
+            },
+            {
                 "code": "set-env.sh",
                 "text": "step1.md"
             }
