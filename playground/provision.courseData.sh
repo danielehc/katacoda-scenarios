@@ -13,11 +13,8 @@ finish() {
 log "Installing Helm 3.2.1"
 
 pushd /tmp
-
 curl -s https://get.helm.sh/helm-v3.2.1-linux-amd64.tar.gz -o helm-v3.2.1-linux-amd64.tar.gz
-
-tar xvzf helm-v3.2.1-linux-amd64.tar.gz
-
+tar xzf helm-v3.2.1-linux-amd64.tar.gz
 sudo cp linux-amd64/helm /usr/bin/
 
 finish

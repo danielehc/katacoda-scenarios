@@ -5,8 +5,7 @@ next step.
 **Example Output**
 
 ```screenshot
-- Fixing Journal
-- Installing dnsmasq
+- Installing Helm x.y.x 
 ```
 
 and concluding with

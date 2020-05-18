@@ -13,8 +13,34 @@
                 "verify": "provision.verify.sh"
             },
             {
+                "title": "Start Minikube cluster",
                 "code": "set-env.sh",
                 "text": "step1.md"
+            },
+            {
+                "title": "Download Consul official Helm chart",
+                "code": "set-env.sh",
+                "text": "step2.md"
+            },
+            {
+                "title": "Install Consul with Helm",
+                "code": "set-env.sh",
+                "text": "step3.md"
+            },
+            {
+                "title": "Provision api service",
+                "code": "set-env.sh",
+                "text": "step4.md"
+            },
+            {
+                "title": "Provision web service",
+                "code": "set-env.sh",
+                "text": "step5.md"
+            },
+            {
+                "title": "Manage connectivity with intentions",
+                "code": "set-env.sh",
+                "text": "step6.md"
             }
         ],
         "intro": {
