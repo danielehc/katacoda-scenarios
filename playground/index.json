@@ -1,8 +1,8 @@
 {
-    "pathwayTitle": "Kubernetes",
-    "icon": "fa-kubernetes",
-    "title": "Kubernetes Playground",
-    "description": "Use Kubernetes in a hosted sandboxed interactive environment",
+    "pathwayTitle": "Consul service mesh on Kubernetes",
+    "icon": "fa-hashicorp",
+    "title": "Consul Kubernetes Playground",
+    "description": "Use COnsul service mesh on Kubernetes in a hosted sandboxed interactive environment",
     "details": {
         "steps": [
             {
