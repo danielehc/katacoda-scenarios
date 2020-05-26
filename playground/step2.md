@@ -6,9 +6,9 @@ Once Kubernetes is running you can the official Consul Helm chart repo directly 
 
 #### Configure Consul service mesh
 
-The scenario comes with a pre configured 
+The scenario comes with a prepared configuration.
 
-<pre class="file" data-target="~/consul-values.yml">consul-values.yml</pre>
+`consul-values.yml`{{open}}
 
 #### Deploy Consul with Helm
 

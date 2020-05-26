@@ -2,7 +2,7 @@
 
 Before being able to access consul you need to verify the deploy was completed.
 
-`~/consul-values.yml`{{execute}}
+`kubectl get pods --all-namespaces`{{execute}}
 
 If the output shows all the pods in a `Running` state you can now configure your Kubernetes cluster to be accessed from outside.
 
