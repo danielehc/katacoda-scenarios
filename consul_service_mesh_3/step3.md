@@ -16,7 +16,7 @@ To access Consul UI you will setup a port forwarding.
 
 This will forward port `80` of `service/hashicorp-consul-ui` on port `80` of your test machine.
 
-You can now open the [Consul UI](https://[[HOST_SUBDOMAIN]]-80-[[KATACODA_HOST]].environments.katacoda.com/ui) tab to be redirected to the Consul UI.
+You can now open the Consul UI tab to be redirected to the Consul UI.
 
 
 

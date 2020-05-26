@@ -2,7 +2,7 @@ cat << 'EOFSRSLY' > /tmp/provision.sh
 #! /bin/bash
 
 log() {
-  echo $(date) - ${1}
+  echo "\033[1;37m$(date) - ${1}\033[0m"
 }
 
 finish() {
