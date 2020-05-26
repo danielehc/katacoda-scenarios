@@ -56,9 +56,9 @@ log "Deploying web backend"
 
 kubectl apply -f ~/web.yml
 
-logs "Waiting for deployment to complete"
+log "Waiting for deployment to complete"
 
-until [ `kubectl get pods | grep -E "(web-|api-)deployment" | grep Running | wc -l ]
+until [ `kubectl get pods | grep -E "(web-|api-)deployment" | grep Running | wc -l`  -gt 1 ]
 do
   sleep 5
 done
