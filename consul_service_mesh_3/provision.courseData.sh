@@ -65,7 +65,7 @@ done
 
 export IP_ADDR=$(hostname -I | awk '{print $1}')
 
-kubectl port-forward service/web 9090:9090 --address ${IP_ADDR}
+kubectl port-forward service/web 9090:9090 --address ${IP_ADDR} &
 
 finish
 
