@@ -1,8 +1,22 @@
-#### Step 4
+#### Deploy backend application in your service mesh
+
+The scenario comes with a prepared configuration.
+
+`api.yml`{{open}}
+
+#### Deploy app with kubectl
+
+YOu can deploy the `api` application using `kubectl`.
+
+`kubectl apply -f ~/api.yml`{{execute}}
 
 
+#### Check application is running in Kubernetes
 
-`kubect apply -f ~/api.yml`{{execute}}
+`kubectl get pods`{{execute}}
 
 
-`kubect apply -f ~/web.yml`{{execute}}
+### Verify application status in Consul UI
+
+Open [Consul UI](https://[[HOST_SUBDOMAIN]]-8080-[[KATACODA_HOST]].environments.katacoda.com/ui/minidc/services) and ensure two services `api` and `api-sidecar-proxy` are registered and healthy in Consul.
+
