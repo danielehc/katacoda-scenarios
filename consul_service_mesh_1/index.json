@@ -26,21 +26,6 @@
                 "title": "Access Consul UI",
                 "code": "set-env.sh",
                 "text": "step3.md"
-            },
-            {
-                "title": "Provision api service",
-                "code": "set-env.sh",
-                "text": "step4.md"
-            },
-            {
-                "title": "Provision web service",
-                "code": "set-env.sh",
-                "text": "step5.md"
-            },
-            {
-                "title": "Manage connectivity with intentions",
-                "code": "set-env.sh",
-                "text": "step6.md"
             }
         ],
     "intro": {
