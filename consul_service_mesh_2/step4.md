@@ -15,6 +15,7 @@ YOu can deploy the `api` application using `kubectl`.
 
 `kubectl get pods`{{execute}}
 
+Wait until the pod is marked as `Running` to continue. This might take up to a minute to complete.
 
 ### Verify application status in Consul UI
 
