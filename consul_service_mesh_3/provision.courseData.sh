@@ -35,13 +35,14 @@ do
   sleep 5
 done
 
+log "Adding port forward for Consul UI"
+
 export IP_ADDR=$(hostname -I | awk '{print $1}')
 
 kubectl port-forward service/hashicorp-consul-ui 80:80 --address ${IP_ADDR} &
 
-log "Waiting for Consul pod to complete configuration."
 
-log "Deploying api backend"
+log "Deploying api backend."
 
 kubectl apply -f ~/api.yml
 
@@ -55,6 +56,8 @@ until [ `kubectl get pods | grep -E "(web-|api-)deployment" | grep Running | wc 
 do
   sleep 5
 done
+
+log "Adding port forward for Web UI"
 
 export IP_ADDR=$(hostname -I | awk '{print $1}')
 

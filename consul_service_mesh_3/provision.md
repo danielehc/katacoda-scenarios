@@ -9,10 +9,11 @@ next step.
 - Starting Kubernetes...this might take up to 5 minutes.
 - Installing Consul service mesh.
 - Waiting for Consul pod to complete configuration.
-- log "Deploying api backend"
-- log "Deploying web backend"
-- log "Waiting for deployment to complete"
-
+- Adding port forward for Consul UI
+- Deploying api backend
+- Deploying web backend
+- Waiting for deployment to complete
+- Adding port forward for Web UI
 ```
 
 and concluding with

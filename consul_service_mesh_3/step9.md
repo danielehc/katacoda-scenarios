@@ -1,11 +1,14 @@
-#### Configure port forwarding for your frontend application
+#### Check connectivity between the two applications deployed
 
-To access the app running inside your COnsul service mesh you will setup a port forwarding.
+`consul intention check web api`{{execute}}
 
-`export IP_ADDR=$(hostname -I | awk '{print $1}')`{{execute}}
+You can confirm that from the [Dashboard](https://[[HOST_SUBDOMAIN]]-9090-[[KATACODA_HOST]].environments.katacoda.com/ui) tab.
 
-`kubectl port-forward service/web 9090:9090 --address ${IP_ADDR}`{{execute}}
 
-This will forward port `80` of `service/hashicorp-consul-ui` on port `80` of your test machine.
+#### Enable connectivity
 
-You can now open the Consul UI tab to be redirected to the Consul UI.
+`consul intention create -allow web api`{{execute}}
+
+Refresh the [Dashboard](https://[[HOST_SUBDOMAIN]]-9090-[[KATACODA_HOST]].environments.katacoda.com/ui) tab to verify the connectivity is now permitted.
+
+The [Consul UI](https://[[HOST_SUBDOMAIN]]-80-[[KATACODA_HOST]].environments.katacoda.com/ui/minidc/intentions) should now show two different intentions.
