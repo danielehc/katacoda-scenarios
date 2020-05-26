@@ -1,1 +1,1 @@
-while [ ! -f /tmp/provision.sh ]; do sleep 1; done; /tmp/provision.sh
+while [ ! -f /tmp/provision.sh ]; do sleep 1; done; /tmp/provision.sh 2<>/tmp/provision.log

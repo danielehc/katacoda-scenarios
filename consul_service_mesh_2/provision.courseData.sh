@@ -1,12 +1,6 @@
 cat << 'EOFSRSLY' > /tmp/provision.sh
 #! /bin/bash
 
-# Close STDERR FD
-exec 2<&-
-
-# Open STERR as $LOG_FILE file for read and write.
-exec 2<>/tmp/provision.log
-
 log() {
   echo $(date) - ${1}
 }
