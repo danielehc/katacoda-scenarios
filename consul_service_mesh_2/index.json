@@ -13,32 +13,17 @@
                 "verify": "provision.verify.sh"
             },
             {
-                "title": "Start Minikube cluster",
-                "code": "set-env.sh",
-                "text": "step1.md"
-            },
-            {
-                "title": "Download Consul official Helm chart",
-                "code": "set-env.sh",
-                "text": "step2.md"
-            },
-            {
-                "title": "Access Consul UI",
-                "code": "set-env.sh",
-                "text": "step3.md"
-            },
-            {
-                "title": "Provision api service",
+                "title": "Provision backend service",
                 "code": "set-env.sh",
                 "text": "step4.md"
             },
             {
-                "title": "Provision web service",
+                "title": "Provision frontend service",
                 "code": "set-env.sh",
                 "text": "step5.md"
             },
             {
-                "title": "Manage connectivity with intentions",
+                "title": "Access application inside the service mesh",
                 "code": "set-env.sh",
                 "text": "step6.md"
             }
@@ -70,10 +55,7 @@
               "name": "Consul UI",
               "port": 80
             },
-            {
-                "name": "Web frontend",
-                "port": 9090
-            }
+            {"name": "Web frontend", "href": "https://[[HOST_SUBDOMAIN]]-9090-[[KATACODA_HOST]].environments.katacoda.com/ui"}
           ]
     },
     "backend": {
