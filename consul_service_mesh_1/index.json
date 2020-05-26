@@ -54,10 +54,6 @@
             {
               "name": "Consul UI",
               "port": 80
-            },
-            {
-                "name": "Web frontend",
-                "port": 9090
             }
           ]
     },
