@@ -36,7 +36,11 @@ helm repo add hashicorp https://helm.releases.hashicorp.com
 
 helm install -f ~/consul-values.yml hashicorp hashicorp/consul
 
-sleep 30
+log "Waiting for Consul pod to complete configuration."
+until [ `kubectl get pods | grep consul-server | grep Running | wc -l` -gt 0 ]
+do
+  sleep 5
+done
 
 export IP_ADDR=$(hostname -I | awk '{print $1}')
 
