@@ -5,7 +5,10 @@ next step.
 **Example Output**
 
 ```screenshot
-- Installing Helm x.y.x 
+- Installing Helm x.y.x
+- Starting Kubernetes...this might take up to 5 minutes.
+- Installing Consul service mesh.
+
 ```
 
 and concluding with

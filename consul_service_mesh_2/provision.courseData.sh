@@ -1,6 +1,12 @@
 cat << 'EOFSRSLY' > /tmp/provision.sh
 #! /bin/bash
 
+# Close STDERR FD
+exec 2<&-
+
+# Open STERR as $LOG_FILE file for read and write.
+exec 2<>/tmp/provision.log
+
 log() {
   echo $(date) - ${1}
 }
@@ -40,7 +46,7 @@ sleep 30
 
 export IP_ADDR=$(hostname -I | awk '{print $1}')
 
-kubectl port-forward service/hashicorp-consul-ui 80:80 --address ${IP_ADDR}
+kubectl port-forward service/hashicorp-consul-ui 80:80 --address ${IP_ADDR} &
 
 finish
 
