@@ -1,16 +1,22 @@
 #### Add HashiCorp repository in Helm
 
+Once Kubernetes is running you can the official Consul Helm chart repo directly from the commandline.
+
 `helm repo add hashicorp https://helm.releases.hashicorp.com`{{execute}}
 
+#### Configure Consul service mesh
 
-#### Deploy Consul using Helm
+The scenario comes with a pre configured 
 
-`helm install -f ~/config/consul-values.yml hashicorp hashicorp/consul`{{execute}}
+<pre class="file" data-target="~/consul-values.yml">consul-values.yml</pre>
 
-#### Check Services being created in Kubernetes
+#### Deploy Consul with Helm
+
+`helm install -f ~/consul-values.yml hashicorp hashicorp/consul`{{execute}}
+
+#### Check services running in Kubernetes
+
+Control Consul is properly running.
 
 `kubectl get services`{{execute}}
-
-
-kubectl port-forward service/hashicorp-consul-ui 80:80 --address `hostname -I | awk '{print $1}'`
 

@@ -23,7 +23,7 @@
                 "text": "step2.md"
             },
             {
-                "title": "Install Consul with Helm",
+                "title": "Access Consul UI",
                 "code": "set-env.sh",
                 "text": "step3.md"
             },
@@ -54,18 +54,9 @@
     },
     "assets": {
         "client": [
-          {
-            "file": "consul-values.yml",
-            "target": "~/config/"
-          },
-          {
-            "file": "api.yml",
-            "target": "~/config/"
-          },
-          {
-            "file": "web.yml",
-            "target": "~/config/"
-          }
+          { "file": "consul-values.yml", "target": "~/" },
+          { "file": "api.yml", "target": "~/" },
+          { "file": "web.yml", "target": "~/" }
         ]
     }
     },
@@ -77,13 +68,12 @@
         "dashboards": [
             {
               "name": "Consul UI",
-              "port": 8500
+              "port": 80
             },
             {
                 "name": "Web frontend",
                 "port": 9090
             }
-
           ]
     },
     "backend": {

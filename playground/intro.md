@@ -1,7 +1,9 @@
-This is a Kubernetes playground. From here you can play with a Kubernetes host and explore its API.
+# Consul service mesh on Kubernetes
 
-#### What are playgrounds?
+In this hands-on lab, you will deploy a Consul datacenter using Helm 3.x.
 
-Playgrounds give you a configured environment to start playing and exploring using an unstructured learning approach.
+The lab will guide you along all the steps needed to deploy Consul service mesh as the data plan for your Kubernetes cluster.
 
-Playgrounds are great for experimenting and trying samples. To learn more about the technology then start with one of our [labs](/learn)
+The lab uses Minikube to deploy the cluster but the commands can be applied to any Kubernetes flavor.
+
+If you are already familiar with the basics of Consul, [undesrstand Consul service mesh](https://learn.hashicorp.com/consul/gs-consul-service-mesh/understand-consul-service-mesh) provides a reference guide for the Consul service mesh based scenarios.

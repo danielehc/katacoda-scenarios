@@ -1,9 +1,16 @@
-#### Step 3
+#### Configure port forwarding for your Consul UI
+
+To access Consul UI you will setup a port forwarding.
+
+`export IP_ADDR=$(hostname -I | awk '{print $1}')`{{execute}}
+
+`kubectl port-forward service/hashicorp-consul-ui 80:80 --address ${IP_ADDR}`{{execute}}
 
 
-`kubect apply -f config/api.yml`{{execute}}
+This will forward port `80` of `service/hashicorp-consul-ui` on port `80` of your test machine.
+
+You can now open the Consul UI tab to be redirected to the Consul UI.
 
 
-`kubect apply -f config/web.yml`{{execute}}
 
 
