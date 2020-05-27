@@ -12,7 +12,7 @@ finish() {
 
 log "Install prerequisites"
 
-apt-get install -y unzip curl jq net-tools dnsutils psmisc
+apt-get install -y unzip curl jq
 
 log "Install Consul locally"
 
