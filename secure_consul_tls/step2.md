@@ -1,4 +1,19 @@
-#### Add HashiCorp repository in Helm
+#### Start Consul server with the configuration file
+
+docker run \
+    -d \
+    -v ${pwd}/:/etc/consul/ \
+    -p 8500:8500 \
+    -p 8600:8600/udp \
+    --name=server \
+    consul agent -server -ui -node=server-1 -bootstrap-expect=1 -client=0.0.0.0 -config-file=/etc/consul/server.json
+
+docker exec server consul members
+
+docker exec -it server /bin/sh
+
+
+-v ${pwd}/envoy_demo.hcl:/etc/consul/envoy_demo.hcl
 
 Once Kubernetes is running you can the official Consul Helm chart repo directly from the commandline.
 
