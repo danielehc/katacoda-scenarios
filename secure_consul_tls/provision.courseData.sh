@@ -16,7 +16,7 @@ APP_VERSION=$(curl -s https://checkpoint-api.hashicorp.com/v1/check/consul | jq 
 
 log Found Consul ${APP_VERSION}
 
-curl -s https://releases.hashicorp.com/consul/${APP_VERSION}/consul_${APP_VERSION}_linux_amd64.zip
+curl -s https://releases.hashicorp.com/consul/${APP_VERSION}/consul_${APP_VERSION}_linux_amd64.zip -o consul_${APP_VERSION}_linux_amd64.zip
 
 unzip consul_${APP_VERSION}_linux_amd64.zip 
 sudo chmod +x consul
