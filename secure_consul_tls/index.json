@@ -1,0 +1,69 @@
+{
+    "pathwayTitle": "Secure consul with TLS",
+    "icon": "fa-consul",
+    "title": "Secure consul with TLS",
+    "description": "Enable mTLS for Consul agents.",
+    "details": {
+        "steps": [
+            {
+                "title": "Provisioning Extra Course Components",
+                "text": "provision.md",
+                "courseData": "provision.courseData.sh",
+                "code": "provision.code.sh",
+                "verify": "provision.verify.sh"
+            },
+            {
+                "title": "Initialize Consul built-in CA",
+                "code": "set-env.sh",
+                "text": "step1.md"
+            },
+            {
+                "title": "Create server certificates",
+                "code": "set-env.sh",
+                "text": "step2.md"
+            },
+            {
+                "title": "Configure servers",
+                "code": "set-env.sh",
+                "text": "step3.md"
+            },
+            {
+                "title": "Configure clients",
+                "code": "set-env.sh",
+                "text": "step4.md"
+            }
+        ],
+    "intro": {
+        "text": "intro.md",
+        "code": "courseBase.sh",
+        "credits": "https://learn.hashicorp.com/consul"
+        },
+    "finish": {
+        "text": "finish.md",
+        "credits": "https://learn.hashicorp.com/consul"
+    },
+    "assets": {
+        "client": [
+          { "file": "consul-values.yml", "target": "~/" },
+          { "file": "api.yml", "target": "~/" },
+          { "file": "web.yml", "target": "~/" }
+        ]
+    }
+    },
+    "environment": {
+        "showdashboard": true,
+        "dashboard": "Dashboard",
+        "uilayout": "editor-terminal",
+        "uimessage1": "\u001b[32mYour Interactive Bash Terminal.\u001b[m\r\n",
+        "dashboards": [
+            {
+              "name": "Consul UI",
+              "port": 80
+            }
+          ]
+    },
+    "backend": {
+        "port": 8080,
+        "imageid": "docker"
+    }
+}
