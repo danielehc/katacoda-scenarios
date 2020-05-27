@@ -10,10 +10,11 @@ finish() {
   log "Complete!  Move on to the next step."
 }
 
-log Install Consul locally
+log "Install Consul locally"
 
-CHECKPOINT_URL="https://checkpoint-api.hashicorp.com/v1/check"
-APP_VERSION=$(curl -s "${CHECKPOINT_URL}"/consul | jq .current_version | tr -d '"')
+APP_VERSION=$(curl -s https://checkpoint-api.hashicorp.com/v1/check/consul | jq .current_version | tr -d '"')
+
+log Found Consul ${APP_VERSION}
 
 curl -s https://releases.hashicorp.com/consul/${APP_VERSION}/consul_${APP_VERSION}_linux_amd64.zip
 
