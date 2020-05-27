@@ -2,7 +2,7 @@ cat << 'EOFSRSLY' > /tmp/provision.sh
 #! /bin/bash
 
 log() {
-  echo $(date) - ${1}
+  echo $(date) - ${@}
 }
 
 finish() {
@@ -12,10 +12,9 @@ finish() {
 
 log "Install prerequisites"
 
-apt-get install -y unzip curl jq
+apt-get install -y unzip curl jq > /dev/null
 
-log "Install Consul locally"
-
+log Install Consul locally
 
 APP_VERSION=$(curl -s https://checkpoint-api.hashicorp.com/v1/check/consul | jq .current_version | tr -d '"')
 
@@ -23,7 +22,7 @@ log Found Consul ${APP_VERSION}
 
 curl -s https://releases.hashicorp.com/consul/${APP_VERSION}/consul_${APP_VERSION}_linux_amd64.zip -o consul_${APP_VERSION}_linux_amd64.zip
 
-unzip consul_${APP_VERSION}_linux_amd64.zip 
+unzip consul_${APP_VERSION}_linux_amd64.zip > /dev/null
 chmod +x consul
 mv consul /usr/local/bin/consul
 
