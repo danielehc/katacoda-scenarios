@@ -30,7 +30,7 @@ mv consul /usr/local/bin/consul
 
 log Pulling Docker image for Consul ${APP_VERSION}
 
-docker pull consul:${APP_VERSION}
+docker pull consul:${APP_VERSION} > /dev/null
 
 finish
 
