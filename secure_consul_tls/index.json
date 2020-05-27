@@ -50,7 +50,7 @@
     }
     },
     "environment": {
-        "showdashboard": true,
+        "showdashboard": false,
         "dashboard": "Dashboard",
         "uilayout": "editor-terminal",
         "uimessage1": "\u001b[32mYour Interactive Bash Terminal.\u001b[m\r\n",
