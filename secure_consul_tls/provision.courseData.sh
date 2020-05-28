@@ -28,9 +28,19 @@ unzip consul_${APP_VERSION}_linux_amd64.zip > /dev/null
 chmod +x consul
 mv consul /usr/local/bin/consul
 
+rm -rf consul_${APP_VERSION}_linux_amd64.zip > /dev/null
+
 log Pulling Docker image for Consul ${APP_VERSION}
 
 docker pull consul:${APP_VERSION} > /dev/null
+
+log Creating Docker volumes
+
+docker volume create server_config > /dev/null
+
+docker volume create client_config > /dev/null
+
+docker container create --name volumes -v server_config:/server -v client_config:/client alpine > /dev/null
 
 finish
 

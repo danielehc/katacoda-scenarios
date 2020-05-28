@@ -1,16 +1,11 @@
 
-#### Start Minikube
+#### Initialize Consul buit-in CA
 
-You first need to start your Minikube environment:
+Initialize Consul built-in CA.
 
-`minikube start --wait=false`{{execute}}
+`consul tls ca create`{{execute}}
 
-This will create a local Kubernetes cluster using Minikube.
+The command creates two files `consul-agent-ca.pem` and `consul-agent-ca-key.pem` 
 
-#### Health Check
-
-Once the first command completed is possible to check the state of your Kubernetes cluster.
-
-`kubectl cluster-info`{{execute}}
-
+You can use the embedded editor to check the content of the files.
 
