@@ -6,9 +6,9 @@
 
 This scenario uses a Docker volume, called `server_config` to help you distribute the configuration to your server node.
 
-`docker cp ./server.json volumes:/server/server.json`{{execute server}}
-`docker cp ./consul-agent-ca.pem volumes:/server/consul-agent-ca.pem`{{execute server}}
-`docker cp ./consul-agent-ca-key.pem volumes:/server/consul-agent-ca-key.pem`{{execute server}}
+`docker cp ./server.json volumes:/server/server.json`{{execute T2}}
+`docker cp ./consul-agent-ca.pem volumes:/server/consul-agent-ca.pem`{{execute T2}}
+`docker cp ./consul-agent-ca-key.pem volumes:/server/consul-agent-ca-key.pem`{{execute T2}}
 
 
 #### Start Consul server with the configuration file
