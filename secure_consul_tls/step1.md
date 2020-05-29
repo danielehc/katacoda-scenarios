@@ -16,8 +16,10 @@ Next step is to create a certificate for the server
 `consul tls cert create -server`{{execute operator}}
 
 
-<p class="callout info">A success message</p>
-<p class="callout success">A success message</p>
-<p class="callout warning">A success message</p>
-<p class="callout danger">A success message</p>
+<div style="background-color:#fcf6ea; color:#866d42; border:1px solid #f8ebcf; padding:1em; border-radius:3px; margin:24px 0;">
+  <p><strong>Warning:</strong><br>
+  
+  In a production scenario it is recommended to create different certificates for each server.
+
+</p></div>
 
