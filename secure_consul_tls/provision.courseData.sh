@@ -11,7 +11,7 @@ finish() {
 }
 
 log "Install prerequisites"
-apt-get install -y apt-utils > /dev/null
+# apt-get install -y apt-utils > /dev/null
 apt-get install -y unzip curl jq > /dev/null
 
 log Install Consul locally

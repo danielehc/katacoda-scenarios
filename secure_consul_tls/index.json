@@ -18,17 +18,17 @@
                 "text": "step1.md"
             },
             {
-                "title": "Create server certificates",
+                "title": "Configure and start server",
                 "code": "set-env.sh",
                 "text": "step2.md"
             },
             {
-                "title": "Configure servers",
+                "title": "Configure and start client",
                 "code": "set-env.sh",
                 "text": "step3.md"
             },
             {
-                "title": "Configure clients",
+                "title": "Use an operator node to monitor your datacenter",
                 "code": "set-env.sh",
                 "text": "step4.md"
             }
