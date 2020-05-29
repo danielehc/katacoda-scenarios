@@ -8,8 +8,5 @@ If you are already familiar with the basics of Consul, [secure agent communicati
 
 
 <div style="background-color:#fcf6ea; color:#866d42; border:1px solid #f8ebcf; padding:1em; border-radius:3px; margin:24px 0;">
-  <p><strong>Warning:</strong><br>
-  
-  Test warning
-
-</p></div>
+  <p><strong>Warning:</strong> Test warning 
+  </p></div>
