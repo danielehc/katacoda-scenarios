@@ -1,23 +1,24 @@
-#### Wait until all pods are running
+### Configure Consul client
 
-Before being able to access consul you need to verify the deploy was completed.
+The scenario comes with a prepared Consul client configuration.
 
-`kubectl get pods --all-namespaces`{{execute}}
+Open `client.json`{{open}} in the editor to inspect values required for a minimal client config with TLS encryption enabled.
 
-If the output shows all the pods in a `Running` state you can now configure your Kubernetes cluster to be accessed from outside.
+In this scenario you are going to use the `auto_encrypt` functionality of Consul that will automatically generate and distribute certificates for the client agents once the datacenter is configured.
 
-#### Configure port forwarding for your Consul UI
+You will still require to refer to the CA certificate `consul-agent-ca.pem` to validate requests.
 
-To access Consul UI you will setup a port forwarding.
+### Distribute configuration files and certificates to the client
 
-`export IP_ADDR=$(hostname -I | awk '{print $1}')`{{execute}}
-
-`kubectl port-forward service/hashicorp-consul-ui 80:80 --address ${IP_ADDR}`{{execute}}
-
-This will forward port `80` of `service/hashicorp-consul-ui` on port `80` of your test machine.
-
-You can now open the Consul UI tab to be redirected to the Consul UI.
+This scenario uses a Docker volume, called `client_config` to help you distribute the configuration to your server node.
 
 
+Copy the required files for the Consul server configuration into the volume.
+
+`docker cp ./client.json volumes:/client/client.json`{{execute client}}
+`docker cp ./consul-agent-ca.pem volumes:/server/consul-agent-ca.pem`{{execute client}}
 
 
+#### Start Consul client with the configuration file
+
+Finally start the Consul client.

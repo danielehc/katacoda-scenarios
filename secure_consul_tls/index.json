@@ -59,7 +59,12 @@
               "name": "Consul UI",
               "port": 80
             }
-          ]
+          ],
+        "terminals": [
+            {"name": "operator", "target": "host01"},
+            {"name": "server", "target": "host01"},
+            {"name": "client", "target": "host01"}
+        ]
     },
     "backend": {
         "port": 8080,

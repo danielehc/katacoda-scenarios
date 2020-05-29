@@ -3,7 +3,7 @@
 
 Initialize Consul built-in CA.
 
-`consul tls ca create`{{execute}}
+`consul tls ca create`{{execute operator}}
 
 The command creates two files `consul-agent-ca.pem` and `consul-agent-ca-key.pem` 
 
