@@ -16,30 +16,33 @@ This scenario uses a Docker volume, called `client_config` to help you distribut
 Copy the required files for the Consul server configuration into the volume.
 
 `docker cp ./client.json volumes:/client/client.json`{{execute client}}
-`docker cp ./consul-agent-ca.pem volumes:/server/consul-agent-ca.pem`{{execute client}}
+
+`docker cp ./consul-agent-ca.pem volumes:/client/consul-agent-ca.pem`{{execute client}}
 
 ### Retrieve Server IP to join the datacenter
 
-`export CONSUL_HTTP_ADDR=$(docker exec server consul members | grep server-1 | awk '{print $2}' | sed 's/:.*//g')`{{execute T1}}
+`export CONSUL_HTTP_ADDR=$(docker exec server consul members | grep server-1 | awk '{print $2}' | sed 's/:.*//g')`{{execute T3}}
 
 #### Start Consul client with the configuration file
 
 Finally start the Consul client.
 
 `docker run \
-    -d
+    -d \
     -v client_config:/etc/consul.d \
     --name=client \
     consul agent \
      -node=client-1 \
      -join=${CONSUL_HTTP_ADDR} \
-     -config-file=/etc/consul/server.json`{{execute T3}}
+     -config-file=/etc/consul.d/client.json`{{execute T3}}
 
 
 #### Confirm client started and joined the datacenter
 
 `docker exec server consul members`{execute T2}}
 
+
+docker logs client
 
 
 docker run \

@@ -1,7 +1,6 @@
 
-#### Initialize Consul buit-in CA
 
-Initialize Consul built-in CA.
+Consul ships with a built-in certification authority (CA) to reduce configuration friction.
 
 `consul tls ca create`{{execute T1}}
 
