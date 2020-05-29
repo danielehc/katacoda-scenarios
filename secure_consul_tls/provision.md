@@ -19,9 +19,3 @@ and concluding with
 ```
 
 Once this message appears, you are ready to continue.
-
-<div style="background-color:#fcf6ea; color:#866d42; border:1px solid #f8ebcf; padding:1em; border-radius:3px;">
-  <p><strong>Warning: </strong>
-  In a production scenario it is recommended to create different certificates for each server.
-
-</p></div>

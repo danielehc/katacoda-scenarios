@@ -15,10 +15,8 @@ Next step is to create a certificate for the server
 
 `consul tls cert create -server`{{execute operator}}
 
-
-<div style="background-color:#fcf6ea; color:#866d42; border:1px solid #f8ebcf; padding:1em; border-radius:3px; margin:14px 0;">
+<div style="background-color:#fcf6ea; color:#866d42; border:1px solid #f8ebcf; padding:1em; border-radius:3px;">
   <p><strong>Warning: </strong>
   In a production scenario it is recommended to create different certificates for each server.
-
 </p></div>
 
