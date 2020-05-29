@@ -26,11 +26,6 @@
                 "title": "Configure and start client",
                 "code": "set-env.sh",
                 "text": "step3.md"
-            },
-            {
-                "title": "Use an operator node to monitor your datacenter",
-                "code": "set-env.sh",
-                "text": "step4.md"
             }
         ],
     "intro": {
@@ -54,8 +49,6 @@
         "dashboard": "Dashboard",
         "uilayout": "editor-terminal",
         "uimessage1": "\u001b[32mOperator node terminal.\u001b[m\r\n",
-        "uimessage2": "\u001b[32mServer node terminal.\u001b[m\r\n",
-        "uimessage3": "\u001b[32mServer node terminal.\u001b[m\r\n",
         "dashboards": [
             {"name": "Consul UI", "port": 8500}
         ],

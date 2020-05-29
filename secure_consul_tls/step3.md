@@ -15,9 +15,9 @@ This scenario uses a Docker volume, called `client_config` to help you distribut
 
 Copy the required files for the Consul server configuration into the volume.
 
-`docker cp ./client.json volumes:/client/client.json`{{execute client}}
+`docker cp ./client.json volumes:/client/client.json`{{execute T3}}
 
-`docker cp ./consul-agent-ca.pem volumes:/client/consul-agent-ca.pem`{{execute client}}
+`docker cp ./consul-agent-ca.pem volumes:/client/consul-agent-ca.pem`{{execute T3}}
 
 ### Retrieve Server IP to join the datacenter
 
@@ -39,52 +39,8 @@ Finally start the Consul client.
 
 #### Confirm client started and joined the datacenter
 
-`docker exec server consul members`{execute T2}}
+You can verify the Consul client started correctly and joined the datacenter using the `consum members` command.
 
+`docker exec server consul members`{{execute T2}}
 
-docker logs client
-
-
-docker run \
-    -d \
-    -v /home/scrapbook/tutorial/config:/etc/consul.d \
-    -p 8500:8500 \
-    -p 8600:8600/udp \
-    --name=client \
-    consul agent -server -ui -node=server-1 -bootstrap-expect=1 -client=0.0.0.0 
-    -config-file=/etc/consul/server.json
-
-docker run \
-    -d \
-    -mount type=bind,source="$(pwd)"/config,target=/etc/consul.d  \
-    -p 8500:8500 \
-    -p 8600:8600/udp \
-    --name=server \
-    consul agent -server -ui -node=server-1 -bootstrap-expect=1 -client=0.0.0.0 
-    -config-file=/etc/consul/server.json
-
-
-docker exec server consul members
-
-docker exec -it server /bin/sh
-
-docker container rm -f server
-
-
-docker volume create server_config
-
-docker volume create client_config
-
-docker container create --name volumes -v server_config:/server -v client_config:/client alpine
-
-docker cp ./server.json volumes:/server/server.json
-docker cp ./consul-agent-ca.pem volumes:/server/consul-agent-ca.pem
-docker cp ./consul-agent-ca-key.pem volumes:/server/consul-agent-ca-key.pem
-
-docker run \
-    -d \
-    -v server_config:/etc/consul.d \
-    -p 8500:8500 \
-    -p 8600:8600/udp \
-    --name=server \
-    consul agent -server -ui -node=server-1 -bootstrap-expect=1 -client=0.0.0.0 -config-file=/etc/consul.d/server.json
+Alternatively you can reach the [Consul UI](https://[[HOST_SUBDOMAIN]]-8500-[[KATACODA_HOST]].environments.katacoda.com/ui/dc1/nodes) tab to be redirected to the Consul UI.
