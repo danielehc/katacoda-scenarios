@@ -1,8 +1,13 @@
-#### Deploy frontend application in your service mesh
+#### Deploy frontend service in your service mesh
 
-The scenario comes with a prepared configuration.
+This hands-on lab comes with a prepared configuration.
 
 `web.yml`{{open}}
+
+In additon to the `"consul.hashicorp.com/connect-inject": "true"` annotation, the
+`web` service defines the  `"consul.hashicorp.com/connect-service-upstreams"` annotation. This annotation
+ explicitly declares the upstream for the `web` service, which is the `api` service deployed
+ previously. 
 
 #### Deploy app with kubectl
 
@@ -10,8 +15,9 @@ YOu can deploy the `web` application using `kubectl`.
 
 `kubectl apply -f ~/web.yml`{{execute}}
 
+#### Check the service is running in Kubernetes
 
-#### Check application is running in Kubernetes
+Finally, you can verify the `web` service is deployed successfully. 
 
 `kubectl get pods`{{execute}}
 
