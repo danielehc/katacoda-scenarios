@@ -16,7 +16,7 @@ Note the following settings:
 
 * The server key contains parameters related to the server pods. The chart is configured to create one Consul server per Kubernetes node.
 * The Consul “connect” service mesh is enabled by setting the connectInject key to true. When the “connect” injector is installed, then a sidecar proxy is automatically added to all pods.
-* The Consul web UI update the ui section and set enabled to true.
+* The ui section enables Consul web UI.
 
 #### Deploy Consul with Helm
 
