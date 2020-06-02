@@ -1,8 +1,8 @@
 {
-    "pathwayTitle": "Secure consul with TLS",
+    "pathwayTitle": "Secure consul with ACLs",
     "icon": "fa-consul",
-    "title": "Secure consul with TLS",
-    "description": "Enable mTLS for Consul agents.",
+    "title": "Secure consul with ACLs",
+    "description": "Enable ACLs for Consul datacenters.",
     "details": {
         "steps": [
             {
@@ -13,12 +13,17 @@
                 "verify": "provision.verify.sh"
             },
             {
-                "title": "Initialize Consul built-in CA",
+                "title": "Setup consul agents",
                 "code": "set-env.sh",
                 "text": "step1.md"
             },
             {
-                "title": "Configure and start server",
+                "title": "Startup server",
+                "code": "set-env.sh",
+                "text": "step2.md"
+            },
+            {
+                "title": "Bootstrap ACLs",
                 "code": "set-env.sh",
                 "text": "step2.md"
             },
