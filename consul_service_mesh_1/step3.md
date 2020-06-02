@@ -1,6 +1,6 @@
 #### Wait until all pods are running
 
-Before being able to access Consul you need to verify the deploy was completed.
+In order to access Consul you must verify the deploy was completed. Execute the following command, and review the output.
 
 `kubectl get pods --all-namespaces`{{execute}}
 
@@ -14,11 +14,10 @@ To access Consul UI you will setup port forwarding.
 
 `kubectl port-forward service/hashicorp-consul-ui 80:80 --address ${IP_ADDR}`{{execute}}
 
-This will forward port `80` of `service/hashicorp-consul-ui` on port `80` of your test machine.
+This will forward port `80` from `service/hashicorp-consul-ui` at port `80` to your test machine.
 
 You can now open the Consul UI tab to be redirected to the Consul UI. The Consul UI will list
 the `consul` service. 
-
 
 
 

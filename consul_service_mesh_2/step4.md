@@ -1,6 +1,6 @@
 #### Deploy services into Consul service mesh
 
-You will deploy two services, web and api, into Consul's service mesh running on a Kubernetes cluster. The two services will use Consul to discover each other and communicate over mTLS with sidecar proxies. This is the first step in deploying application into a zero-trust network.
+You will deploy two services, web and api, into Consul's service mesh running on a Kubernetes cluster. The two services will use Consul to discover each other and communicate over mTLS with sidecar proxies. This is the first step in deploying an application into a zero-trust network.
 
 The two services represent a simple two-tier application made of a backend api service and a frontend that communicates with the api service over HTTP and exposes the results in a web ui.
 
@@ -29,4 +29,3 @@ Wait until the pod is marked as `Running` to continue. This might take up to a m
 ### Verify application status in Consul UI
 
 Open [Consul UI](https://[[HOST_SUBDOMAIN]]-80-[[KATACODA_HOST]].environments.katacoda.com/ui/minidc/services) and ensure two services `api` and `api-sidecar-proxy` are registered and healthy in Consul.
-

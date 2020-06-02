@@ -26,7 +26,7 @@ You will use `helm install` to deploy Consul using the configuration defined in 
 
 #### Verify the Consul deployment
 
-To check the deployment process on the command line you can use `kubectl get services` to see which services are being exposed from the Kubernetes cluster, including Consul.
+Execute `kubectl get services` from the command line to verify the services, including Consul, are being exposed from the Kubernetes cluster.
 
 `kubectl get services`{{execute}}
 
@@ -36,4 +36,3 @@ You should have the following four Consul services:
 * hashicorp-consul-connect-injector-svc                                                                    
 * hashicorp-consul-dns
 * hashicorp-consul-ui
-

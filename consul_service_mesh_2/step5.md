@@ -5,13 +5,13 @@ This hands-on lab comes with a prepared configuration.
 `web.yml`{{open}}
 
 In additon to the `"consul.hashicorp.com/connect-inject": "true"` annotation, the
-`web` service defines the  `"consul.hashicorp.com/connect-service-upstreams"` annotation. This annotation
- explicitly declares the upstream for the `web` service, which is the `api` service deployed
+`web` service defines the `"consul.hashicorp.com/connect-service-upstreams"` annotation. This annotation
+ explicitly declares the upstream for the web service, which is the `api` service you deployed
  previously. 
 
 #### Deploy app with kubectl
 
-YOu can deploy the `web` application using `kubectl`.
+You can deploy the `web` application using `kubectl`.
 
 `kubectl apply -f ~/web.yml`{{execute}}
 
