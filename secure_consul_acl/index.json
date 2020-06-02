@@ -44,8 +44,7 @@
     },
     "assets": {
         "client": [
-          { "file": "server.json", "target": "./" },
-          { "file": "client.json", "target": "./" }
+          { "file": "agent.hcl", "target": "./" }
         ]
     }
     },
