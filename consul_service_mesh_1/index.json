@@ -1,29 +1,29 @@
 {
-    "pathwayTitle": "Consul service mesh on Kubernetes",
+    "pathwayTitle": "Consul Service Mesh on Kubernetes",
     "icon": "fa-consul",
-    "title": "Consul service mesh on Kubernetes - Scenario 1",
+    "title": "Deploy Consul Service Mesh",
     "description": "Install Consul service mesh on Kubernetes in a hosted sandboxed interactive environment",
     "details": {
         "steps": [
             {
-                "title": "Provisioning Extra Course Components",
+                "title": "Provisioning Lab Infrastructure",
                 "text": "provision.md",
                 "courseData": "provision.courseData.sh",
                 "code": "provision.code.sh",
                 "verify": "provision.verify.sh"
             },
             {
-                "title": "Start Minikube cluster",
+                "title": "Start Minikube",
                 "code": "set-env.sh",
                 "text": "step1.md"
             },
             {
-                "title": "Download Consul official Helm chart",
+                "title": "Download the Helm chart",
                 "code": "set-env.sh",
                 "text": "step2.md"
             },
             {
-                "title": "Access Consul UI",
+                "title": "Access the Consul UI",
                 "code": "set-env.sh",
                 "text": "step3.md"
             }

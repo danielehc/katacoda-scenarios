@@ -1,29 +1,29 @@
 {
-    "pathwayTitle": "Consul service mesh on Kubernetes",
+    "pathwayTitle": "Consul Service Mesh on Kubernetes",
     "icon": "fa-consul",
-    "title": "Consul service mesh on Kubernetes - Scenario 3",
+    "title": "Secure Services in the Consul Service Mesh",
     "description": "Enforce a Zero-trust Network with Consul Service Mesh",
     "details": {
         "steps": [
             {
-                "title": "Provisioning Extra Course Components",
+                "title": "Provisioning Lab Infrastructure",
                 "text": "provision.md",
                 "courseData": "provision.courseData.sh",
                 "code": "provision.code.sh",
                 "verify": "provision.verify.sh"
             },
             {
-                "title": "Check apps connectivity",
+                "title": "Verify Service Connectivity",
                 "code": "set-env.sh",
                 "text": "step7.md"
             },
             {
-                "title": "Enforce zero-trust connectivity",
+                "title": "Enforce Zero-Trust Networking",
                 "code": "set-env.sh",
                 "text": "step8.md"
             },
             {
-                "title": "Permit connections with intentions",
+                "title": "Allow Communication with Consul Intentions",
                 "code": "set-env.sh",
                 "text": "step9.md"
             }
