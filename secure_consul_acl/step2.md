@@ -1,7 +1,7 @@
 
 The scenario comes with a prepared Consul server configuration.
 
-Open `server.json`{{open}} in the editor to inspect values required for a minimal server configuration with TLS encryption enabled.
+Open `server.json`{{open}} in the editor to inspect values required for a minimal server config with TLS encryption enabled.
 
 The configuration refers also to the two files created in the previous step.
 

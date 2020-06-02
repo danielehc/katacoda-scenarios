@@ -10,10 +10,10 @@ You will still require to refer to the CA certificate `consul-agent-ca.pem` to v
 
 ### Distribute configuration files and certificates to the client
 
-This scenario uses a Docker volume, called `client_config` to help you distribute the configuration to your client node.
+This scenario uses a Docker volume, called `client_config` to help you distribute the configuration to your server node.
 
 
-Copy the required files for the Consul client configuration into the volume.
+Copy the required files for the Consul server configuration into the volume.
 
 `docker cp ./client.json volumes:/client/client.json`{{execute T3}}
 
