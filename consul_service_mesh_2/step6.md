@@ -7,5 +7,3 @@ To access the app running inside your Consul service mesh, you will setup port f
 `kubectl port-forward service/web 9090:9090 --address ${IP_ADDR}`{{execute}}
 
 This will forward port `80` of `service/hashicorp-consul-ui` on port `80` of your test machine.
-
-You can now open the Consul UI tab to be redirected to the Consul UI.
