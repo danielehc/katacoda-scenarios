@@ -23,19 +23,24 @@
                 "text": "step2.md"
             },
             {
-                "title": "Create server token",
+                "title": "Enable local binary",
                 "code": "set-env.sh",
                 "text": "step3.md"
             },
             {
-                "title": "Setup client agent",
+                "title": "Create server token",
                 "code": "set-env.sh",
                 "text": "step4.md"
             },
             {
+                "title": "Setup client agent",
+                "code": "set-env.sh",
+                "text": "step5.md"
+            },
+            {
                 "title": "Use DNS with tokens",
                 "code": "set-env.sh",
-                "text": "step4.md"
+                "text": "step6.md"
             }
         ],
     "intro": {
