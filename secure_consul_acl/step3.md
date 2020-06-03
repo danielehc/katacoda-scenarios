@@ -1,46 +1,45 @@
-### Configure Consul client
 
-The scenario comes with a prepared Consul client configuration.
+To start using ACLs you need to bootstrap them.
 
-Open `client.json`{{open}} in the editor to inspect values required for a minimal client config with TLS encryption enabled.
+First login into Consul server node:
 
-In this scenario you are going to use the `auto_encrypt` functionality of Consul that will automatically generate and distribute certificates for the client agents once the datacenter is configured.
+`docker exec -it server /bin/sh`{{execute T2}}
 
-You will still require to refer to the CA certificate `consul-agent-ca.pem` to validate requests.
+And make sure you configure the environment to reach Consul:
 
-### Distribute configuration files and certificates to the client
-
-This scenario uses a Docker volume, called `client_config` to help you distribute the configuration to your server node.
+`export CONSUL_HTTP_ADDR=localhost:8500`{{execute T2}}
 
 
-Copy the required files for the Consul server configuration into the volume.
+### Bootstrap ACLs
 
-`docker cp ./client.json volumes:/client/client.json`{{execute T3}}
-
-`docker cp ./consul-agent-ca.pem volumes:/client/consul-agent-ca.pem`{{execute T3}}
-
-### Retrieve Server IP to join the datacenter
-
-`export CONSUL_HTTP_ADDR=$(docker exec server consul members | grep server-1 | awk '{print $2}' | sed 's/:.*//g')`{{execute T3}}
-
-#### Start Consul client with the configuration file
-
-Finally start the Consul client.
-
-`docker run \
-    -d \
-    -v client_config:/etc/consul.d \
-    --name=client \
-    consul agent \
-     -node=client-1 \
-     -join=${CONSUL_HTTP_ADDR} \
-     -config-file=/etc/consul.d/client.json`{{execute T3}}
+`consul acl bootstrap`{{execute T2}}
 
 
-#### Confirm client started and joined the datacenter
 
-You can verify the Consul client started correctly and joined the datacenter using the `consum members` command.
+To start using ACLs you need to bootstrap them.
 
-`docker exec server consul members`{{execute T2}}
 
-Alternatively you can reach the [Consul UI](https://[[HOST_SUBDOMAIN]]-8500-[[KATACODA_HOST]].environments.katacoda.com/ui/dc1/nodes) tab to be redirected to the Consul UI.
+
+
+Run `consul acl bootstrap | tee consul.bootstrap{{execute}}` to bootstrap the ACL system, generate your first token, and capture the output into the `consul.bootstrap` file.
+
+If you receive an error saying "The ACL system is currently in legacy mode.", this indicates that the Consul service is still starting. Wait a few seconds and try the command again.
+
+Example Output
+
+```
+$ consul acl bootstrap | tee consul.bootstrap
+AccessorID:       e57b446b-2da0-bce2-f01c-6c0134d8e19b
+SecretID:         bba19e7c-9f47-2b08-f0ea-e1bca43ba9c5
+Description:      Bootstrap Token (Global Management)
+Local:            false
+Create Time:      2020-02-20 17:01:13.105174927 +0000 UTC
+Policies:
+   00000000-0000-0000-0000-000000000001 - global-management
+```
+
+<div style="background-color:#fcf6ea; color:#866d42; border:1px solid #f8ebcf; padding:1em; border-radius:3px;">
+  <p><strong>Warning: </strong>
+  In this hands-on lab we are redirecting the output for the `consul acl bootstrap` command on a file to simplify operations in the next steps. In a real-life scenario you want to make sure the bootstrap token is stored in a safe place as having it compromised will disprove ACL safety.
+</p></div>
+

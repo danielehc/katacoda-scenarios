@@ -25,12 +25,12 @@
             {
                 "title": "Bootstrap ACLs",
                 "code": "set-env.sh",
-                "text": "step2.md"
+                "text": "step3.md"
             },
             {
                 "title": "Configure and start client",
-                "code": "set-env.sh",
-                "text": "step3.md"
+                "courseData": "step4.courseData.sh",
+                "text": "step4.md"
             }
         ],
     "intro": {
