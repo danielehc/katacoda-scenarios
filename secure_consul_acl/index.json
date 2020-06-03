@@ -13,27 +13,27 @@
                 "verify": "provision.verify.sh"
             },
             {
-                "title": "Setup consul agents",
+                "title": "Setup server agent",
                 "code": "set-env.sh",
                 "text": "step1.md"
             },
             {
-                "title": "Startup server",
+                "title": "Bootstrap ACLs",
                 "code": "set-env.sh",
                 "text": "step2.md"
             },
             {
-                "title": "Bootstrap ACLs",
+                "title": "Create server token",
                 "code": "set-env.sh",
                 "text": "step3.md"
             },
             {
-                "title": "Create policies and tokens",
+                "title": "Setup client agent",
                 "code": "set-env.sh",
                 "text": "step4.md"
             },
             {
-                "title": "Configure and start client",
+                "title": "Use DNS with tokens",
                 "code": "set-env.sh",
                 "text": "step4.md"
             }

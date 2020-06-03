@@ -1,31 +1,36 @@
 
-Once configuration is distributed on the nodes it is possible to start the Consul server.
+To start using ACLs you need to bootstrap them.
 
-`docker run \
-    -d \
-    -v server_config:/etc/consul.d \
-    -p 8500:8500 \
-    -p 8600:8600/udp \
-    --name=server \
-    consul agent -server -ui \
-     -node=server-1 \
-     -bootstrap-expect=1 \
-     -client=0.0.0.0 \
-     -config-file=/etc/consul.d/agent.hcl`{{execute T2}}
+You will use the operator node to perform the first operations.
 
-### Check server logs
+`export CONSUL_HTTP_ADDR=localhost:8500`{{T1}}
 
-You can verify the Consul server started correctly by checking the logs.
+The `CONSUL_HTTP_ADDR` can be used to refer to your Consul datacenter from any node in the network.
 
-`docker logs server`{{execute T2}}
+### Bootstrap ACLs
 
-You should get a log message like the following when ACLs are enabled:
+To start using ACLs you need to bootstrap them.
 
-`agent.server: initializing acls`
+Run `consul acl bootstrap | tee consul.bootstrap`{{execute}} to bootstrap the ACL system, generate your first token, and capture the output into the `consul.bootstrap` file.
 
-Alternatively you can reach the [Consul UI](https://[[HOST_SUBDOMAIN]]-8500-[[KATACODA_HOST]].environments.katacoda.com/ui) tab to be redirected to the Consul UI.
+If you receive an error saying "The ACL system is currently in legacy mode.", this indicates that the Consul service is still starting. Wait a few seconds and try the command again.
+
+Example Output
+
+```
+$ consul acl bootstrap | tee consul.bootstrap
+AccessorID:       e57b446b-2da0-bce2-f01c-6c0134d8e19b
+SecretID:         bba19e7c-9f47-2b08-f0ea-e1bca43ba9c5
+Description:      Bootstrap Token (Global Management)
+Local:            false
+Create Time:      2020-02-20 17:01:13.105174927 +0000 UTC
+Policies:
+   00000000-0000-0000-0000-000000000001 - global-management
+```
 
 <div style="background-color:#fcf6ea; color:#866d42; border:1px solid #f8ebcf; padding:1em; border-radius:3px;">
   <p><strong>Warning: </strong>
-  Like any other requests made by Consul once ACLs are enabled, the results showed by the UI are the ones available by default to all unauthenticated (anonymous) clients. At this time your first inspection of the UI will show only empty tabs (no services, nor nodes). You will apply a token to access those info from the UI later in this lab.
+  In this hands-on lab we are redirecting the output for the `consul acl bootstrap` command on a file to simplify operations in the next steps. In a real-life scenario you want to make sure the bootstrap token is stored in a safe place as having it compromised will disprove ACL safety.
 </p></div>
+
+
