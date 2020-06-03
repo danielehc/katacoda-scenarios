@@ -1,4 +1,4 @@
-# Consul service mesh on Kubernetes
+# Consul Service Mesh on Kubernetes
 
 In this hands-on lab, you will deploy a Consul datacenter using Helm 3.x.
 

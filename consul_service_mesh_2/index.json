@@ -1,29 +1,29 @@
 {
-    "pathwayTitle": "Consul service mesh on Kubernetes",
+    "pathwayTitle": "Consul Service Mesh on Kubernetes",
     "icon": "fa-consul",
-    "title": "Consul service mesh on Kubernetes - Scenario 2",
+    "title": "Deploy Services into Consul Service Mesh",
     "description": "Secure Applications with Consul Service Mesh",
     "details": {
         "steps": [
             {
-                "title": "Provisioning Extra Course Components",
+                "title": "Provisioning Lab Infrastructure",
                 "text": "provision.md",
                 "courseData": "provision.courseData.sh",
                 "code": "provision.code.sh",
                 "verify": "provision.verify.sh"
             },
             {
-                "title": "Provision backend service",
+                "title": "Deploy the Backend Service",
                 "code": "set-env.sh",
                 "text": "step4.md"
             },
             {
-                "title": "Provision frontend service",
+                "title": "Deploy the Frontend Service",
                 "code": "set-env.sh",
                 "text": "step5.md"
             },
             {
-                "title": "Access application inside the service mesh",
+                "title": "Access applications in the Service Mesh",
                 "code": "set-env.sh",
                 "text": "step6.md"
             }
