@@ -1,4 +1,4 @@
-# Deploye services to Consul service mesh on Kubernetes
+# Deploy services to Consul service mesh on Kubernetes
 
 In this lab you will deploy two services, web and api, into Consul's service mesh running on a Kubernetes cluster. The two services will use Consul to discover each other and communicate over mTLS with sidecar proxies. This is the first step in deploying an application into a zero-trust network.
 
