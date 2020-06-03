@@ -4,7 +4,7 @@ In this lab you will perform all the steps needed to deploy Consul service mesh 
 
 The lab uses Minikube to deploy the cluster but the commands can be applied to any Kubernetes flavor.
 
-If you are already familiar with the basics of Consul, [understand Consul service mesh](https://learn.hashicorp.com/consul/gs-consul-service-mesh/understand-consul-service-mesh) provides a reference guide for the Consul service mesh based labs.
+If you are already familiar with the basics of Consul, [Understand Consul Service Mesh](https://learn.hashicorp.com/consul/gs-consul-service-mesh/understand-consul-service-mesh) provides a reference guide for the Consul service mesh based labs.
 
 In this hands-on lab, you will deploy a Consul datacenter using Minikube and Helm 3.x. Specifically you will:
 
