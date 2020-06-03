@@ -27,5 +27,5 @@ Alternatively you can reach the [Consul UI](https://[[HOST_SUBDOMAIN]]-8500-[[KA
 
 <div style="background-color:#fcf6ea; color:#866d42; border:1px solid #f8ebcf; padding:1em; border-radius:3px;">
   <p><strong>Warning: </strong>
-  Like any other requests made by Consul once ACLs are enabled, the results showed by the UI are the ones available by default to all clients. At this time your first inspection of the UI will show only empty tabs (no services nor nodes). You will apply a token to access those info from the UI later in this lab.
+  Like any other requests made by Consul once ACLs are enabled, the results showed by the UI are the ones available by default to all unauthenticated (anonymous) clients. At this time your first inspection of the UI will show only empty tabs (no services, nor nodes). You will apply a token to access those info from the UI later in this lab.
 </p></div>
