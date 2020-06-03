@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
-echo "Test Course data"
+echo "Copying bootstrap info"
 
-touch test_provision.txt
+docker cp server:/consul.bootstrap .

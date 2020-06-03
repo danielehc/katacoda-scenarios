@@ -29,7 +29,6 @@
             },
             {
                 "title": "Configure and start client",
-                "courseData": "step4.courseData.sh",
                 "code": "set-env.sh",
                 "text": "step4.md"
             }
