@@ -3,7 +3,7 @@ To start using ACLs you need to bootstrap them.
 
 You will use the operator node to perform the first operations.
 
-`export CONSUL_HTTP_ADDR=localhost:8500`{{T1}}
+`export CONSUL_HTTP_ADDR=localhost:8500`{{execute T1}}
 
 The `CONSUL_HTTP_ADDR` can be used to refer to your Consul datacenter from any node in the network.
 
@@ -11,7 +11,7 @@ The `CONSUL_HTTP_ADDR` can be used to refer to your Consul datacenter from any n
 
 To start using ACLs you need to bootstrap them.
 
-Run `consul acl bootstrap | tee consul.bootstrap`{{execute}} to bootstrap the ACL system, generate your first token, and capture the output into the `consul.bootstrap` file.
+Run `consul acl bootstrap | tee consul.bootstrap`{{execute T1}} to bootstrap the ACL system, generate your first token, and capture the output into the `consul.bootstrap` file.
 
 If you receive an error saying "The ACL system is currently in legacy mode.", this indicates that the Consul service is still starting. Wait a few seconds and try the command again.
 

@@ -1,12 +1,14 @@
 
 You can now use the bootstrap token to create other ACL policies for the rest of your datacenter.
 
-`docker cp ./agent.hcl volumes:/client/agent.hcl`{{execute T3}}
+The first policy you are going to create is the one for the server.
 
+`consul acl policy create \
+  -name consul-server-one \
+  -rules @server_policy.hcl`{{execute T1}}
 
+`consul acl token create \
+  -description "consul-server-1 agent token" \
+  -policy-name consul-server-one`{{execute T1}}
 
-
-`kubect apply -f ~/api.yml`{{execute}}
-
-
-`kubect apply -f ~/web.yml`{{execute}}
+consul acl set-agent-token agent "<agent token here>"
