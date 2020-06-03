@@ -11,4 +11,4 @@ The first policy you are going to create is the one for the server.
   -description "consul-server-1 agent token" \
   -policy-name consul-server-one | tee server.token`{{execute T1}}
 
-consul acl set-agent-token agent "<agent token here>"
+`consul acl set-agent-token agent $(cat server.token  | grep SecretID  | awk '{print $2}')`{{execute T1}}

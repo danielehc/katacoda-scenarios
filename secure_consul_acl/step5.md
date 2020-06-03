@@ -8,16 +8,27 @@ Once the server got a token assigned it is possible to create a token for the cl
   -description "consul-client agent token" \
   -policy-name consul-client | tee client.token`{{execute T1}}
 
-
 ### Configure Consul client
 
-consul acl set-agent-token agent "<agent token here>"
+`export client_token=$(cat client.token | grep SecretID  | awk '{print $2}')`{{execute T1}}
+
+`cat <<EOF >> ~/agent.hcl
+
+acl = {
+    enabled = true
+    default_policy = "deny"
+    enable_token_persistence = true
+    tokens = {
+        agent = "$(cat client.token | grep SecretID  | awk '{print $2}')"
+
+    }
+}
+EOF
+`{{execute T1}}
 
 To configure clients you can embed the newly created token directly in the configuration file so that they will be able to use it right from startup. Add the token in the `agent.hcl`{{open}} file.
 
-<pre class="file" data-filename="agent.hcl" data-target="insert" data-marker="        agent =">
-        agent = "${client_token}"
-</pre>
+
 
 Once the file is modified to include the token distribute it to the client.
 
@@ -33,5 +44,5 @@ Finally start the Consul client.
     --name=client \
     consul agent \
      -node=client-1 \
-     -join=${CONSUL_HTTP_ADDR} \
-     -config-file=/etc/consul.d/client.json`{{execute T3}}
+     -join=$(docker exec server consul members | grep server-1 | awk '{print $2}' | sed 's/:.*//g') \
+     -config-file=/etc/consul.d/agent.hcl`{{execute T3}}

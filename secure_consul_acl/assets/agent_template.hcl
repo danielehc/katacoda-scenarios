@@ -3,6 +3,6 @@ acl = {
     default_policy = "deny"
     enable_token_persistence = true
     tokens = {
-        agent =
+        agent = "${client_token}"
     }
 }

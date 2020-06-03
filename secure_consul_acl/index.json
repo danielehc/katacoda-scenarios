@@ -54,7 +54,7 @@
     },
     "assets": {
         "client": [
-          { "file": "agent.hcl", "target": "./" },
+          { "file": "agent_template.hcl", "target": "./" },
           { "file": "server.hcl", "target": "./" },
           { "file": "client_policy.hcl", "target": "./" },
           { "file": "server_policy.hcl", "target": "./" }
