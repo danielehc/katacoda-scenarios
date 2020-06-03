@@ -11,3 +11,6 @@ The previous request was successful because you still had the bootstrap token ex
 After unsetting it, try again the same commands:
 
 `consul members`{{execute T1}}
+
+
+### Create a token to only access services

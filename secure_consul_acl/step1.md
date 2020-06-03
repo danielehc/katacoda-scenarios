@@ -19,7 +19,7 @@ By enabling token persistence, tokens will be persisted to disk and reloaded whe
 
 This scenario uses a Docker volumes, called `server_config` to help you distribute the configuration to your server.
 
-`docker cp ./server.hcl volumes:/server/server.hcl`{{execute T2}}
+`docker cp ./server.hcl volumes:/server/server.hcl`{{execute T1}}
 
 ### Start Consul server
 
@@ -35,13 +35,13 @@ Once configuration is distributed on the nodes it is possible to start the Consu
      -node=server-1 \
      -bootstrap-expect=1 \
      -client=0.0.0.0 \
-     -config-file=/etc/consul.d/server.hcl`{{execute T2}}
+     -config-file=/etc/consul.d/server.hcl`{{execute T1}}
 
 ### Check server logs
 
 You can verify the Consul server started correctly by checking the logs.
 
-`docker logs server`{{execute T2}}
+`docker logs server`{{execute T1}}
 
 You should get a log message like the following when ACLs are enabled:
 

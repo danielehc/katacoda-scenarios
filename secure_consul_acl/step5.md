@@ -12,7 +12,7 @@ Once the server got a token assigned it is possible to create a token for the cl
 
 `export client_token=$(cat client.token | grep SecretID  | awk '{print $2}')`{{execute T1}}
 
-`cat <<EOF >> ~/agent.hcl
+```cat <<EOF >> ~/agent.hcl
 
 acl = {
     enabled = true
@@ -24,7 +24,7 @@ acl = {
     }
 }
 EOF
-`{{execute T1}}
+```{{execute T1}}
 
 To configure clients you can embed the newly created token directly in the configuration file so that they will be able to use it right from startup. Add the token in the `agent.hcl`{{open}} file.
 
@@ -32,11 +32,14 @@ To configure clients you can embed the newly created token directly in the confi
 
 Once the file is modified to include the token distribute it to the client.
 
-`docker cp ./agent.hcl volumes:/client/agent.hcl`{{execute T3}}
+`docker cp ./agent.hcl volumes:/client/agent.hcl`{{execute T1}}
 
 ### Start Consul client
 
 Finally start the Consul client.
+
+`export JOIN_IP=$(docker exec server consul members | grep server-1 | awk '{print $2}' | sed 's/:.*//g')`{{execute T1}}
+
 
 `docker run \
     -d \
@@ -44,5 +47,5 @@ Finally start the Consul client.
     --name=client \
     consul agent \
      -node=client-1 \
-     -join=$(docker exec server consul members | grep server-1 | awk '{print $2}' | sed 's/:.*//g') \
-     -config-file=/etc/consul.d/agent.hcl`{{execute T3}}
+     -join=${JOIN_IP} \
+     -config-file=/etc/consul.d/agent.hcl`{{execute T1}}

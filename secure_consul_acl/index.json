@@ -38,7 +38,7 @@
                 "text": "step5.md"
             },
             {
-                "title": "Use DNS with tokens",
+                "title": "Use CLI with tokens",
                 "code": "set-env.sh",
                 "text": "step6.md"
             }
