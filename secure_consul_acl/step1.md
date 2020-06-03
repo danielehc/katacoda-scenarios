@@ -19,7 +19,7 @@ By enabling token persistence, tokens will be persisted to disk and reloaded whe
 
 This scenario uses a Docker volumes, called `server_config` to help you distribute the configuration to your server.
 
-`docker cp ./agent.hcl volumes:/server/agent.hcl`{{execute T2}}
+`docker cp ./agent.hcl volumes:/server/server.hcl`{{execute T2}}
 
 ### Start Consul server
 
