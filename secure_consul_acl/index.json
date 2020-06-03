@@ -24,8 +24,13 @@
             },
             {
                 "title": "Bootstrap ACLs",
-                "courseData": "step3.courseData.sh",
+                "code": "set-env.sh",
                 "text": "step3.md"
+            },
+            {
+                "title": "Create policies and tokens",
+                "code": "set-env.sh",
+                "text": "step4.md"
             },
             {
                 "title": "Configure and start client",
@@ -63,6 +68,6 @@
     },
     "backend": {
         "port": 8080,
-        "imageid": "docker"
+        "imageid": "ubuntu"
     }
 }

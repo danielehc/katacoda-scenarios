@@ -12,16 +12,9 @@ And make sure you configure the environment to reach Consul:
 
 ### Bootstrap ACLs
 
-`consul acl bootstrap`{{execute T2}}
-
-
-
 To start using ACLs you need to bootstrap them.
 
-
-
-
-Run `consul acl bootstrap | tee consul.bootstrap{{execute}}` to bootstrap the ACL system, generate your first token, and capture the output into the `consul.bootstrap` file.
+Run `consul acl bootstrap | tee consul.bootstrap`{{execute}} to bootstrap the ACL system, generate your first token, and capture the output into the `consul.bootstrap` file.
 
 If you receive an error saying "The ACL system is currently in legacy mode.", this indicates that the Consul service is still starting. Wait a few seconds and try the command again.
 
@@ -43,3 +36,7 @@ Policies:
   In this hands-on lab we are redirecting the output for the `consul acl bootstrap` command on a file to simplify operations in the next steps. In a real-life scenario you want to make sure the bootstrap token is stored in a safe place as having it compromised will disprove ACL safety.
 </p></div>
 
+
+cat consul.bootstrap  | grep SecretID  | awk '{print $2}'
+
+consul members -token $(cat consul.bootstrap  | grep SecretID  | awk '{print $2}')
