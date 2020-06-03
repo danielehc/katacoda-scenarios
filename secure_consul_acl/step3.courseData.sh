@@ -2,4 +2,4 @@
 
 echo "Test Course data"
 
-touch test_provision_4.txt
+touch test_provision.txt
