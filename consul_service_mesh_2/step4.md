@@ -1,10 +1,8 @@
 #### Deploy services into Consul service mesh
 
-You will deploy two services, web and api, into Consul's service mesh running on a Kubernetes cluster. The two services will use Consul to discover each other and communicate over mTLS with sidecar proxies. This is the first step in deploying an application into a zero-trust network.
-
 The two services represent a simple two-tier application made of a backend api service and a frontend that communicates with the api service over HTTP and exposes the results in a web ui.
 
-#### Deploy the backend service 
+#### Review the backend service configuration
 
 This hands-on lab comes with a prepared configuration.
 
@@ -20,7 +18,7 @@ You can deploy the `api` service using `kubectl`.
 
 #### Check the service is running in Kubernetes
 
-Finally, you can verify the `api` service is deployed successfully. 
+Finally, you can verify the `api` service is deployed successfully.
 
 `kubectl get pods`{{execute}}
 

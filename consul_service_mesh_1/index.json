@@ -1,7 +1,7 @@
 {
-    "pathwayTitle": "Consul Service Mesh on Kubernetes",
+    "pathwayTitle": "Install Consul service mesh on Kubernetes",
     "icon": "fa-consul",
-    "title": "Deploy Consul Service Mesh",
+    "title": "Install Consul service mesh on Kubernetes",
     "description": "Install Consul service mesh on Kubernetes in a hosted sandboxed interactive environment",
     "details": {
         "steps": [

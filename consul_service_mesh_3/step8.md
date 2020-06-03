@@ -1,6 +1,6 @@
 #### Enable default-deny policy
 
-Using Consul cmmandline from the Consul container you can enable the default-deny policy for your service mesh.
+Using Consul command line from the Consul container you can enable the default-deny policy for your service mesh.
 
 `consul intention create -deny '*' '*'`{{execute}}
 

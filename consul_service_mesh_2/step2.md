@@ -14,7 +14,7 @@ The scenario comes with a prepared configuration.
 
 `helm install -f ~/consul-values.yml hashicorp hashicorp/consul`{{execute}}
 
-#### Check services running in Kubernetes
+#### Check services running on Kubernetes
 
 Control Consul is properly running.
 
