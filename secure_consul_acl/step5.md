@@ -38,7 +38,7 @@ Once the file is modified to include the token distribute it to the client.
 
 Finally start the Consul client.
 
-`export JOIN_IP=$(docker exec server consul members | grep server-1 | awk '{print $2}' | sed 's/:.*//g')`{{execute T1}}
+`export JOIN_IP=$(consul members | grep server-1 | awk '{print $2}' | sed 's/:.*//g')`{{execute T1}}
 
 
 `docker run \
