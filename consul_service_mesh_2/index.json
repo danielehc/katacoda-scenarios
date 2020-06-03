@@ -1,8 +1,8 @@
 {
-    "pathwayTitle": "Consul Service Mesh on Kubernetes",
+    "pathwayTitle": "Deploy services to Consul service mesh on Kubernetes",
     "icon": "fa-consul",
-    "title": "Deploy Services into Consul Service Mesh",
-    "description": "Secure Applications with Consul Service Mesh",
+    "title": "Deploy services to Consul service mesh on Kubernetes",
+    "description": "You will deploy two services into Consul's service mesh running on a Kubernetes cluster. The two services will use Consul to discover each other and communicate over mTLS with sidecar proxies. This is the first step in deploying an application into a zero-trust network.",
     "details": {
         "steps": [
             {

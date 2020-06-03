@@ -7,7 +7,7 @@ This hands-on lab comes with a prepared configuration.
 In additon to the `"consul.hashicorp.com/connect-inject": "true"` annotation, the
 `web` service defines the `"consul.hashicorp.com/connect-service-upstreams"` annotation. This annotation
  explicitly declares the upstream for the web service, which is the `api` service you deployed
- previously. 
+ previously.
 
 #### Deploy app with kubectl
 
@@ -17,7 +17,7 @@ You can deploy the `web` application using `kubectl`.
 
 #### Check the service is running in Kubernetes
 
-Finally, you can verify the `web` service is deployed successfully. 
+Finally, you can verify the `web` service is deployed successfully.
 
 `kubectl get pods`{{execute}}
 

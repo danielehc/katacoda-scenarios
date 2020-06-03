@@ -1,8 +1,8 @@
 {
-    "pathwayTitle": "Consul Service Mesh on Kubernetes",
+    "pathwayTitle": "Configure a zero-trust network with Consul service mesh intentions on Kubernetes",
     "icon": "fa-consul",
-    "title": "Secure Services in the Consul Service Mesh",
-    "description": "Enforce a Zero-trust Network with Consul Service Mesh",
+    "title": "Configure a zero-trust network with Consul service mesh intentions on Kubernetes",
+    "description": "Enforce a zero-trust Network with Consul Service Mesh intentions",
     "details": {
         "steps": [
             {
