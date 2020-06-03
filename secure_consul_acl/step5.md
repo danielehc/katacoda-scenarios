@@ -12,7 +12,8 @@ Once the server got a token assigned it is possible to create a token for the cl
 
 `export client_token=$(cat client.token | grep SecretID  | awk '{print $2}')`{{execute T1}}
 
-```cat <<EOF >> ~/agent.hcl
+```bash
+cat <<EOF >> ~/agent.hcl
 
 acl = {
     enabled = true
@@ -26,9 +27,8 @@ acl = {
 EOF
 ```{{execute T1}}
 
+
 To configure clients you can embed the newly created token directly in the configuration file so that they will be able to use it right from startup. Add the token in the `agent.hcl`{{open}} file.
-
-
 
 Once the file is modified to include the token distribute it to the client.
 
