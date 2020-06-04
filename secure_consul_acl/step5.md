@@ -15,7 +15,7 @@ service_prefix "" {
 }
 ```
 
-This policy will permit the registration of all nodes with a name starting with `client-`. This permits you to reuse a single token across all your clients, or to combine this policy with more specific ones for the single client agent to generate specific tokens.
+This policy will permit the registration of all nodes with a name starting with `client-`.
 
 Create the policy and token with the `consul acl` command.
 

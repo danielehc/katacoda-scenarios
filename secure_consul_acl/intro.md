@@ -2,7 +2,7 @@
 
 In this hands-on lab, you will deploy a secure Consul datacenter using Docker.
 
-The lab will guide through the steps necessary to deploy Consul with ACLs enabled for agent RPC communications.
+The lab will guide you through the steps necessary to deploy Consul with ACLs enabled to secure acces to the UI, API, CLI, services, and agents.
 
 Specifically, you will:
 

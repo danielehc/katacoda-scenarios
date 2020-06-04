@@ -1,7 +1,7 @@
 
 Once ACLs have been bootstrapped, you can use the bootstrap token to complete the configuration.
 
-If the token is not set to the CONSUL_HTTP_TOKEN environment variable, or passed as a a command
+If the token is not set in the CONSUL_HTTP_TOKEN environment variable, or passed as a a command
 line option, you will not be able to perform operations, or you will be presented only with a subset
 of results.
 
