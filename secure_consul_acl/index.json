@@ -23,12 +23,12 @@
                 "text": "step2.md"
             },
             {
-                "title": "Enable local binary",
+                "title": "Set the bootstrap token",
                 "code": "set-env.sh",
                 "text": "step3.md"
             },
             {
-                "title": "Create server token",
+                "title": "Setup server agent",
                 "code": "set-env.sh",
                 "text": "step4.md"
             },
@@ -38,7 +38,7 @@
                 "text": "step5.md"
             },
             {
-                "title": "Use CLI with tokens",
+                "title": "Create non-privileged policy & token",
                 "code": "set-env.sh",
                 "text": "step6.md"
             }

@@ -1,13 +1,13 @@
 
-First you will instruct your environment to find the Consul agent for performing the request.
+First, you will configure your environment to be able to interact with the Consul agent.
 
-In this case you have the Docker container forwarding the port `8500` on the local machine so you can reach it without having to be inside the container.
+In this hands-on lab the Docker container is forwarding port `8500` to the local machine. You should be able to interact with it without having to be inside the container.
 
 `export CONSUL_HTTP_ADDR=localhost:8500`{{execute T1}}
 
 ### Bootstrap ACLs
 
-To start using ACLs you need to bootstrap them.
+You need to bootstrap the ACL system to start using ACLs.
 
 Run `consul acl bootstrap | tee consul.bootstrap`{{execute T1}} to bootstrap the ACL system, generate your first token, and capture the output into the `consul.bootstrap` file.
 
@@ -28,7 +28,7 @@ Policies:
 
 <div style="background-color:#fcf6ea; color:#866d42; border:1px solid #f8ebcf; padding:1em; border-radius:3px;">
   <p><strong>Warning: </strong>
-  In this hands-on lab we are redirecting the output for the `consul acl bootstrap` command on a file to simplify operations in the next steps. In a real-life scenario you want to make sure the bootstrap token is stored in a safe place as having it compromised will disprove ACL safety.
+  In this hands-on lab, you are redirecting the output of the `consul acl bootstrap` command to a file to simplify operations in the next steps. In a real-life scenario, you want to make sure the bootstrap token is stored in a safe place. If it is compromised, the ACL system can be abused.
 </p></div>
 
 

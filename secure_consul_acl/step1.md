@@ -1,7 +1,7 @@
 
-Consul uses Access Control Lists (ACLs) to secure the UI, API, CLI, service communications, and agent communications. When securing your datacenter you should configure the ACLs first. 
+Consul uses Access Control Lists (ACLs) to secure the UI, API, CLI, service communications, and agent communications. When securing your datacenter you should configure the ACLs first.
 
-Open `server.hcl`{{open}} in the editor to inspect values required for a minimal configuration with ACL system enabled.
+Open `server.hcl`{{open}} in the editor to inspect values required for a minimal configuration with the ACL system enabled.
 
 ```
 acl = {
@@ -11,7 +11,7 @@ acl = {
 }
 ```
 
-In this lab, you will configure the default policy of "deny", which means all operations will not be permitted unless made using a token that permits them. 
+In this lab, you will configure the "default-deny" policy, which denies all operations by default. All operations will be evaluated against their token, and only operations granted by policy associated with the token will be allowed.
 
 By enabling token persistence, tokens will be persisted to disk and reloaded when an agent restarts.
 
@@ -23,7 +23,7 @@ This scenario uses a Docker volume, called `server_config` to help you distribut
 
 ### Start Consul server
 
-Once configuration is distributed on the nodes it is possible to start the Consul server.
+Once configuration is distributed on the nodes, it is possible to start the Consul server.
 
 `docker run \
     -d \
@@ -47,9 +47,9 @@ You should get a log message like the following when ACLs are enabled:
 
 `agent.server: initializing acls`
 
-Alternatively you can reach the [Consul UI](https://[[HOST_SUBDOMAIN]]-8500-[[KATACODA_HOST]].environments.katacoda.com/ui) tab to be redirected to the Consul UI.
+Alternatively you can visit the [Consul UI](https://[[HOST_SUBDOMAIN]]-8500-[[KATACODA_HOST]].environments.katacoda.com/ui) tab to launch the Consul UI.
 
 <div style="background-color:#fcf6ea; color:#866d42; border:1px solid #f8ebcf; padding:1em; border-radius:3px;">
   <p><strong>Warning: </strong>
-  Like any other requests made to Consul, once ACLs are enabled, the results showed by the UI are the ones available by default to all unauthenticated (anonymous) clients. At this time your first inspection of the UI will show only empty tabs (no services, nor nodes). You will apply a token to access those info from the UI later in this lab.
+  Once ACLs are enabled the results available in the UI include only those authorized for all unauthenticated (anonymous) clients. At this time, your first inspection of the UI will show only empty tabs (no services, nor nodes). You will enter a token to access that info from the UI later in this lab.
 </p></div>

@@ -1,5 +1,5 @@
 
-To verify the client node properly started you can query consul to retrieve the list of members.
+You can query consul to retrieve the list of members and verify the client node properly started.
 
 `consul members`{{execute T1}}
 
@@ -10,13 +10,13 @@ server-1  172.18.0.2:8301  alive   server  1.7.3  2         dc1  <all>
 client-1  172.18.0.3:8301  alive   client  1.7.3  2         dc1  <default>
 ```
 
-### Setup a less privileged token for CLI operations
+### Create a non-privileged policy & token for CLI operations
 
-Having your bootstrap token used in daily activities or exposed as an environment variable is **strongly discouraged** because it exposes you to several security risks. 
+Having your bootstrap token used in daily activities or exposed as an environment variable is **strongly discouraged**. It exposes you to several security risks.
 
-The best approach would be to create a specific token for the operator, associated with a policy reflecting only the minimum permissions required to perform the tasks.
+A better approach would be to create a specific poliicy/token for each operator granting the minimum permissions required to perform their daily tasks.
 
-For this lab you can create a simple read-only policy to inspect the content of your Consul datacenter without the possibility to make changes.
+For this lab, you can create a simple read-only policy to inspect the content of your Consul datacenter without the ability to make changes.
 
 Open `read_policy.hcl`{{open}} to check the rules defined:
 
@@ -45,7 +45,7 @@ Create the policy and token with the `consul acl` command.
 
 ### Change the token
 
-The previous requests were successful because you still had the bootstrap token exported in `CONSUL_HTTP_TOKEN`.
+The previous requests were successful because you still had the bootstrap token exported in `CONSUL_HTTP_TOKEN`. Unset that with the following command.
 
 `unset CONSUL_HTTP_TOKEN`{{execute T1}}
 
@@ -53,13 +53,13 @@ After unsetting it, try query Consul:
 
 `consul members`{{execute T1}}
 
-The fact the command now returns an empty output, indicates that ACLs are properly in place and that an anonymous client will not be able to retrieve data from Consul even if able to reach the agent.
+The fact that the command now returns an empty output indicates that ACLs are properly in place, and that an anonymous client will not be able to retrieve data from Consul even if they are able to reach the agent.
 
-Finally set the token for the command using the `CONSUL_HTTP_TOKEN` environment variable.
+Finally, set the token for the command using the `CONSUL_HTTP_TOKEN` environment variable.
 
 `export CONSUL_HTTP_TOKEN=$(cat read-only.token  | grep SecretID  | awk '{print $2}')`{{execute T1}}
 
-You can now try again to retrieve the list of members from Consul.
+Now try to retrieve the list of members from Consul again.
 
 `consul members`{{execute T1}}
 
