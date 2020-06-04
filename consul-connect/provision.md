@@ -5,17 +5,18 @@ next step.
 **Example Output**
 
 ```screenshot
-- Install prerequisites
-- Install Consul locally
-- Installing Consul x.y.z
-- Pulling Docker image for Consul x.y.z
-- Creating Docker volumes
+[timestamp] - Install prerequisites
+[timestamp] - Installing service binaries
+[timestamp] - Install Consul locally
+[timestamp] - Installing Consul x.y.z
+[timestamp] - Creating Consul user and configuration
+[timestamp] - Complete! Move on to the next step.
 ```
 
 and concluding with
 
 ```
-- Complete! Move on to the next step.
+[timestamp] - Complete! Move on to the next step.
 ```
 
 Once this message appears, you are ready to continue.
