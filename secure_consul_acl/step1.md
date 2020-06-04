@@ -1,7 +1,7 @@
 
 Consul uses Access Control Lists (ACLs) to secure the UI, API, CLI, service communications, and agent communications. When securing your datacenter you should configure the ACLs first. 
 
-Open `agent.hcl`{{open}} in the editor to inspect values required for a minimal configuration with ACL system enabled.
+Open `server.hcl`{{open}} in the editor to inspect values required for a minimal configuration with ACL system enabled.
 
 ```
 acl = {
@@ -11,13 +11,13 @@ acl = {
 }
 ```
 
-In this example, you will configure the default policy of "deny", which means all operations will not be permitted unless made using a token that permits them. 
+In this lab, you will configure the default policy of "deny", which means all operations will not be permitted unless made using a token that permits them. 
 
 By enabling token persistence, tokens will be persisted to disk and reloaded when an agent restarts.
 
 #### Distribute configuration
 
-This scenario uses a Docker volumes, called `server_config` to help you distribute the configuration to your server.
+This scenario uses a Docker volume, called `server_config` to help you distribute the configuration to your server.
 
 `docker cp ./server.hcl volumes:/server/server.hcl`{{execute T1}}
 
@@ -51,5 +51,5 @@ Alternatively you can reach the [Consul UI](https://[[HOST_SUBDOMAIN]]-8500-[[KA
 
 <div style="background-color:#fcf6ea; color:#866d42; border:1px solid #f8ebcf; padding:1em; border-radius:3px;">
   <p><strong>Warning: </strong>
-  Like any other requests made by Consul once ACLs are enabled, the results showed by the UI are the ones available by default to all unauthenticated (anonymous) clients. At this time your first inspection of the UI will show only empty tabs (no services, nor nodes). You will apply a token to access those info from the UI later in this lab.
+  Like any other requests made to Consul, once ACLs are enabled, the results showed by the UI are the ones available by default to all unauthenticated (anonymous) clients. At this time your first inspection of the UI will show only empty tabs (no services, nor nodes). You will apply a token to access those info from the UI later in this lab.
 </p></div>

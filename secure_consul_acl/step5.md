@@ -1,5 +1,24 @@
 Once the server got a token assigned it is possible to create a token for the client node.
 
+Open the `client_policy.hcl`{{open}} file to review the policy.
+
+```hcl
+# consul-server-one-policy.hcl
+node_prefix "client-" {
+  policy = "write"
+}
+node_prefix "" {
+   policy = "read"
+}
+service_prefix "" {
+   policy = "read"
+}
+```
+
+This policy will permit the registration of all nodes with a name starting with `client-`. This permits you to reuse a single token across all your clients or to combine this policy with more specific ones for the single client agent to generate specific tokens.
+
+Create the policy and token with the `consul acl` command.
+
 `consul acl policy create \
   -name consul-client \
   -rules @client_policy.hcl`{{execute T1}}
@@ -10,7 +29,7 @@ Once the server got a token assigned it is possible to create a token for the cl
 
 ### Configure Consul client
 
-`export client_token=$(cat client.token | grep SecretID  | awk '{print $2}')`{{execute T1}}
+This time, since the client agent is not yet started you will apply the token directly in the configuration. For this lab we used the `client.token` file created in the previous step to automatically populate the file.
 
 ```bash
 cat <<EOF >> ~/agent.hcl
@@ -27,8 +46,7 @@ acl = {
 EOF
 ```{{execute T1}}
 
-
-To configure clients you can embed the newly created token directly in the configuration file so that they will be able to use it right from startup. Add the token in the `agent.hcl`{{open}} file.
+Check `agent.hcl`{{open}} file to ensure the token is properly populated.
 
 Once the file is modified to include the token distribute it to the client.
 
@@ -39,7 +57,6 @@ Once the file is modified to include the token distribute it to the client.
 Finally start the Consul client.
 
 `export JOIN_IP=$(consul members | grep server-1 | awk '{print $2}' | sed 's/:.*//g')`{{execute T1}}
-
 
 `docker run \
     -d \

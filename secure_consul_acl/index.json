@@ -1,12 +1,12 @@
 {
-    "pathwayTitle": "Secure consul with ACLs",
+    "pathwayTitle": "Secure Consul with ACLs",
     "icon": "fa-consul",
-    "title": "Secure consul with ACLs",
+    "title": "Secure Consul with ACLs",
     "description": "Enable ACLs for Consul datacenters.",
     "details": {
         "steps": [
             {
-                "title": "Provisioning Extra Course Components",
+                "title": "Provisioning Lab Infrastructure",
                 "text": "provision.md",
                 "courseData": "provision.courseData.sh",
                 "code": "provision.code.sh",

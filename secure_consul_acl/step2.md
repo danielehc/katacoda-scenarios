@@ -1,11 +1,9 @@
 
-To start using ACLs you need to bootstrap them.
+First you will instruct your environment to find the Consul agent for performing the request.
 
-You will use the operator node to perform the first operations.
+In this case you have the Docker container forwarding the port `8500` on the local machine so you can reach it without having to be inside the container.
 
 `export CONSUL_HTTP_ADDR=localhost:8500`{{execute T1}}
-
-The `CONSUL_HTTP_ADDR` can be used to refer to your Consul datacenter from any node in the network.
 
 ### Bootstrap ACLs
 

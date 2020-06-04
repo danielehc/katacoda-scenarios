@@ -1,10 +1,10 @@
-# consul-client-policy.hcl
-node_prefix "client-" {
-  policy = "write"
-}
+# read-only-policy.hcl
 node_prefix "" {
    policy = "read"
 }
 service_prefix "" {
+   policy = "read"
+}
+key-prefix "" {
    policy = "read"
 }
