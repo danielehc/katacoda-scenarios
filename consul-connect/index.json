@@ -7,29 +7,35 @@
   "details": {
     "steps": [
       {
-        "title": "Start the backend counting service",
+        "title": "Provisioning Lab Infrastructure",
+        "text": "provision.md",
+        "courseData": "provision.courseData.sh",
+        "code": "provision.code.sh",
+        "verify": "provision.verify.sh"
+      },
+      {
+        "title": "Access the Consul UI and Start Backend Service",
         "text": "step1.md"
       },
       {
-        "title": "Start the dashboard",
+        "title": "Start the Frondend Service",
         "text": "step2.md"
       },
       {
-        "title": "Start the proxies",
+        "title": "Start the Sidecar Proxies",
         "text": "step3.md"
       },
       {
-        "title": "Deny service connections",
+        "title": "Enforce a Zero-trust Network",
         "text": "step4.md"
       },
       {
-        "title": "Allow dashboard connection",
+        "title": "Allow Frontend Connections",
         "text": "step5.md"
       }
     ],
     "intro": {
       "text": "intro.md",
-      "code": "courseBase.sh",
       "credits": "https://learn.hashicorp.com/consul"
     },
     "finish": {
@@ -40,10 +46,10 @@
   "environment": {
     "uilayout": "terminal",
     "uimessage1":
-      "\u001b[32mYour Interactive Bash Terminal. A safe place to learn and execute commands version 0.1.\u001b[m\r\n"
+      "\u001b[32mYour Interactive Bash Terminal. A safe place to learn and execute commands.\u001b[m\r\n"
   },
   "backend": {
-    "imageid": "hashicorp-hashistack",
+    "imageid": "ubuntu",
     "showdashboard": true,
     "dashboards": [
       { "name": "Counting", "port": 9003 },
