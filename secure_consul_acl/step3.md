@@ -1,7 +1,9 @@
 
-Once ACLs have been bootstrapped you can use the bootstrap token to complete the configuration.
+Once ACLs have been bootstrapped, you can use the bootstrap token to complete the configuration.
 
-Until the token is not set for Consul operations you will not be able to perform operations or you will be presented only with a subset of results.
+If the token is not set in the CONSUL_HTTP_TOKEN environment variable, or passed as a a command
+line option, you will not be able to perform operations, or you will be presented only with a subset
+of results.
 
 `consul members`{{execute T1}}
 
@@ -13,7 +15,7 @@ You can set the token for the command using the `CONSUL_HTTP_TOKEN` environment 
 
 `export CONSUL_HTTP_TOKEN=$(cat consul.bootstrap  | grep SecretID  | awk '{print $2}')`{{execute T1}}
 
-You can now try again to retrieve the list of members from Consul.
+Now, try again to retrieve the list of members from Consul.
 
 `consul members`{{execute T1}}
 
