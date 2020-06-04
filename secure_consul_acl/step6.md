@@ -3,17 +3,12 @@ To verify the client node properly started you can query consul to retrieve the 
 
 `consul members`{{execute T1}}
 
-### Change the token
-
-The previous request was successful because you still had the bootstrap token exported in `CONSUL_HTTP_TOKEN`.
-
-`unset CONSUL_HTTP_TOKEN`{{execute T1}}
-
-After unsetting it, try again the same commands:
-
-`consul members`{{execute T1}}
-
-The fact the command now returns an empty output, indicates that ACLs are properly in place and that an anonymous client will not be able to retrieve data from Consul even if able to reach the agent.
+```plaintext
+$ consul members
+Node      Address          Status  Type    Build  Protocol  DC   Segment
+server-1  172.18.0.2:8301  alive   server  1.7.3  2         dc1  <all>
+client-1  172.18.0.3:8301  alive   client  1.7.3  2         dc1  <default>
+```
 
 ### Setup a less privileged token for CLI operations
 
@@ -23,7 +18,7 @@ The best approach would be to create a specific token for the operator, associat
 
 For this lab you can create a simple read-only policy to inspect the content of your Consul datacenter without the possibility to make changes.
 
-Open `read_polict.hcl`{{open}} to check the rules defined:
+Open `read_policy.hcl`{{open}} to check the rules defined:
 
 ```plaintext
 # read-only-policy.hcl
@@ -46,6 +41,19 @@ Create the policy and token with the `consul acl` command.
 `consul acl token create \
   -description "read-only token" \
   -policy-name read-only | tee read-only.token`{{execute T1}}
+
+
+### Change the token
+
+The previous requests were successful because you still had the bootstrap token exported in `CONSUL_HTTP_TOKEN`.
+
+`unset CONSUL_HTTP_TOKEN`{{execute T1}}
+
+After unsetting it, try query Consul:
+
+`consul members`{{execute T1}}
+
+The fact the command now returns an empty output, indicates that ACLs are properly in place and that an anonymous client will not be able to retrieve data from Consul even if able to reach the agent.
 
 Finally set the token for the command using the `CONSUL_HTTP_TOKEN` environment variable.
 
