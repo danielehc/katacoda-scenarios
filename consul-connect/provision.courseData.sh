@@ -22,10 +22,14 @@ log Installing service binaries
 
 mkdir -p ~/src
 
-cd ~/src && curl -L https://github.com/hashicorp/katakoda/raw/master/consul-connect/assets/bin/counting-service -O
-mv ~/src/counting-service /usr/local/bin
-cd ~/src && curl -L https://github.com/hashicorp/katakoda/raw/master/consul-connect/assets/bin/dashboard-service -O
-mv ~/src/dashboard-service /usr/local/bin
+curl -sL https://github.com/hashicorp/katakoda/raw/master/consul-connect/assets/bin/counting-service -o /usr/local/bin/counting-service
+curl -sL https://github.com/hashicorp/katakoda/raw/master/consul-connect/assets/bin/dashboard-service -o /usr/local/bin/dashboard-service
+
+# cd ~/src && curl -L https://github.com/hashicorp/katakoda/raw/master/consul-connect/assets/bin/counting-service -O
+# mv ~/src/counting-service /usr/local/bin
+# cd ~/src && curl -L https://github.com/hashicorp/katakoda/raw/master/consul-connect/assets/bin/dashboard-service -O
+# mv ~/src/dashboard-service /usr/local/bin
+
 chmod +x /usr/local/bin/*-service
 
 #############################
@@ -46,12 +50,16 @@ mv consul /usr/local/bin/consul
 
 rm -rf consul_${APP_VERSION}_linux_amd64.zip > /dev/null
 
-log Creating COnsul user and configuration
+log Creating Consul user and configuration
 
 useradd consul --create-home
 mkdir -p /etc/consul.d
-cd /etc/consul.d && curl -L https://github.com/hashicorp/katakoda/raw/master/consul-connect/assets/config/counting.json -O
-cd /etc/consul.d && curl -L https://github.com/hashicorp/katakoda/raw/master/consul-connect/assets/config/dashboard.json -O
+
+curl -sL https://github.com/hashicorp/katakoda/raw/master/consul-connect/assets/config/counting.json -o /etc/consul.d/counting.json
+curl -sL https://github.com/hashicorp/katakoda/raw/master/consul-connect/assets/config/dashboard.json -o /etc/consul.d/dashboard.json
+
+# cd /etc/consul.d && curl -L https://github.com/hashicorp/katakoda/raw/master/consul-connect/assets/config/counting.json -O
+# cd /etc/consul.d && curl -L https://github.com/hashicorp/katakoda/raw/master/consul-connect/assets/config/dashboard.json -O
 mkdir -p /home/consul/log
 chown -R consul /home/consul
 echo '127.0.0.1 localhost' >> /etc/hosts
