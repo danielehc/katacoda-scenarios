@@ -65,6 +65,7 @@
         "showdashboard": true,
         "dashboard": "Dashboard",
         "uilayout": "editor-terminal",
+        "hideHiddenFiles": true,
         "uimessage1": "\u001b[32mOperator node terminal.\u001b[m\r\n",
         "dashboards": [
             {"name": "Consul UI", "port": 8500}
