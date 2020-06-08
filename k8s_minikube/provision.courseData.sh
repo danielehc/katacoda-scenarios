@@ -21,6 +21,13 @@ sudo cp linux-amd64/helm /usr/bin/
 
 # log "Starting Kubernetes...this might take up to 5 minutes."
 
+useradd consul --create-home -G docker -s /bin/bash
+
+runuser -l consul -c "minikube start --vm-driver=docker -p dc1 -v 8 --memory 1024"
+
+runuser -l consul -c "minikube start --vm-driver=docker -p dc2 -v 8 --memory 1024"
+
+
 # minikube start --wait=true
 
 # log "Installing Consul service mesh."
