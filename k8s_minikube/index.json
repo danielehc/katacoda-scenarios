@@ -2,16 +2,25 @@
 	"title": "Kubernetes & Minikube",
 	"description": "Launch Kubernetes Cluster Using MiniKube",
 	"details": {
-		"steps": [{
-			"title": "Step 1 - Start Minikube",
-			"text": "step1.md"
-		}, {
-			"title": "Step 2 - Cluster Info",
-			"text": "step2.md"
-		}, {
-			"title": "Step 3 - Deploy Containers",
-			"text": "step3.md"
-		}],
+		"steps": [
+			{
+                "title": "Provisioning Lab Infrastructure",
+                "text": "provision.md",
+                "courseData": "provision.courseData.sh",
+                "code": "provision.code.sh",
+                "verify": "provision.verify.sh"
+            },
+			{
+				"title": "Step 1 - Start Minikube",
+				"text": "step1.md"
+			}, {
+				"title": "Step 2 - Cluster Info",
+				"text": "step2.md"
+			}, {
+				"title": "Step 3 - Deploy Containers",
+				"text": "step3.md"
+			}
+		],
 		"intro": {
 			"text": "intro.md"
 		},

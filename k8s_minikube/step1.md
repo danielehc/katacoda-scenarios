@@ -28,3 +28,5 @@ minikube start --vm-driver=docker -p dc2 -v 8
 `runuser -l consul -c "minikube start --vm-driver=docker -p dc1 -v 8 --memory 1024"`{{execute}}
 
 `runuser -l consul -c "minikube start --vm-driver=docker -p dc2 -v 8 --memory 1024"`{{execute}}
+
+`helm repo add hashicorp https://helm.releases.hashicorp.com`{{execute}}
