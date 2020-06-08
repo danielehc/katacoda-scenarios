@@ -63,3 +63,6 @@ Now try to retrieve the list of members from Consul again.
 
 `consul members`{{execute T1}}
 
+### Apply a token to Consul UI
+
+The same token you used for your CLI command can be also applied to the Consul UI. Visit the [Consul UI](https://[[HOST_SUBDOMAIN]]-8500-[[KATACODA_HOST]].environments.katacoda.com/ui) tab to apply one of the tokens generated in this lab to the UI.
