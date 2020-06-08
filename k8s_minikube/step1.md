@@ -36,6 +36,12 @@ minikube start --vm-driver=docker -p dc2 -v 8
 `kubectl config use-context dc1`{{execute}}
 
 
+`git clone https://github.com/hashicorp/consul-helm.git`{{execute}}
+`cd consul-helm`{{execute}}
+`git checkout wan-federation-base`{{execute}}
+`cd ..`{{execute}}
+
+
 `helm install consul ./consul-helm -f ./dc1-config.yaml --timeout 10m`{{execute}}
 
 `kubectl get svc consul-mesh-gateway`{{execute}}
