@@ -1,25 +1,25 @@
 global:
-    datacenter: dc1
-    image: lkysow/consul-ent:1.8.0-beta1-feb21
-    tls:
-      enabled: true
-    federation:
-      enabled: true
-    name: consul
-  connectInject:
+  datacenter: dc1
+  image: lkysow/consul-ent:1.8.0-beta1-feb21
+  tls:
     enabled: true
-    imageEnvoy: envoyproxy/envoy-alpine:v1.13.0
-  meshGateway:
+  federation:
     enabled: true
-    enableHealthChecks: false
-    replicas: 1
-    wanAddress:
-      useNodeIP: false
-      #host: "52.149.187.167"
-    service:
-      enabled: true
-      type: LoadBalancer
-      #annotations: |
+  name: consul
+connectInject:
+  enabled: true
+  imageEnvoy: envoyproxy/envoy-alpine:v1.13.0
+meshGateway:
+  enabled: true
+  enableHealthChecks: false
+  replicas: 1
+  wanAddress:
+    useNodeIP: false
+    #host: "52.149.187.167"
+  service:
+    enabled: true
+    type: LoadBalancer
+    #annotations: |
       #  service.beta.kubernetes.io/azure-load-balancer-internal: "true"
     imageEnvoy: envoyproxy/envoy-alpine:v1.13.0
   
