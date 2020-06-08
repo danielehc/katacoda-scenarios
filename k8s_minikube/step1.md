@@ -36,4 +36,21 @@ minikube start --vm-driver=docker -p dc2 -v 8
 `kubectl config use-context dc1`{{execute}}
 
 
+`helm install consul ./consul-helm -f ./dc1-config.yaml --timeout 10m`{{execute}}
+
+`kubectl get svc consul-mesh-gateway`{{execute}}
+
+```
+NAME                  TYPE           CLUSTER-IP    EXTERNAL-IP     PORT(S)         AGE
+consul-mesh-gateway   LoadBalancer   10.0.202.79   20.185.102.21   443:32753/TCP   108s
+```
+
+Once it has it, update meshGateway.wanAddress.host to that IP in your dc1-config.yaml file. In this example it would look like
+```
+meshGateway:
+  wanAddress:
+    useNodeIP: false
+    host: "20.185.102.21"
+```
+
 `kubectl config use-context dc2`{{execute}}
