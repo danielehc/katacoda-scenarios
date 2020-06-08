@@ -26,14 +26,15 @@
 		},
 		"finish": {
 			"text": "finish.md"
+		},
+		"assets": {
+			"client": [
+			  { "file": "dc1-values.yml", "target": "./dc1-values.yml" },
+			  { "file": "dc2-values.yml", "target": "./dc2-values.yml" }
+			]
 		}
 	},
-	"assets": {
-        "client": [
-          { "file": "dc1-values.yml", "target": "./dc1-values.yml" },
-          { "file": "dc2-values.yml", "target": "./dc2-values.yml" }
-        ]
-    },
+	
 	"environment": {
 		"uilayout": "terminal",
 		"uimessage1": "\u001b[32mYour Interactive Bash Terminal. A safe place to learn and execute commands.\u001b[m\r\n"
