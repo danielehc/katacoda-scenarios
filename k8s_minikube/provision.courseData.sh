@@ -23,8 +23,8 @@ log "Adding consul user"
 
 useradd consul --create-home -G docker -s /bin/bash
 
-cp ./dc1-values.yml /home/consul
-cp ./dc2-values.yml /home/consul
+cp /root/dc1-values.yml /home/consul
+cp /root/dc2-values.yml /home/consul
 
 log "Starting first Kubernetes cluster...this might take up to 5 minutes."
 
