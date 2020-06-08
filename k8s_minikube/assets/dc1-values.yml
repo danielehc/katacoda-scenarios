@@ -6,6 +6,20 @@ global:
   federation:
     enabled: true
   name: consul
+
+ui:
+  enabled: true
+  service:
+    type: 'NodePort'
+    ports:
+      nodePort: 18500
+
+server:
+    replicas: 1
+    bootstrapExpect: 1
+    disruptionBudget:
+      enabled: true
+      maxUnavailable: 0
 connectInject:
   enabled: true
   imageEnvoy: envoyproxy/envoy-alpine:v1.13.0
