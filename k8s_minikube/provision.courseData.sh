@@ -19,9 +19,15 @@ sudo cp linux-amd64/helm /usr/bin/
 
 # pushd ~
 
-# log "Starting Kubernetes...this might take up to 5 minutes."
+log "Adding consul user"
 
 useradd consul --create-home -G docker -s /bin/bash
+
+cp ./dc1-values.yml /home/consul
+cp ./dc2-values.yml /home/consul
+
+log "Starting first Kubernetes cluster...this might take up to 5 minutes."
+
 
 runuser -l consul -c "minikube start --vm-driver=docker -p dc1 -v 8 --memory 1024"
 

@@ -29,8 +29,8 @@
 		},
 		"assets": {
 			"client": [
-			  { "file": "dc1-values.yml", "target": "./dc1-values.yml" },
-			  { "file": "dc2-values.yml", "target": "./dc2-values.yml" }
+			  { "file": "dc1-values.yml", "target": "./" },
+			  { "file": "dc2-values.yml", "target": "./" }
 			]
 		}
 	},

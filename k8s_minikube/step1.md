@@ -8,7 +8,7 @@ Minikube has been installed and configured in the environment. Check that it is 
 
 Great! You now have a running Kubernetes cluster in your online terminal. Minikube started a virtual machine for you, and a Kubernetes cluster is now running in that VM.
 
-
+Old commands
 ```
 minikube start --vm-driver=docker -p dc1`
 
@@ -22,7 +22,8 @@ usermod -a -G docker dc2
 minikube start --vm-driver=docker -p dc2 -v 8
 ```
 
-
+Old commands
+```
 `useradd consul --create-home -G docker -s /bin/bash`{{execute}}
 
 `runuser -l consul -c "minikube start --vm-driver=docker -p dc1 -v 8 --memory 1024"`{{execute}}
@@ -32,17 +33,21 @@ minikube start --vm-driver=docker -p dc2 -v 8
 `su - consul`{{execute}}
 
 `helm repo add hashicorp https://helm.releases.hashicorp.com`{{execute}}
+```
+
+`git clone https://github.com/hashicorp/consul-helm.git`{{execute}}
+
+`cd consul-helm`{{execute}}
+
+`git checkout wan-federation-base`{{execute}}
+
+`cd ..`{{execute}}
 
 `kubectl config use-context dc1`{{execute}}
 
-
-`git clone https://github.com/hashicorp/consul-helm.git`{{execute}}
-`cd consul-helm`{{execute}}
-`git checkout wan-federation-base`{{execute}}
-`cd ..`{{execute}}
-
-
 `helm install consul ./consul-helm -f ./dc1-config.yaml --timeout 10m`{{execute}}
+
+`kubectl get pods --all-namespaces`{{execute}}
 
 `kubectl get svc consul-mesh-gateway`{{execute}}
 
