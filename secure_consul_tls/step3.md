@@ -1,17 +1,18 @@
+The configuration process for clients is the same as the servers. 
+
 ### Configure Consul client
 
-The scenario comes with a prepared Consul client configuration.
+This lab comes with a prepared Consul client configuration.
 
-Open `client.json`{{open}} in the editor to inspect values required for a minimal client config with TLS encryption enabled.
+Open `client.json`{{open}} in the editor to review the values required for a minimal client config with TLS encryption enabled.
 
-In this scenario you are going to use the `auto_encrypt` functionality of Consul that will automatically generate and distribute certificates for the client agents once the datacenter is configured.
+In this lab, you are going to use the `auto_encrypt` functionality of Consul that will automatically generate and distribute certificates for the client agents once the datacenter is configured.
 
-You will still require to refer to the CA certificate `consul-agent-ca.pem` to validate requests.
+You will still need to refer to the CA certificate `consul-agent-ca.pem` to validate requests.
 
-### Distribute configuration files and certificates to the client
+### Distribute configuration and certificates to the client
 
-This scenario uses a Docker volume, called `client_config` to help you distribute the configuration to your client node.
-
+This scenario uses a Docker volume, called `client_config` to help you distribute the files to your client node.
 
 Copy the required files for the Consul client configuration into the volume.
 
