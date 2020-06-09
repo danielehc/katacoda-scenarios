@@ -1,7 +1,7 @@
 
 This labs comes with a prepared Consul server configuration.
 
-Open `server.json`{{open}} in the editor to review th values required for a minimal server configuration with TLS encryption enabled.
+Open `server.json`{{open}} in the editor to review the values required for a minimal server configuration with TLS encryption enabled.
 
 Notice that the configuration includes options for the two files created in the previous step.
 
