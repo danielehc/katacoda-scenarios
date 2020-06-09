@@ -10,9 +10,9 @@ In this lab, you are going to use the `auto_encrypt` functionality of Consul tha
 
 You will still need to refer to the CA certificate `consul-agent-ca.pem` to validate requests.
 
-### Distribute configuration and certificates to the client
+### Distribute configuration and certificate to the client
 
-This scenario uses a Docker volume, called `client_config` to help you distribute the files to your client node.
+This lab uses a Docker volume, called `client_config` to help you distribute the files to your client node.
 
 Copy the required files for the Consul client configuration into the volume.
 
