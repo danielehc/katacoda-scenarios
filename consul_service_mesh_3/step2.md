@@ -1,22 +1,9 @@
-#### Add HashiCorp repository in Helm
+#### Enable default-deny policy
 
-Once Kubernetes is running you can the official Consul Helm chart repo directly from the commandline.
+Using Consul command line from the Consul container you can enable the default-deny policy for your service mesh.
 
-`helm repo add hashicorp https://helm.releases.hashicorp.com`{{execute}}
+`consul intention create -deny '*' '*'`{{execute}}
 
-#### Configure Consul service mesh
+### Verify intention is in place
 
-The scenario comes with a prepared configuration.
-
-`consul-values.yml`{{open}}
-
-#### Deploy Consul with Helm
-
-`helm install -f ~/consul-values.yml hashicorp hashicorp/consul`{{execute}}
-
-#### Check services running in Kubernetes
-
-Control Consul is properly running.
-
-`kubectl get services`{{execute}}
-
+Open [Consul UI](https://[[HOST_SUBDOMAIN]]-80-[[KATACODA_HOST]].environments.katacoda.com/ui/minidc/intentions) to verify the intention is correclty showed by the UI.

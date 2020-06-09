@@ -16,8 +16,3 @@ During this session you will deploy a Consul datacenter using Minikube and Helm 
 - Verify the Consul deployment
 - Configure port forwarding for the Consul UI
 
-
-
-
-
-https://learn.hashicorp.com/consul

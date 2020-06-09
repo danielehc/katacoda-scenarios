@@ -1,22 +1,28 @@
-#### Add HashiCorp repository in Helm
+#### Deploy frontend service in your service mesh
 
-Once Kubernetes is running you can the official Consul Helm chart repo directly from the commandline.
+This hands-on lab comes with a prepared configuration.
 
-`helm repo add hashicorp https://helm.releases.hashicorp.com`{{execute}}
+`web.yml`{{open}}
 
-#### Configure Consul service mesh
+In additon to the `"consul.hashicorp.com/connect-inject": "true"` annotation, the
+`web` service defines the `"consul.hashicorp.com/connect-service-upstreams"` annotation. This annotation
+ explicitly declares the upstream for the web service, which is the `api` service you deployed
+ previously.
 
-The scenario comes with a prepared configuration.
+#### Deploy app with kubectl
 
-`consul-values.yml`{{open}}
+You can deploy the `web` application using `kubectl`.
 
-#### Deploy Consul with Helm
+`kubectl apply -f ~/web.yml`{{execute}}
 
-`helm install -f ~/consul-values.yml hashicorp hashicorp/consul`{{execute}}
+#### Check the service is running in Kubernetes
 
-#### Check services running on Kubernetes
+Finally, you can verify the `web` service is deployed successfully.
 
-Control Consul is properly running.
+`kubectl get pods`{{execute}}
 
-`kubectl get services`{{execute}}
+Wait until the pod is marked as `Running` to continue. This might take up to a minute to complete
 
+### Verify application status in Consul UI
+
+Open [Consul UI](https://[[HOST_SUBDOMAIN]]-80-[[KATACODA_HOST]].environments.katacoda.com/ui/minidc/services) and ensure two services `api` and `api-sidecar-proxy` are registered and healthy in Consul.

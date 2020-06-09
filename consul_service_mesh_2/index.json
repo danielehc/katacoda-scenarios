@@ -15,17 +15,17 @@
             {
                 "title": "Deploy the Backend Service",
                 "code": "set-env.sh",
-                "text": "step4.md"
+                "text": "step1.md"
             },
             {
                 "title": "Deploy the Frontend Service",
                 "code": "set-env.sh",
-                "text": "step5.md"
+                "text": "step2.md"
             },
             {
                 "title": "Access applications in the Service Mesh",
                 "code": "set-env.sh",
-                "text": "step6.md"
+                "text": "step3.md"
             }
         ],
     "intro": {

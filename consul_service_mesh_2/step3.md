@@ -1,23 +1,11 @@
-#### Wait until all pods are running
+#### Configure port forwarding for your frontend service
 
-Before being able to access consul you need to verify the deploy was completed.
-
-`kubectl get pods --all-namespaces`{{execute}}
-
-If the output shows all the pods in a `Running` state you can now configure your Kubernetes cluster to be accessed from outside.
-
-#### Configure port forwarding for your Consul UI
-
-To access Consul UI you will setup a port forwarding.
+To access the app running inside your Consul service mesh, you will setup port forwarding.
 
 `export IP_ADDR=$(hostname -I | awk '{print $1}')`{{execute}}
 
-`kubectl port-forward service/hashicorp-consul-ui 80:80 --address ${IP_ADDR}`{{execute}}
+`kubectl port-forward service/web 9090:9090 --address ${IP_ADDR}`{{execute}}
 
-This will forward port `80` of `service/hashicorp-consul-ui` on port `80` of your test machine.
+This will forward port `9090` from `service/web` at port `9090` to your test machine.
 
-You can now open the [Consul UI](https://[[HOST_SUBDOMAIN]]-80-[[KATACODA_HOST]].environments.katacoda.com/ui) tab to be redirected to the Consul UI.
-
-
-
-
+You can now open the [Dashboard](https://[[HOST_SUBDOMAIN]]-9090-[[KATACODA_HOST]].environments.katacoda.com/ui) tab to be redirected to the web application UI.

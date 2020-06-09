@@ -16,7 +16,3 @@ In this hands-on lab you will:
 
 If you are already familiar with the basics of Consul, [understand Consul service mesh](https://learn.hashicorp.com/consul/gs-consul-service-mesh/understand-consul-service-mesh) provides a reference guide for the Consul service mesh based scenarios.
 
-
-
-
-https://learn.hashicorp.com/consul

@@ -1,16 +1,9 @@
+#### Check Consul is up and running
 
-#### Start Minikube
+Open [Consul UI](https://[[HOST_SUBDOMAIN]]-80-[[KATACODA_HOST]].environments.katacoda.com/ui/minidc/services) and ensure four services `api`, `api-sidecar-proxy`, `web` and `web-sidecar-proxy` are registered and healthy in Consul.
 
-You first need to start your Minikube environment:
+Open the [Dashboard](https://[[HOST_SUBDOMAIN]]-9090-[[KATACODA_HOST]].environments.katacoda.com/ui) tab to be redirected to the web application UI.
 
-`minikube start --wait=false`{{execute}}
+### Connect to Consul container
 
-This will create a local Kubernetes cluster using Minikube.
-
-#### Health Check
-
-Once the first command completed is possible to check the state of your Kubernetes cluster.
-
-`kubectl cluster-info`{{execute}}
-
-
+`kubectl exec -it hashicorp-consul-server-0 /bin/sh`{{execute}}

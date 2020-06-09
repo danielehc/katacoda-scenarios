@@ -19,7 +19,3 @@ In this hands-on lab, you will deploy two services in the Consul service mesh. S
 - Configure port forwarding for your frontend service
 - View the frontend from a web browser
 
-
-
-
-https://learn.hashicorp.com/consul

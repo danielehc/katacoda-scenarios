@@ -15,17 +15,17 @@
             {
                 "title": "Verify Service Connectivity",
                 "code": "set-env.sh",
-                "text": "step7.md"
+                "text": "step1.md"
             },
             {
                 "title": "Enforce Zero-Trust Networking",
                 "code": "set-env.sh",
-                "text": "step8.md"
+                "text": "step2.md"
             },
             {
                 "title": "Allow Communication with Consul Intentions",
                 "code": "set-env.sh",
-                "text": "step9.md"
+                "text": "step3.md"
             }
         ],
     "intro": {
