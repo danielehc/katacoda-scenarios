@@ -1,15 +1,13 @@
 
-The scenario comes with a prepared Consul server configuration.
+This labs comes with a prepared Consul server configuration.
 
-Open `server.json`{{open}} in the editor to inspect values required for a minimal server configuration with TLS encryption enabled.
+Open `server.json`{{open}} in the editor to review the values required for a minimal server configuration with TLS encryption enabled.
 
-The configuration refers also to the two files created in the previous step.
+Notice that the configuration includes options for the two files created in the previous step.
 
+### Distribute configuration and certificates to the server
 
-### Distribute configuration files and certificates to the server
-
-This scenario uses a Docker volume, called `server_config` to help you distribute the configuration to your server node.
-
+This labs uses a Docker volume, called `server_config` to help you distribute the files to your server node.
 
 Copy the required files for the Consul server configuration into the volume.
 
