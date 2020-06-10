@@ -31,11 +31,11 @@
 			"client": [
 			  { "file": "dc1-values.yml", "target": "./" },
 			  { "file": "dc2-values.yml", "target": "./" },
-			  { "file": "cluster-blueprint/README.md", "target": "./cluster-blueprint/README.md" },
-			  { "file": "cluster-blueprint/ingress.hcl", "target": "./cluster-blueprint/ingress.hcl" },
-			  { "file": "cluster-blueprint/k8s.hcl", "target": "./cluster-blueprint/k8s.hcl" },
-			  { "file": "cluster-blueprint/k8s-dashboard.yml", "target": "./cluster-blueprint/k8s-dashboard.yml" },
-			  { "file": "cluster-blueprint/network.hcl", "target": "./cluster-blueprint/network.hcl" }
+			  { "file": "cluster-blueprint/README.md", "target": "./cluster-blueprint" },
+			  { "file": "cluster-blueprint/ingress.hcl", "target": "./cluster-blueprint" },
+			  { "file": "cluster-blueprint/k8s.hcl", "target": "./cluster-blueprint" },
+			  { "file": "cluster-blueprint/k8s-dashboard.yml", "target": "./cluster-blueprint" },
+			  { "file": "cluster-blueprint/network.hcl", "target": "./cluster-blueprint" }
 			]
 		}
 	},

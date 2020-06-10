@@ -50,15 +50,19 @@ mv ./shipyard /usr/local/bin/shipyard
 
 ## ================================
 
-log "Adding lab users"
+log "Running Scenario"
 
-useradd dc1 --create-home -G docker -s /bin/bash
-cp /root/dc1-values.yml /home/dc1
-chown dc1: /home/dc1/*.yml
+shipyard run ./cluster-blueprint/
 
-useradd dc2 --create-home -G docker -s /bin/bash
-cp /root/dc2-values.yml /home/dc2
-chown dc2: /home/dc2/*.yml
+# log "Adding lab users"
+
+# useradd dc1 --create-home -G docker -s /bin/bash
+# cp /root/dc1-values.yml /home/dc1
+# chown dc1: /home/dc1/*.yml
+
+# useradd dc2 --create-home -G docker -s /bin/bash
+# cp /root/dc2-values.yml /home/dc2
+# chown dc2: /home/dc2/*.yml
 
 # log "Starting first Kubernetes cluster...this might take up to 5 minutes."
 
