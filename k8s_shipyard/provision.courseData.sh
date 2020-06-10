@@ -52,6 +52,8 @@ mv ./shipyard /usr/local/bin/shipyard
 
 log "Running Scenario"
 
+cd ~
+
 shipyard run ./cluster-blueprint/
 
 # log "Adding lab users"
