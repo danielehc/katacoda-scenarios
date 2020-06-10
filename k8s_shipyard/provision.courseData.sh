@@ -10,16 +10,47 @@ finish() {
   log "Complete!  Move on to the next step."
 }
 
-log "Installing Helm 3.2.1"
+mkdir -p /tmp/provision
 
-pushd /tmp
-curl -s https://get.helm.sh/helm-v3.2.1-linux-amd64.tar.gz -o helm-v3.2.1-linux-amd64.tar.gz
-tar xzf helm-v3.2.1-linux-amd64.tar.gz
-sudo cp linux-amd64/helm /usr/bin/
+cd /tmp/provision
 
-# pushd ~
+## ================================
 
-log "Adding consul user"
+HELM_VERSION = "3.2.1"
+
+log "Installing Helm ${HELM_VERSION}"
+
+curl -s https://get.helm.sh/helm-v${HELM_VERSION}-linux-amd64.tar.gz -o helm-v${HELM_VERSION}-linux-amd64.tar.gz
+tar xzf helm-v${HELM_VERSION}-linux-amd64.tar.gz
+sudo cp linux-amd64/helm /usr/local/bin/
+
+## ================================
+
+KUBECTL_VERSION = `curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`
+
+log "Installing Kubectl ${KUBECTL_VERSION}"
+
+curl -LO https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl
+
+chmod +x ./kubectl
+
+mv ./kubectl /usr/local/bin/kubectl
+
+## ================================
+
+SHIPYARD_VERSION = "0.0.32"
+
+log "Installing Shipyard ${SHIPYARD_VERSION}"
+
+curl -Ls https://github.com/shipyard-run/shipyard/releases/download/v${SHIPYARD_VERSION}/shipyard_${SHIPYARD_VERSION}_Linux_x86_64.tar.gz -o shipyard_${SHIPYARD_VERSION}_Linux_x86_64.tar.gz
+
+tar xzf shipyard_${SHIPYARD_VERSION}_Linux_x86_64.tar.gz
+
+mv ./shipyard /usr/local/bin/shipyard
+
+## ================================
+
+log "Adding dc1 user"
 
 useradd consul --create-home -G docker -s /bin/bash
 
@@ -28,9 +59,9 @@ cp /root/dc2-values.yml /home/consul
 
 chown consul: /home/consul/*.yml
 
-log "Starting first Kubernetes cluster...this might take up to 5 minutes."
+# log "Starting first Kubernetes cluster...this might take up to 5 minutes."
 
-curl https://shipyard.run/blueprint | bash -s github.com/shipyard-run/blueprints//learn-consul-service-mesh
+# curl https://shipyard.run/blueprint | bash -s github.com/shipyard-run/blueprints//learn-consul-service-mesh
 
 # runuser -l consul -c "minikube start --vm-driver=docker -p dc1 -v 8 --memory 1024"
 
@@ -58,7 +89,6 @@ curl https://shipyard.run/blueprint | bash -s github.com/shipyard-run/blueprints
 
 # # kubectl port-forward service/hashicorp-consul-ui 80:80 --address ${IP_ADDR} &
 
-
 # # log "Deploying api backend."
 
 # # kubectl apply -f ~/api.yml
@@ -79,6 +109,13 @@ curl https://shipyard.run/blueprint | bash -s github.com/shipyard-run/blueprints
 # # export IP_ADDR=$(hostname -I | awk '{print $1}')
 
 # # kubectl port-forward service/web 9090:9090 --address ${IP_ADDR} &
+
+## ================================
+
+log "Cleaning temporary files"
+
+rm -rf /tmp/provision
+
 
 finish
 
