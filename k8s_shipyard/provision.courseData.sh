@@ -50,14 +50,15 @@ mv ./shipyard /usr/local/bin/shipyard
 
 ## ================================
 
-log "Adding dc1 user"
+log "Adding lab users"
 
-useradd consul --create-home -G docker -s /bin/bash
+useradd dc1 --create-home -G docker -s /bin/bash
+cp /root/dc1-values.yml /home/dc1
+chown dc1: /home/dc1/*.yml
 
-cp /root/dc1-values.yml /home/consul
-cp /root/dc2-values.yml /home/consul
-
-chown consul: /home/consul/*.yml
+useradd dc2 --create-home -G docker -s /bin/bash
+cp /root/dc2-values.yml /home/dc2
+chown dc2: /home/dc2/*.yml
 
 # log "Starting first Kubernetes cluster...this might take up to 5 minutes."
 
