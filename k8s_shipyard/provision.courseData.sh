@@ -16,7 +16,7 @@ cd /tmp/provision
 
 ## ================================
 
-HELM_VERSION="3.2.1"
+export HELM_VERSION="3.2.1"
 
 log "Installing Helm ${HELM_VERSION}"
 
@@ -26,7 +26,7 @@ sudo cp linux-amd64/helm /usr/local/bin/
 
 ## ================================
 
-KUBECTL_VERSION=`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`
+export KUBECTL_VERSION=`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`
 
 log "Installing Kubectl ${KUBECTL_VERSION}"
 
@@ -38,7 +38,7 @@ mv ./kubectl /usr/local/bin/kubectl
 
 ## ================================
 
-SHIPYARD_VERSION="0.0.32"
+export SHIPYARD_VERSION="0.0.32"
 
 log "Installing Shipyard ${SHIPYARD_VERSION}"
 
