@@ -36,7 +36,9 @@
 			  { "file": "cluster-blueprint/ingress.hcl", "target": "./cluster-blueprint" },
 			  { "file": "cluster-blueprint/k8s.hcl", "target": "./cluster-blueprint" },
 			  { "file": "cluster-blueprint/k8s-dashboard.yml", "target": "./cluster-blueprint" },
-			  { "file": "cluster-blueprint/network.hcl", "target": "./cluster-blueprint" }
+			  { "file": "cluster-blueprint/network.hcl", "target": "./cluster-blueprint" },
+			  { "file": "api.yml", "target": "./" },
+          	  { "file": "web.yml", "target": "./" }
 			]
 		}
 	},
