@@ -1,4 +1,4 @@
-
+```
 `git clone https://github.com/hashicorp/consul-helm.git`{{execute}}
 
 `cd consul-helm`{{execute}}
@@ -6,10 +6,17 @@
 `git checkout wan-federation-base`{{execute}}
 
 `cd ..`{{execute}}
+```
+
+`helm repo add hashicorp https://helm.releases.hashicorp.com`{{execute}}
 
 `export KUBECONFIG=${HOME}/.shipyard/config/dc1/kubeconfig.yaml`{{execute}}
 
+`helm install -f ./dc1-values.yml consul hashicorp/consul --timeout 10m`{{execute}}
+
+```
 `helm install consul ./consul-helm -f ./dc1-values.yml --timeout 10m`{{execute}}
+```
 
 `kubectl get pods --all-namespaces`{{execute}}
 
@@ -45,7 +52,11 @@ meshGateway:
 
 `kubectl create -f consul-ca-cert.yaml -f consul-ca-key.yaml`{{execute}}
 
+`helm install -f ./dc2-values.yml consul hashicorp/consul --timeout 10m`{{execute}}
+
+```
 `helm install consul ./consul-helm -f ./dc2-values.yml --timeout 10m`{{execute}}
+```
 
 `export KUBECONFIG=${HOME}/.shipyard/config/dc1/kubeconfig.yaml`{{execute}}
 
