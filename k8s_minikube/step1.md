@@ -30,10 +30,10 @@ Old commands
 
 `runuser -l consul -c "minikube start --vm-driver=docker -p dc2 -v 8 --memory 1024"`{{execute}}
 
-`su - consul`{{execute}}
-
 `helm repo add hashicorp https://helm.releases.hashicorp.com`{{execute}}
 ```
+
+`su - consul`{{execute}}
 
 `git clone https://github.com/hashicorp/consul-helm.git`{{execute}}
 
@@ -45,7 +45,7 @@ Old commands
 
 `kubectl config use-context dc1`{{execute}}
 
-`helm install consul ./consul-helm -f ./dc1-config.yaml --timeout 10m`{{execute}}
+`helm install consul ./consul-helm -f ./dc1-values.yml --timeout 10m`{{execute}}
 
 `kubectl get pods --all-namespaces`{{execute}}
 

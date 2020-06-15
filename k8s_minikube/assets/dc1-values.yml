@@ -32,7 +32,9 @@ meshGateway:
     #host: "52.149.187.167"
   service:
     enabled: true
-    type: LoadBalancer
+    type: 'NodePort'
+    ports:
+      nodePort: 1443
     #annotations: |
       #  service.beta.kubernetes.io/azure-load-balancer-internal: "true"
     imageEnvoy: envoyproxy/envoy-alpine:v1.13.0
