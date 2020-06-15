@@ -46,3 +46,16 @@ meshGateway:
 `kubectl create -f consul-ca-cert.yaml -f consul-ca-key.yaml`{{execute}}
 
 `helm install consul ./consul-helm -f ./dc2-values.yml --timeout 10m`{{execute}}
+
+`export KUBECONFIG=${HOME}/.shipyard/config/dc1/kubeconfig.yaml`{{execute}}
+
+`kubectl apply -f ~/api.yml`{{execute}}
+
+
+`export KUBECONFIG=${HOME}/.shipyard/config/dc2/kubeconfig.yaml`{{execute}}
+
+`kubectl apply -f ~/web.yml`{{execute}}
+
+`export IP_ADDR=$(hostname -I | awk '{print $1}')`{{execute}}
+
+`kubectl port-forward service/web 9090:9090 --address ${IP_ADDR}`{{execute}}

@@ -39,9 +39,9 @@ ingress "consul_dc1" {
     }
 
     port {
-        remote = 8500
-        local = 8500
-        host = 8500
+        remote = 8501
+        local = 8501
+        host = 8501
     }
 }
 
