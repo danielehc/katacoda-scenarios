@@ -1,39 +1,3 @@
-Minikube has been installed and configured in the environment. Check that it is properly installed, by running the minikube version command:
-
-`minikube version`{{execute}}
-
-#### Start the cluster, by running the minikube start command:
-
-`minikube start`{{execute}}
-
-Great! You now have a running Kubernetes cluster in your online terminal. Minikube started a virtual machine for you, and a Kubernetes cluster is now running in that VM.
-
-Old commands
-```
-minikube start --vm-driver=docker -p dc1`
-
-useradd dc1 --create-home
-useradd dc2 --create-home
-
-usermod -a -G docker dc1
-
-usermod -a -G docker dc2
-
-minikube start --vm-driver=docker -p dc2 -v 8
-```
-
-Old commands
-```
-`useradd consul --create-home -G docker -s /bin/bash`{{execute}}
-
-`runuser -l consul -c "minikube start --vm-driver=docker -p dc1 -v 8 --memory 1024"`{{execute}}
-
-`runuser -l consul -c "minikube start --vm-driver=docker -p dc2 -v 8 --memory 1024"`{{execute}}
-
-`helm repo add hashicorp https://helm.releases.hashicorp.com`{{execute}}
-```
-
-`su - consul`{{execute}}
 
 `git clone https://github.com/hashicorp/consul-helm.git`{{execute}}
 
@@ -43,15 +7,20 @@ Old commands
 
 `cd ..`{{execute}}
 
-```
-`kubectl config use-context dc1`{{execute}}
-```
-
 `export KUBECONFIG=${HOME}/.shipyard/config/dc1/kubeconfig.yaml`{{execute}}
 
 `helm install consul ./consul-helm -f ./dc1-values.yml --timeout 10m`{{execute}}
 
 `kubectl get pods --all-namespaces`{{execute}}
+
+```
+NAME                                                          READY   STATUS    RESTARTS   AGE
+consul-connect-injector-webhook-deployment-6fd55dfcd7-5jxnm   1/1     Running   0          50s
+consul-server-0                                               1/1     Running   0          49s
+consul-5642w                                                  1/1     Running   0          50s
+consul-mesh-gateway-bc7f449cb-7hxt6                           1/1     Running   3          50s
+```
+
 
 `kubectl get svc consul-mesh-gateway`{{execute}}
 
@@ -68,10 +37,6 @@ meshGateway:
     host: "20.185.102.21"
 ```
 
-```
-
-`kubectl config use-context dc2`{{execute}}
-```
 `kubectl get secret consul-ca-cert -o yaml > consul-ca-cert.yaml`{{execute}}
 `kubectl get secret consul-ca-key -o yaml > consul-ca-key.yaml`{{execute}}
 
