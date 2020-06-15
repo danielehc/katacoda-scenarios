@@ -47,7 +47,7 @@ Old commands
 `kubectl config use-context dc1`{{execute}}
 ```
 
-`KUBECONFIG=${HOME}/.shipyard/config/dc1/kubeconfig.yaml`{{execute}}
+`export KUBECONFIG=${HOME}/.shipyard/config/dc1/kubeconfig.yaml`{{execute}}
 
 `helm install consul ./consul-helm -f ./dc1-values.yml --timeout 10m`{{execute}}
 
@@ -76,7 +76,7 @@ meshGateway:
 `kubectl get secret consul-ca-key -o yaml > consul-ca-key.yaml`{{execute}}
 
 
-`KUBECONFIG=${HOME}/.shipyard/config/dc2/kubeconfig.yaml`{{execute}}
+`export KUBECONFIG=${HOME}/.shipyard/config/dc2/kubeconfig.yaml`{{execute}}
 
 `kubectl create -f consul-ca-cert.yaml -f consul-ca-key.yaml`{{execute}}
 
