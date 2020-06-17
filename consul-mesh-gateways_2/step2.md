@@ -32,6 +32,8 @@ meshGateway:
 
 `kubectl get secret consul-federation -o yaml > consul-federation-secret.yaml`{{execute}}
 
+`cat consul-federation-secret.yaml | grep serverConfigJSON: | awk '{print $2}' | base64 -d`{{execute}}
+
 `export KUBECONFIG=${HOME}/.shipyard/config/dc2/kubeconfig.yaml`{{execute}}
 
 `kubectl apply -f consul-federation-secret.yaml`{{execute}}
