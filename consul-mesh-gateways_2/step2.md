@@ -1,6 +1,9 @@
 
 `helm repo add hashicorp https://helm.releases.hashicorp.com`{{execute}}
 
+
+### Deploy DC1
+
 `export KUBECONFIG=${HOME}/.shipyard/config/dc1/kubeconfig.yaml`{{execute}}
 
 `helm install -f ./dc1-values.yml consul hashicorp/consul --timeout 10m`{{execute}}
@@ -34,17 +37,21 @@ meshGateway:
 
 `cat consul-federation-secret.yaml | grep serverConfigJSON: | awk '{print $2}' | base64 -d`{{execute}}
 
+### Deploy DC2
+
 `export KUBECONFIG=${HOME}/.shipyard/config/dc2/kubeconfig.yaml`{{execute}}
 
 `kubectl apply -f consul-federation-secret.yaml`{{execute}}
 
 `helm install -f ./dc2-values.yml consul hashicorp/consul --timeout 10m`{{execute}}
 
+### Deploy Service api
 
 `export KUBECONFIG=${HOME}/.shipyard/config/dc1/kubeconfig.yaml`{{execute}}
 
 `kubectl apply -f ~/api.yml`{{execute}}
 
+### Deploy Service web
 
 `export KUBECONFIG=${HOME}/.shipyard/config/dc2/kubeconfig.yaml`{{execute}}
 
