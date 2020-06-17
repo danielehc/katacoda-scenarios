@@ -1,0 +1,43 @@
+global:
+  datacenter: dc1
+  image: consul:1.8.0-beta
+  tls:
+    enabled: true
+  federation:
+    enabled: true
+    createFederationSecret: true
+  name: consul
+
+ui:
+  enabled: true
+  service:
+    type: 'NodePort'
+    ports:
+      nodePort: 18500
+
+server:
+    replicas: 1
+    bootstrapExpect: 1
+    disruptionBudget:
+      enabled: true
+      maxUnavailable: 0
+connectInject:
+  enabled: true
+  imageEnvoy: envoyproxy/envoy-alpine:v1.13.1
+meshGateway:
+  enabled: true
+  enableHealthChecks: false
+  replicas: 1
+  # wanAddress:
+  #   useNodeIP: false
+  #   host: "10.5.1.200"
+  service:
+    enabled: true
+    type: 'NodePort'
+    nodePort: 30001
+    #annotations: |
+      #  service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+    imageEnvoy: envoyproxy/envoy-alpine:v1.13.1
+client:
+  enabled: true
+  grpc: true
