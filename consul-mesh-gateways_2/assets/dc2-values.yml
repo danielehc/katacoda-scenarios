@@ -1,6 +1,7 @@
 global:
   name: consul
-  image: consul:1.8.0-beta
+  image: consul:1.8.0-rc1
+  imageK8S: "hashicorp/consul-k8s:0.16.0"
   datacenter: dc2
   tls:
     enabled: true
