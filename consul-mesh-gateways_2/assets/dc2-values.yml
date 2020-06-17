@@ -51,11 +51,8 @@ server:
       name: consul-federation
       items:
         - key: serverConfigJSON
-          path: consul-federation-secret.yaml
+          path: config.json
       load: true
-client:
-  enabled: true
-  grpc: true
 
 
 
