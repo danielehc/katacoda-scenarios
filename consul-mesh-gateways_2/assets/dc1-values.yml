@@ -38,6 +38,3 @@ meshGateway:
     #annotations: |
       #  service.beta.kubernetes.io/azure-load-balancer-internal: "true"
     imageEnvoy: envoyproxy/envoy-alpine:v1.13.1
-client:
-  enabled: true
-  grpc: true

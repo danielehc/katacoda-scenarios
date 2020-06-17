@@ -33,9 +33,7 @@ meshGateway:
   service:
     enabled: true
     type: 'NodePort'
-    ports:
-      nodePort: 1443
+    nodePort: 30001
     #annotations: |
       #  service.beta.kubernetes.io/azure-load-balancer-internal: "true"
     imageEnvoy: envoyproxy/envoy-alpine:v1.13.0
-  

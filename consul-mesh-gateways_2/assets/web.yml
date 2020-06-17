@@ -1,10 +1,10 @@
 ---
     # Web frontend
-    
+
     apiVersion: apps/v1
     kind: Deployment
     metadata:
-      name: web-deployment
+      name: web
       labels:
         app: web
     spec:
@@ -18,7 +18,7 @@
             app: web
           annotations:
             "consul.hashicorp.com/connect-inject": "true"
-            "consul.hashicorp.com/connect-service-upstreams": "api:9091"
+            "consul.hashicorp.com/connect-service-upstreams": "api:9091:dc1"
         spec:
           containers:
           - name: web
@@ -34,10 +34,10 @@
               value: "web"
             - name: "MESSAGE"
               value: "Hello World"
-    
+
 ---
     # Service to expose web frontend
-    
+
     apiVersion: v1
     kind: Service
     metadata:

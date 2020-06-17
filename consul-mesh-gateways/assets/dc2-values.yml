@@ -18,7 +18,7 @@ server:
   extraConfig: |
     {
       "primary_datacenter": "dc1",
-      "primary_gateways": ["10.5.1.200:1443"]
+      "primary_gateways": ["10.5.1.200:30001"]
     }
 connectInject:
   enabled: true
@@ -34,8 +34,7 @@ meshGateway:
   service:
     enabled: true
     type: 'NodePort'
-    ports:
-      nodePort: 1443
+    nodePort: 30002
     #annotations: |
     #  service.beta.kubernetes.io/azure-load-balancer-internal: "true"
     imageEnvoy: envoyproxy/envoy-alpine:v1.13.0
