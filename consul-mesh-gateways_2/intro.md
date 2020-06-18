@@ -12,7 +12,7 @@ During this session you will deploy two Consul datacenters using Shipyard and He
 - Review the Consul service mesh configuration file for your primary datacenter
 - Deploy Consul to a primary Kubernetes cluster using the HashiCorp Consul Helm chart
 - Verify the Consul deployment
-- Enable automatic Wan Federation between the two Kubernetes clusters using consul-k8s and Kubernetes secrets
+- Enable automatic WAN federation between the two Consul datacenters using Kubernetes secrets
 - Review the Consul service mesh configuration file for your secondary datacenter
 - Deploy Consul to a secondary Kubernetes cluster using the HashiCorp Consul Helm chart
 - Verify federation between the two Consul datacenters

@@ -25,5 +25,4 @@ Wait until the pod is marked as `Running` to continue. This might take up to a m
 
 ### Verify application status in Consul UI
 
-Open [Consul UI](https://[[HOST_SUBDOMAIN]]-8501-[[KATACODA_HOST]].environments.katacoda.com/ui/dc2/services) and ensure the service `web` is registered and healthy in Consul.
-
+Open [Consul UI](https://[[HOST_SUBDOMAIN]]-8502-[[KATACODA_HOST]].environments.katacoda.com/ui/dc2/services) and ensure the service `web` is registered and healthy in Consul.
