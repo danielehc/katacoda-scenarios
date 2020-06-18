@@ -21,7 +21,7 @@ pushd ~
 
 log "Starting Kubernetes...this might take up to 5 minutes."
 
-minikube start --wait=true
+minikube start
 
 log "Installing Consul service mesh."
 
