@@ -12,7 +12,7 @@
                 "verify": "provision.verify.sh"
 			},
 			{
-				"title": "Configure and start first Consul datacenter",
+				"title": "Configure and start primary Consul datacenter",
 				"text": "step1.md"
 			},
 			{
@@ -20,7 +20,7 @@
 				"text": "step2.md"
 			},
 			{
-				"title": "Configure and start second Consul datacenter",
+				"title": "Configure and start secondary Consul datacenter",
 				"text": "step3.md"
 			},
 			{
@@ -28,11 +28,11 @@
 				"text": "step4.md"
 			},
 			{
-				"title": "Deploy service on first datacenter",
+				"title": "Deploy service on primary datacenter",
 				"text": "step5.md"
 			},
 			{
-				"title": "Deploy service on second datacenter",
+				"title": "Deploy service on secondary datacenter",
 				"text": "step6.md"
 			},
 			{
