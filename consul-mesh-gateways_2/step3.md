@@ -18,7 +18,7 @@ This hands-on lab comes with a prepared configuration.
 `dc2-values.yml`{{open}}
 
 <div style="background-color:#eff5ff; color:#416f8c; border:1px solid #d0e0ff; padding:1em; border-radius:3px; margin:24px 0;">
-  <p><strong>Info:</strong><br>
+  <p><strong>Info: </strong>
   
   You must use a separate Helm config file for each datacenter (primary and secondaries) since their settings are different.
 
