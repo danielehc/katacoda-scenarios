@@ -39,7 +39,7 @@ In the output you should have a service named `consul-mesh-gateway`
 ```
 NAME                TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)       AGE
 ...
-consul-mesh-gateway NodePort    10.43.168.240   <none>        443:30002/TCP 1m
+consul-mesh-gateway NodePort    10.43.132.201   <none>        443:30001/TCP 2m
 ...
 ```
 

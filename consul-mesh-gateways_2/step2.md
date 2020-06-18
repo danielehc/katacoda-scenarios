@@ -19,7 +19,7 @@ The secret contains several configuration info. Particularly important is the po
 `cat consul-federation-secret.yaml | grep serverConfigJSON: | awk '{print $2}' | base64 -d`{{execute}}
 
 <div style="background-color:#fbe5e5; color:#864242; border:1px solid #f8cfcf; padding:1em; border-radius:3px; margin:24px 0;">
-  <p><strong>Security note:</strong><br>
+  <p><strong>Security note: </strong>
   
  The federation secret makes it possible to gain full admin privileges in Consul. This secret must be kept securely, i.e. it should be deleted from your filesystem after importing it to your secondary datacenter and you should use RBAC permissions to ensure only administrators can read it from Kubernetes.
 
