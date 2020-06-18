@@ -54,8 +54,23 @@ ingress "consul_dc2" {
     }
 
     port {
-        remote = 8500
-        local = 8500
-        host = 18600
+        remote = 8501
+        local = 8501
+        host = 8502
+    }
+}
+
+ingress "web_frontend" {
+    target = "k8s_cluster.dc2"
+    service = "svc/web"
+
+    network  {
+      name = "network.local"
+    }
+
+    port {
+        remote = 9090
+        local = 9090
+        host = 9090
     }
 }

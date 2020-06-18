@@ -12,18 +12,32 @@
                 "verify": "provision.verify.sh"
 			},
 			{
-				"title": "Step 1 - All commands",
+				"title": "Configure and start first Consul datacenter",
+				"text": "step1.md"
+			},
+			{
+				"title": "Export configuration from Kubernetes secrets",
 				"text": "step2.md"
 			},
 			{
-				"title": "Step 1 - Start Minikube",
-				"text": "step1.md"
-			}, {
-				"title": "Step 2 - Cluster Info",
-				"text": "step2.md"
-			}, {
-				"title": "Step 3 - Deploy Containers",
+				"title": "Configure and start second Consul datacenter",
 				"text": "step3.md"
+			},
+			{
+				"title": "Verify Consul datacenter federation",
+				"text": "step4.md"
+			},
+			{
+				"title": "Deploy service on first datacenter",
+				"text": "step5.md"
+			},
+			{
+				"title": "Deploy service on second datacenter",
+				"text": "step6.md"
+			},
+			{
+				"title": "Verify service connection",
+				"text": "step7.md"
 			}
 		],
 		"intro": {
