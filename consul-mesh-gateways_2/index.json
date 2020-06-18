@@ -63,7 +63,12 @@
 	
 	"environment": {
 		"uilayout": "terminal",
-		"uimessage1": "\u001b[32mYour Interactive Bash Terminal. A safe place to learn and execute commands.\u001b[m\r\n"
+		"uimessage1": "\u001b[32mYour Interactive Bash Terminal. A safe place to learn and execute commands.\u001b[m\r\n",
+		"dashboards": [
+			{"name": "Consul DC1 UI", "port": 8501 },
+			{"name": "Consul DC2 UI", "port": 8502 },
+            {"name": "Web frontend", "href": "https://[[HOST_SUBDOMAIN]]-9090-[[KATACODA_HOST]].environments.katacoda.com/ui"}
+		]
 	},
 	"backend": {
 		"imageid": "ubuntu"
