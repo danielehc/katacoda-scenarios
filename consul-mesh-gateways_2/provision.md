@@ -13,8 +13,6 @@ next step.
  <Kubernetes clusters creation logs>
 ...
 [timestamp] - Cleaning temporary files
-[timestamp] - Complete! Move on to the next step.
-
 ```
 
 and concluding with
