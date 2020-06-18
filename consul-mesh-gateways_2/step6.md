@@ -2,10 +2,10 @@
 
 This hands-on lab comes with a prepared configuration for the `web` service.
 
-`web.yml`{{open}}
+`cat web.yml | more`{{execute}}
 
 In addition to the `"consul.hashicorp.com/connect-inject": "true"` annotation, the
-`web` service defines the `"consul.hashicorp.com/connect-service-upstreams"` annotation. This annotation explicitly declares the upstream for the web service, which is the `api` service you deployed previously.
+`web` service defines the `"consul.hashicorp.com/connect-service-upstreams"` annotation. This annotation explicitly declares the upstream for the web service, which is the `api` service you deployed previously. Notice the annotation also contains a ":dc1" segment that indicates which datacenter handles requests for the service.
 
 #### Deploy app with kubectl
 
@@ -25,4 +25,4 @@ Wait until the pod is marked as `Running` to continue. This might take up to a m
 
 ### Verify application status in Consul UI
 
-Open [Consul UI](https://[[HOST_SUBDOMAIN]]-80-[[KATACODA_HOST]].environments.katacoda.com/ui/dc2/services) and ensure the service `web` is registered and healthy in Consul.
+Open [Consul UI](https://[[HOST_SUBDOMAIN]]-8502-[[KATACODA_HOST]].environments.katacoda.com/ui/dc2/services) and ensure the service `web` is registered and healthy in Consul.

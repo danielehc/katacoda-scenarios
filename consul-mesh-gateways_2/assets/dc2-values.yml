@@ -55,3 +55,4 @@ server:
         - key: serverConfigJSON
           path: config.json
       load: true
+
