@@ -5,15 +5,14 @@ next step.
 **Example Output**
 
 ```screenshot
-- Installing Helm x.y.x
-- Starting Kubernetes...this might take up to 5 minutes.
-- Installing Consul service mesh.
-- Waiting for Consul pod to complete configuration.
-- Adding port forward for Consul UI
-- Deploying api backend
-- Deploying web backend
-- Waiting for deployment to complete
-- Adding port forward for Web UI
+[timestamp] - Installing Helm 3.2.1
+[timestamp] - Installing Kubectl v1.18.4
+[timestamp] - Installing Shipyard 0.0.33
+[timestamp] - Running Scenario
+...
+ <Kubernetes clusters creation logs>
+...
+[timestamp] - Cleaning temporary files
 ```
 
 and concluding with

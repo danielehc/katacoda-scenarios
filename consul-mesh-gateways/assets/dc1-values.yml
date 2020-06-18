@@ -20,9 +20,11 @@ server:
     disruptionBudget:
       enabled: true
       maxUnavailable: 0
+
 connectInject:
   enabled: true
   imageEnvoy: envoyproxy/envoy-alpine:v1.13.0
+
 meshGateway:
   enabled: true
   enableHealthChecks: false

@@ -1,19 +1,30 @@
-With a running Kubernetes cluster, containers can now be deployed.
+Now you're ready to import the secret into your secondary cluster(s).
 
-Using kubectl run, it allows containers to be deployed onto the cluster-
-`kubectl run first-deployment --image=katacoda/docker-http-server --port=80`{{execute}}
+Switch kubectl context to your secondary Kubernetes cluster.
 
-The status of the deployment can be discovered via the running Pods - 
-`kubectl get pods`{{execute}}
+`export KUBECONFIG=${HOME}/.shipyard/config/dc2/kubeconfig.yaml`{{execute}}
 
-Once the container is running it can be exposed via different networking options, depending on requirements. One possible solution is NodePort, that provides a dynamic port to a container.
+And import the secret:
 
-`kubectl expose deployment first-deployment --port=80 --type=NodePort`{{execute}}
+`kubectl apply -f consul-federation-secret.yaml`{{execute}}
 
-The command below finds the allocated port and executes a HTTP request.
 
-`export PORT=$(kubectl get svc first-deployment -o go-template='{{range.spec.ports}}{{if .nodePort}}{{.nodePort}}{{"\n"}}{{end}}{{end}}')
-echo "Accessing host01:$PORT"
-curl host01:$PORT`{{execute}}
+### Deploy consul secondary datacenter (`dc2`)
 
-The results is the container that processed the request.
+With the primary cluster up and running, and the federation secret imported into the secondary cluster, you can now install Consul into the secondary cluster.
+
+This hands-on lab comes with a prepared configuration.
+
+`dc2-values.yml`{{open}}
+
+<div style="background-color:#eff5ff; color:#416f8c; border:1px solid #d0e0ff; padding:1em; border-radius:3px; margin:24px 0;">
+  <p><strong>Info: </strong>
+  
+  You must use a separate Helm config file for each datacenter (primary and secondaries) since their settings are different.
+
+</p></div>
+
+You will use `helm install` to deploy Consul using the configuration defined in `dc2-values.yml`. This should only take a few minutes.
+
+`helm install -f ./dc2-values.yml consul hashicorp/consul --timeout 10m`{{execute}}
+

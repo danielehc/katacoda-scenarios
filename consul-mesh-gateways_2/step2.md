@@ -1,55 +1,26 @@
+To configure the secondary datacenter (`dc2`) you will need to configure it to be able to reach the primary (`dc1`). You can use the *federation secret* to automate this step.
 
-`helm repo add hashicorp https://helm.releases.hashicorp.com`{{execute}}
-
-`export KUBECONFIG=${HOME}/.shipyard/config/dc1/kubeconfig.yaml`{{execute}}
-
-`helm install -f ./dc1-values.yml consul hashicorp/consul --timeout 10m`{{execute}}
-
-`kubectl get pods --all-namespaces`{{execute}}
+The federation secret is a Kubernetes secret containing information needed for secondary datacenters/clusters to federate with the primary. This secret is created automatically by setting:
 
 ```
-NAME                                                          READY   STATUS    RESTARTS   AGE
-consul-connect-injector-webhook-deployment-6fd55dfcd7-5jxnm   1/1     Running   0          50s
-consul-server-0                                               1/1     Running   0          49s
-consul-5642w                                                  1/1     Running   0          50s
-consul-mesh-gateway-bc7f449cb-7hxt6                           1/1     Running   3          50s
+global:
+  federation:
+    createFederationSecret: true
 ```
 
-`kubectl get svc consul-mesh-gateway`{{execute}}
+in your Helm chart configuration.
 
-```
-NAME                  TYPE           CLUSTER-IP    EXTERNAL-IP     PORT(S)         AGE
-consul-mesh-gateway   LoadBalancer   10.0.202.79   20.185.102.21   443:32753/TCP   108s
-```
-
-Once it has it, update meshGateway.wanAddress.host to that IP in your dc1-config.yaml file. In this example it would look like
-```
-meshGateway:
-  wanAddress:
-    useNodeIP: false
-    host: "20.185.102.21"
-```
+After the installation into your primary cluster you will need to export this secret:
 
 `kubectl get secret consul-federation -o yaml > consul-federation-secret.yaml`{{execute}}
 
+The secret contains several configuration info. Particularly important is the portion of server configuration to define federation using mesh gateways:
+
 `cat consul-federation-secret.yaml | grep serverConfigJSON: | awk '{print $2}' | base64 -d`{{execute}}
 
-`export KUBECONFIG=${HOME}/.shipyard/config/dc2/kubeconfig.yaml`{{execute}}
+<div style="background-color:#fbe5e5; color:#864242; border:1px solid #f8cfcf; padding:1em; border-radius:3px; margin:24px 0;">
+  <p><strong>Security note: </strong>
+  
+ The federation secret makes it possible to gain full admin privileges in Consul. This secret must be kept securely, i.e. it should be deleted from your filesystem after importing it to your secondary datacenter and you should use RBAC permissions to ensure only administrators can read it from Kubernetes.
 
-`kubectl apply -f consul-federation-secret.yaml`{{execute}}
-
-`helm install -f ./dc2-values.yml consul hashicorp/consul --timeout 10m`{{execute}}
-
-
-`export KUBECONFIG=${HOME}/.shipyard/config/dc1/kubeconfig.yaml`{{execute}}
-
-`kubectl apply -f ~/api.yml`{{execute}}
-
-
-`export KUBECONFIG=${HOME}/.shipyard/config/dc2/kubeconfig.yaml`{{execute}}
-
-`kubectl apply -f ~/web.yml`{{execute}}
-
-`export IP_ADDR=$(hostname -I | awk '{print $1}')`{{execute}}
-
-`kubectl port-forward service/web 9090:9090 --address ${IP_ADDR}`{{execute}}
+</p></div>
