@@ -9,7 +9,7 @@ Add the HashiCorp repository to Helm:
 
 This hands-on lab comes with a prepared configuration.
 
-`dc1-values.yml`{{open}}
+`cat dc1-values.yml | more`{{execute}}
 
 Note the following settings:
 

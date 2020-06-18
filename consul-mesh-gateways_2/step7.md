@@ -6,10 +6,10 @@ Open [Web frontend](https://[[HOST_SUBDOMAIN]]-9090-[[KATACODA_HOST]].environmen
 
 <div style="background-color:#eff5ff; color:#416f8c; border:1px solid #d0e0ff; padding:1em; border-radius:3px; margin:24px 0;">
   <p><strong>Note:</strong>
-  
-  For this lab we deployed an ingress in your Kubernetes cluster to permit you access to the service interface without having to manually permit the communication.
 
-  You can achieve the same in a test Kubernetes environment (i.e. Minikube) by enabling a port forwarding for the service:
+  For this lab we deployed an ingress in your Kubernetes cluster to permit you access to the service interface without you having to manually configure it.
+
+  You can achieve the same in a test Kubernetes environment (i.e. Minikube) by enabling port forwarding for the service:
 
   ```
   kubectl port-forward service/web 9090:9090 --address 0.0.0.0

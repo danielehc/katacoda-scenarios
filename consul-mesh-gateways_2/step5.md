@@ -1,4 +1,4 @@
-To verify the two datacenter are actively working and routing traffic through the mesh gateways you will use two services, `api` and `web`. 
+To verify the two datacenter are actively working and routing traffic through the mesh gateways you will use two services, `api` and `web`.
 
 The two services represent a simple two-tier application made of a backend api service and a frontend that communicates with the api service over HTTP and exposes the results in a web ui.
 
@@ -6,7 +6,7 @@ The two services represent a simple two-tier application made of a backend api s
 
 This hands-on lab comes with a prepared configuration for the `api` service.
 
-`api.yml`{{open}}
+`cat api.yml | more`{{execute}}
 
 The `"consul.hashicorp.com/connect-inject": "true"` annotation in the configuration ensures a sidecar proxy is automatically added to the `api` pod. This proxy will handle inbound and outbound service connections, automatically wrapping and verifying TLS connections.
 
