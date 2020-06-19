@@ -1,5 +1,5 @@
 {
-	"title": "Consul Mesh Gateways Test 2",
+	"title": "Consul Mesh Gateways on Kubernetes",
 	"icon": "fa-consul",
 	"description": "Consul Service Discovery and Secure Mesh across Multiple Kubernetes Clusters",
 	"details": {
