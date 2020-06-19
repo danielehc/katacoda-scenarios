@@ -38,7 +38,7 @@ Note the following settings:
 * The `ui` section enables Consul web UI.
 
 <div style="background-color:#eff5ff; color:#416f8c; border:1px solid #d0e0ff; padding:1em; border-radius:3px; margin:24px 0;">
-  <p><strong>Info:</strong><br>
+  <p><strong>Info: </strong>
 
 The example in this lab modifies only few default settings.  You can learn what settings are available by running `helm inspect values hashicorp/consul` or by reading the [Helm Chart Reference](https://www.consul.io/docs/k8s/helm) available on the Consul documentation site.
 
