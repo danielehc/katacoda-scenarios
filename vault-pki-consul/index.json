@@ -1,8 +1,8 @@
 {
-    "pathwayTitle": "Secure Consul with ACLs",
-    "icon": "fa-consul",
-    "title": "Secure Consul with ACLs",
-    "description": "Enable ACLs for Consul datacenters.",
+    "pathwayTitle": "Vault as Consul CA",
+    "icon": "fa-vault",
+    "title": "Vault as Consul CA",
+    "description": "Vault as Consul CA.",
     "details": {
         "steps": [
             {
@@ -11,6 +11,11 @@
                 "courseData": "provision.courseData.sh",
                 "code": "provision.code.sh",
                 "verify": "provision.verify.sh"
+            },
+            {
+                "title": "All commands",
+                "code": "set-env.sh",
+                "text": "step0.md"
             },
             {
                 "title": "Setup server agent",
