@@ -63,6 +63,7 @@
           { "file": "client_policy.hcl", "target": "./" },
           { "file": "server_policy.hcl", "target": "./" },
           { "file": "read_policy.hcl", "target": "./" }
+          { "file": "vault_provisioner_policy.hcl", "target": "./" }
         ]
     }
     },
