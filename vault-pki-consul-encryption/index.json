@@ -74,11 +74,11 @@
         "hideHiddenFiles": true,
         "uimessage1": "\u001b[32mOperator node terminal.\u001b[m\r\n",
         "dashboards": [
-            {"name": "Consul UI", "port": 8500}
+            {"name": "Consul UI", "port": 8500},
+            {"name": "Vault UI", "port": 8200}
         ],
         "terminals": [
-            {"name": "server", "target": "host01"},
-            {"name": "client", "target": "host01"}
+            {"name": "server", "target": "host01"}
         ]
     },
     "backend": {
