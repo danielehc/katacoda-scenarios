@@ -36,7 +36,7 @@ APP_VERSION="0.25.1"
 log Installing consul-template ${APP_VERSION}
 # https://releases.hashicorp.com/consul-template/0.25.1/consul-template_0.25.1_linux_amd64.zip
 
-curl -s https://releases.hashicorp.com/consul-template/${APP_VERSION}/consul-template_${APP_VERSION}_linux_amd64.zip
+curl -s https://releases.hashicorp.com/consul-template/${APP_VERSION}/consul-template_${APP_VERSION}_linux_amd64.zip -o consul-template_${APP_VERSION}_linux_amd64.zip
 
 unzip consul_${APP_VERSION}_linux_amd64.zip > /dev/null
 chmod +x consul
