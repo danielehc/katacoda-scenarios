@@ -2,7 +2,7 @@
     "pathwayTitle": "Consul gossip key in Vault",
     "icon": "fa-vault",
     "title": "Consul gossip key in Vault",
-    "description": "Consull gossip key in Vault",
+    "description": "Consul gossip key in Vault",
     "details": {
         "steps": [
             {
