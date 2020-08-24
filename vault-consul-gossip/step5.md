@@ -1,0 +1,3 @@
+### Further automation: Consul template
+
+
