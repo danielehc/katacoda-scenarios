@@ -1,5 +1,5 @@
-acl = {
-    enabled = true
-    default_policy = "deny"
-    enable_token_persistence = true
-}
+data_dir = "/opt/consul",
+log_level = "INFO",
+node_name = "server1",
+server = true,
+encrypt = "<insert gossip encryption here>"

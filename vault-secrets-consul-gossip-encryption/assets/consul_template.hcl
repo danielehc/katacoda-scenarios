@@ -41,12 +41,12 @@ syslog {
 template {
   # This is the source file on disk to use as the input template. This is often
   # called the "consul-template template".
-  source      = "/opt/nomad/templates/agent.crt.tpl"
+  source      = "agent.crt.tpl"
 
   # This is the destination path on disk where the source template will render.
   # If the parent directories do not exist, consul-template will attempt to
   # create them, unless create_dest_dirs is false.
-  destination = "/opt/nomad/agent-certs/agent.crt"
+  destination = "/opt/consul/agent-certs/agent.crt"
 
   # This is the permission to render the file. If this option is left
   # unspecified, consul-template will attempt to match the permissions of the
@@ -56,20 +56,20 @@ template {
 
   # This is the optional command to run when the template is rendered. The
   # command will only run if the resulting template changes.
-  command     = "systemctl reload nomad"
+  command     = "consul reload"
 }
 
 template {
-  source      = "/opt/nomad/templates/agent.key.tpl"
+  source      = "agent.key.tpl"
   destination = "/opt/nomad/agent-certs/agent.key"
   perms       = 0700
-  command     = "systemctl reload nomad"
+  command     = "consul reload"
 }
 
 template {
-  source      = "/opt/nomad/templates/ca.crt.tpl"
-  destination = "/opt/nomad/agent-certs/ca.crt"
-  command     = "systemctl reload nomad"
+  source      = "ca.crt.tpl"
+  destination = "/opt/consul/agent-certs/ca.crt"
+  command     = "consul reload"
 }
 
 # The following template stanzas are for the CLI certs

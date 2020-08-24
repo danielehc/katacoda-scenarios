@@ -6,10 +6,7 @@ next step.
 
 ```screenshot
 - Install prerequisites
-- Install Consul locally
-- Installing Consul x.y.z
-- Pulling Docker image for Consul x.y.z
-- Creating Docker volumes
+...
 ```
 
 and concluding with

@@ -3,21 +3,21 @@
 
 https://learn.hashicorp.com/tutorials/nomad/security-gossip-encryption#generate-an-encryption-key
 
-```
-consul keygen
-```
+The lab includes a Consul binary on the same Virtual Machine that will be used to test Consul gossip encryption. The `consul` binary can be used to generate a valid gossip encryption key:
+
+`consul keygen`{{execute T1}}
+
 
 Alternatively, you can use any method that can create 16 random bytes encoded in base64.
 
-```
-$ openssl rand -base64 16 
-VNYxXf/MuX49lgS6F34Vzw==
-```
+* **Method 1: openssl**
 
-```
-$ dd if=/dev/urandom bs=16 count=1 status=none | base64
-LsuYyj93KVfT3pAJPMMCgA==
-```
+`openssl rand -base64 16`{{execute T1}}
+
+* **Method 2: dd**
+
+`dd if=/dev/urandom bs=16 count=1 status=none | base64`{{execute T1}}
+
 
 https://learn.hashicorp.com/tutorials/vault/static-secrets
 
@@ -27,21 +27,17 @@ https://www.vaultproject.io/docs/secrets/consul
 
 ### Enable Vault secrets engine
 
-```
-vault secrets list -detailed
-```
+`vault secrets list -detailed`{{execute T1}}
 
-```
-vault secrets enable -path="kv-v1" kv
-```
+`vault secrets enable -path="kv-v1" kv`{{execute T1}}
 
 ### Write encryption key in Vault
 
+`vault kv put kv-v1/consul/config/encryption key=cg8StVXbQJ0gPvMd9o7yrg==`{{execute T1}}
+
+Example output:
 ```
-vault kv put kv-v1/consul/config/encryption key=cg8StVXbQJ0gPvMd9o7yrg==
 Success! Data written to: kv-v1/consul/config/encryption
 ```
 
-```
-vault kv get -field=key kv-v1/consul/config/encryption
-```
+`vault kv get -field=key kv-v1/consul/config/encryption`{{execute T1}}
