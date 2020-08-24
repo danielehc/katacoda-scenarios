@@ -31,6 +31,12 @@ https://www.vaultproject.io/docs/secrets/consul
 
 `vault secrets enable -path="kv-v1" kv`{{execute T1}}
 
+Example output:
+
+```
+Success! Enabled the kv secrets engine at: kv-v1/
+```
+
 ### Write encryption key in Vault
 
 `vault kv put kv-v1/consul/config/encryption key=cg8StVXbQJ0gPvMd9o7yrg==`{{execute T1}}

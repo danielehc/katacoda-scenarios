@@ -14,4 +14,6 @@ Insert the previously generated gossip key in the configuration file and save.
 
 ## Start Consul
 
-`consul agent -config-file server.hcl`{{execute T1}}
+`mkdir /opt/consul`{{execute}}
+
+`consul agent -config-file server.hcl -advertise '{{ GetInterfaceIP "ens3" }}'`{{execute T1}}
