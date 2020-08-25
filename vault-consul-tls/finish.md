@@ -1,26 +1,18 @@
 ## Review
 
-In this hands-on lab, you deployed a secure Consul datacenter using Docker.
+In this hands-on lab, you deployed a secure Consul datacenter using Vault to generate and manage certificates.
 
-The lab guided you through the steps necessary to deploy Consul with ACLs enabled for agent RPC communications.
+The lab will guided you through the steps necessary to deploy Consul with TLS encryption enabled to secure access to the UI, API, CLI, services, and agents.
 
 Specifically, you:
 
-- Configured a default-deny policy
-- Enabled token persistence through configuration
-- Started a server with user-defined configuration
-- Bootstrapped the ACL System
-- Configured your environment to use the bootstrap token
-- Created a server policy
-- Associated the server policy with a token
-- Registered the server token with the server agent
-- Created a client policy
-- Associated the client policy with a token
-- Registered the client token with the client agent via configuration
-- Joined a client agent to an existing datacenter with ACLs enabled and configured.
-- Created a read-only policy for non-priveleged access
-- Associated the non-priveleged policy with a token
-- Verified limited access with non-priveleged token
+- Started a Vault dev instance
+- Created a policy in Vault to allow certificate generation
+- Enabled PKI engine in Vault
+- Initialized the CA and generate an intermediate certificate
+- Generated certificates for your Consul servers
+- Used consul-template to retrieve certificates at runtime
+- Performed a certificate rotation
 
 ## Next Steps
 
