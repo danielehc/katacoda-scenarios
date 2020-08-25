@@ -34,7 +34,7 @@ You need to create templates that consul-template can use to render the actual c
 
 Create a directory called templates in `/opt/consul`.
 
-`sudo mkdir /opt/consul/templates`{{execute T1}}
+`sudo mkdir -p /opt/consul/templates`{{execute T1}}
 
 You will provide different templates to the nodes depending on whether they are server nodes or client nodes. All of the nodes will get the CLI templates (since you want to use the CLI on any of the nodes).
 

@@ -28,9 +28,17 @@ First, enable the `pki` secrets engine at the `pki` path.
 
 `vault secrets enable pki`{{execute T1}}
 
+```
+Success! Enabled the pki secrets engine at: pki/
+```
+
 Tune the `pki` secrets engine to issue certificates with a maximum time-to-live (TTL) of 87600 hours.
 
 `vault secrets tune -max-lease-ttl=87600h pki`{{execute T1}}
+
+```
+Success! Tuned the secrets engine at: pki/`
+```
 
 Generate the root certificate and save the certificate in `CA_cert.crt`.
 
@@ -42,11 +50,18 @@ This generates a new self-signed CA certificate and private key.
 Vault will automatically revoke the generated root at the end of its lease period (TTL); 
 the CA certificate will sign its own Certificate Revocation List (CRL).
 
+> If you want you can inspect the certificate created using the `openssl` tool:
+> `openssl x509 -text -noout -in CA_cert.crt`{{execute T1}}
+
 Configure the CA and CRL URLs.
 
 `vault write pki/config/urls \
         issuing_certificates="http://127.0.0.1:8200/v1/pki/ca" \
         crl_distribution_points="http://127.0.0.1:8200/v1/pki/crl"`{{execute T1}}
+
+```
+Success! Data written to: pki/config/urls
+```
 
 ## Generate Intermediate CA
 
@@ -54,9 +69,17 @@ First, enable the `pki` secrets engine at the `pki_int` path.
 
 `vault secrets enable -path=pki_int pki`{{execute T1}}
 
+```
+Success! Enabled the pki secrets engine at: pki_int/
+```
+
 Tune the `pki_int` secrets engine to issue certificates with a maximum time-to-live (TTL) of 43800 hours.
 
 `vault secrets tune -max-lease-ttl=43800h pki_int`{{execute T1}}
+
+```
+Success! Tuned the secrets engine at: pki_int/
+```
 
 Request an intermediate certificate and save the CSR as `pki_intermediate.csr`.
 
@@ -64,14 +87,19 @@ Request an intermediate certificate and save the CSR as `pki_intermediate.csr`.
         common_name="dc1.consul Intermediate Authority" \
         | jq -r '.data.csr' > pki_intermediate.csr`{{execute T1}}
 
-Once the CSR is signed and the root CA returns a certificate, it can be imported back into Vault.
+Sign the CSR.
 
 `vault write -format=json pki/root/sign-intermediate csr=@pki_intermediate.csr \
         format=pem_bundle ttl="43800h" \
         | jq -r '.data.certificate' > intermediate.cert.pem`{{execute T1}}
 
+Once the CSR is signed and the root CA returns a certificate, it can be imported back into Vault.
+
 `vault write pki_int/intermediate/set-signed certificate=@intermediate.cert.pem`{{execute T1}}
 
+```
+Success! Data written to: pki_int/intermediate/set-signed
+```
 
 ## Create a Role
 
@@ -82,6 +110,10 @@ A role is a logical name that maps to a policy used to generate those credential
         allow_subdomains=true \
         generate_lease=true \
         max_ttl="720h"`{{execute T1}}
+
+```
+Success! Data written to: pki_int/roles/consul-dc1
+```
 
 For this lab you are using the following options for the role:
 

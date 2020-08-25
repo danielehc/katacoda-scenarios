@@ -6,7 +6,7 @@ vault {
   address      = "http://active.vault.service.consul:8200"
 
   # This value can also be specified via the environment variable VAULT_TOKEN.
-  token        = "s.m069Vpul3c4lfGnJ6unpxgxD"
+  token        = "<insert your token here>"
 
   # This should also be less than or around 1/3 of your TTL for a predictable
   # behaviour. Consult https://github.com/hashicorp/vault/issues/3414
@@ -61,7 +61,7 @@ template {
 
 template {
   source      = "agent.key.tpl"
-  destination = "/opt/nomad/agent-certs/agent.key"
+  destination = "/opt/consul/agent-certs/agent.key"
   perms       = 0700
   command     = "consul reload"
 }
@@ -71,15 +71,3 @@ template {
   destination = "/opt/consul/agent-certs/ca.crt"
   command     = "consul reload"
 }
-
-# The following template stanzas are for the CLI certs
-
-# template {
-#  source      = "/opt/nomad/templates/cli.crt.tpl"
-#  destination = "/opt/nomad/cli-certs/cli.crt"
-#}
-
-# template {
-#  source      = "/opt/nomad/templates/cli.key.tpl"
-#  destination = "/opt/nomad/cli-certs/cli.key"
-# }

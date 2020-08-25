@@ -59,10 +59,12 @@
     },
     "assets": {
         "client": [
-          { "file": "server.hcl", "target": "./" },
-          { "file": "client_policy.hcl", "target": "./" },
-          { "file": "server_policy.hcl", "target": "./" },
-          { "file": "read_policy.hcl", "target": "./" },
+          { "file": "ca.crt.tpl", "target": "./" },
+          { "file": "agent.crt.tpl", "target": "./" },
+          { "file": "agent.key.tpl", "target": "./" },
+          { "file": "consul_template.hcl", "target": "./" },
+          { "file": "server.json", "target": "./" },
+          { "file": "tls-policy.hcl", "target": "./" },
           { "file": "vault_provisioner_policy.hcl", "target": "./" }
         ]
     }
