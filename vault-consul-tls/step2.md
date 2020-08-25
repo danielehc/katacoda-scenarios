@@ -13,7 +13,7 @@ vault {
   address      = "http://active.vault.service.consul:8200"
 
   # This value can also be specified via the environment variable VAULT_TOKEN.
-  token        = "s.m069Vpul3c4lfGnJ6unpxgxD"
+  token        = "<insert your token here>"
 
   # This should also be less than or around 1/3 of your TTL for a predictable
   # behaviour. Consult https://github.com/hashicorp/vault/issues/3414
@@ -63,25 +63,25 @@ template {
 
   # This is the optional command to run when the template is rendered. The
   # command will only run if the resulting template changes.
-  command     = "systemctl reload consul"
+  command     = "consul reload"
 }
 
 template {
   source      = "/opt/consul/templates/agent.key.tpl"
   destination = "/opt/consul/agent-certs/agent.key"
   perms       = 0700
-  command     = "systemctl reload consul"
+  command     = "consul reload"
 }
 
 template {
   source      = "/opt/consul/templates/ca.crt.tpl"
   destination = "/opt/consul/agent-certs/ca.crt"
-  command     = "systemctl reload consul"
+  command     = "consul reload"
 }
 ```
 
 ### Start consul-template
 
-```
-consul-template -config "consul_template.hcl"
-```
+Start consul-template.
+
+`consul-template -config "consul_template.hcl"`{{execute T1}}
