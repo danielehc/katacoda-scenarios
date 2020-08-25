@@ -1,14 +1,18 @@
-Create a policy to access the role endpoint
 
-Create a policy file named tls-policy.hcl and provide it the following contents.
+
+### Create a policy to access the role endpoint
+
+Earlier in the lab you used a root token to log in to Vault. Although you could use that token in our next steps to generate our TLS certs, the recommended security approach is to create a new token based on a specific policy with limited privileges.
+
+Create a policy file named `tls-policy.hcl` and provide it the following contents.
 
 ```
-path "pki_int/issue/consul-datacenter" {
+path "pki_int/issue/consul-dc1" {
   capabilities = ["update"]
 }
 ```
 
-Write the policy you just created into Vault.
+Write the policy you created into Vault.
 
 `vault policy write tls-policy tls-policy.hcl`{{execute T1}}
 
@@ -55,5 +59,23 @@ ca.crt.tpl.
 ```
 {{ with secret "pki_int/issue/consul-datacenter" "common_name=server.dc1.consul" "ttl=24h"}}
 {{ .Data.issuing_ca }}
+{{ end }}
+```
+
+Consul CLI
+
+cli.crt.tpl.
+
+```
+{{ with secret "pki_int/issue/nomad-cluster" "ttl=24h" }}
+{{ .Data.certificate }}
+{{ end }}
+```
+
+cli.key.tpl.
+
+```
+{{ with secret "pki_int/issue/nomad-cluster" "ttl=24h" }}
+{{ .Data.private_key }}
 {{ end }}
 ```
