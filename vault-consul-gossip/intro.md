@@ -22,12 +22,6 @@ If you are already familiar with the basics of Consul, [Secure Gossip Communicat
 Alternatively, you can use any method that can create 16 random bytes encoded in base64.
 <br/>
 
-<ul>
-<li>
 * **Method 2: openssl** `openssl rand -base64 16`{{execute T1}}
-</li>
-<li>
 * **Method 3: dd** `dd if=/dev/urandom bs=16 count=1 status=none | base64`{{execute T1}}
-</li>
-<ul>
 </p></div>
