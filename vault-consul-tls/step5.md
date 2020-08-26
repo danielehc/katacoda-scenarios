@@ -1,3 +1,4 @@
-### Further automation: Consul template
+### TODO - Configure CLI certificates
 
 
+### Use CLI certificate with REST API

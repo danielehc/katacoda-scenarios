@@ -1,8 +1,8 @@
 {
-    "pathwayTitle": "Secure Consul using Vault",
+    "pathwayTitle": "Generate mTLS Certificates for Consul using Vault",
     "icon": "fa-vault",
-    "title": "Secure Consul using Vault",
-    "description": "Secure Consul using Vault",
+    "title": "Generate mTLS Certificates for Consul using Vault",
+    "description": "Generate mTLS Certificates for Consul using Vault",
     "details": {
         "steps": [
             {
@@ -13,39 +13,34 @@
                 "verify": "provision.verify.sh"
             },
             {
-                "title": "Setup Vault as CA",
+                "title": "Start Vault",
                 "code": "set-env.sh",
                 "text": "step0.md"
             },
             {
-                "title": "Create Secrets for Consul",
+                "title": "Configure Vault as CA",
                 "code": "set-env.sh",
                 "text": "step1.md"
             },
             {
-                "title": "Bootstrap ACLs",
+                "title": "Configure consul-template",
                 "code": "set-env.sh",
                 "text": "step2.md"
             },
             {
-                "title": "Set the bootstrap token",
+                "title": "Start consul-template",
                 "code": "set-env.sh",
                 "text": "step3.md"
             },
             {
-                "title": "Setup server agent",
+                "title": "Configure and start Consul",
                 "code": "set-env.sh",
                 "text": "step4.md"
             },
             {
-                "title": "Setup client agent",
+                "title": "Configure CLI tokens",
                 "code": "set-env.sh",
                 "text": "step5.md"
-            },
-            {
-                "title": "Create non-privileged policy & token",
-                "code": "set-env.sh",
-                "text": "step6.md"
             }
         ],
     "intro": {
