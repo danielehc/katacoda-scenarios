@@ -1,8 +1,8 @@
 ## Need to start Consul first with ACL enabled
 
 `vault write consul/config/access \
-    address=$(CONSUL_ADDR) \
-    token=$(CONSUL_TOKEN)`{{execute T1}}
+    address=${CONSUL_HTTP_ADDR} \
+    token=${CONSUL_HTTP_TOKEN}`{{execute T1}}
 
 
 Once you have the consul secret backend enabled, configure access with consul's address and management token:
@@ -30,6 +30,8 @@ $ vault write consul/role/role-name type=management global=true
 ```
 Success! Data written to: consul/role/role-name
 ```
+
+https://www.vaultproject.io/docs/secrets/consul
 
 ### Create Vault policy
 
