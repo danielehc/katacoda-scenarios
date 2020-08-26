@@ -38,11 +38,11 @@ Alternatively, you can use any method that can create 16 random bytes encoded in
 <ul>
 <li>
 * **Method 2: openssl** <br/>
-`openssl rand -base64 16`{{execute T1}}
+`openssl rand -base64 16`{{execute T1}} <br/>
 </li>
 <li>
 * **Method 3: dd** <br/>
-`dd if=/dev/urandom bs=16 count=1 status=none | base64`{{execute T1}}
+`dd if=/dev/urandom bs=16 count=1 status=none | base64`{{execute T1}} <br/>
 </li>
 <ul>
 </p></div>
