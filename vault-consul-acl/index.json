@@ -18,22 +18,22 @@
                 "text": "step0.md"
             },
             {
-                "title": "Configure Consul secrets engine",
+                "title": "Configure and start Consul",
                 "code": "set-env.sh",
                 "text": "step1.md"
             },
             {
-                "title": "Create Vault policy",
+                "title": "Configure Consul secrets engine",
                 "code": "set-env.sh",
                 "text": "step2.md"
             },
             {
-                "title": "Obtain and test Consul token",
+                "title": "Create Vault policy",
                 "code": "set-env.sh",
                 "text": "step3.md"
             },
             {
-                "title": "Configure and start Consul",
+                "title": "Obtain and test Consul token",
                 "code": "set-env.sh",
                 "text": "step4.md"
             },
