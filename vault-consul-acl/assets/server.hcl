@@ -5,6 +5,7 @@ node_name = "server-1",
 server = true,
 ui = true,
 client_addr = "0.0.0.0",
+bootstrap_expect = 1,
 
 # ACL configuration
 acl = {
