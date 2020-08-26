@@ -22,7 +22,7 @@ Alternatively, you can use any method that can create 16 random bytes encoded in
 <li>
 * **Method 3: dd** - `dd if=/dev/urandom bs=16 count=1 status=none | base64`
 </li>
-<ul>
+</ul>
 
 If you decide to use one of these methods for the lab make sure you use the `CONSUL_GOSSIP_KEY` variable to store the result of the command or to take note of the value of the key generated to manually enter it into Consul's configuration file later.
 
