@@ -16,12 +16,10 @@ If you are already familiar with the basics of Consul, [Secure Gossip Communicat
 
 
 
-<div style="background-color:#eff5ff; color:#416f8c; border:1px solid #d0e0ff; padding:1em; border-radius:3px; margin:24px 0;">
-  <p><strong>Info: </strong>
-
-Alternatively, you can use any method that can create 16 random bytes encoded in base64.
-
-* **Method 2: openssl** `openssl rand -base64 16`{{execute T1}}
-* **Method 3: dd** `dd if=/dev/urandom bs=16 count=1 status=none | base64`{{execute T1}}
-
-</p></div>
+> Alternatively, you can use any method that can create 16 random bytes encoded in base64.
+>
+> * **Method 2: openssl** 
+> `openssl rand -base64 16`{{execute T1}}
+>
+> * **Method 3: dd** 
+> `dd if=/dev/urandom bs=16 count=1 status=none | base64`{{execute T1}}
