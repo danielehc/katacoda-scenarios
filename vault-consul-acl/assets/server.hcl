@@ -1,3 +1,12 @@
+# Base configuration
+data_dir = "/opt/consul",
+log_level = "INFO",
+node_name = "server-1",
+server = true,
+ui = true,
+client_addr = "0.0.0.0",
+
+# ACL configuration
 acl = {
     enabled = true
     default_policy = "deny"

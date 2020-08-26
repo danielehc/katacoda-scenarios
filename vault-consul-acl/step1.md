@@ -20,7 +20,7 @@ By enabling token persistence, tokens will be persisted to disk and reloaded whe
 
 Once configuration is distributed on the nodes, it is possible to start the Consul server.
 
-`consul agent -config-file server.hcl -advertise '{{ GetInterfaceIP "ens3" }}' >~/log/consul.log 2>&1" > ~/log/nohup_consul.log &`{{execute T1}}
+`nohup sh -c "consul agent -config-file server.hcl -advertise '{{ GetInterfaceIP "ens3" }}' >~/log/consul.log 2>&1" > ~/log/nohup_consul.log &`{{execute T1}}
 
 ### Check server logs
 
