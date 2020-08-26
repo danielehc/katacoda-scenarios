@@ -1,3 +1,25 @@
+
+<div style="background-color:#eff5ff; color:#416f8c; border:1px solid #d0e0ff; padding:1em; border-radius:3px; margin:24px 0;">
+  <p><strong>Info: </strong>
+
+Alternatively, you can use any method that can create 16 random bytes encoded in base64.
+<br/>
+
+<ul>
+<li>
+* **Method 2: openssl** <br/>
+`openssl rand -base64 16`{{execute T1}}
+</li>
+<li>
+* **Method 3: dd** <br/>
+`dd if=/dev/urandom bs=16 count=1 status=none | base64`{{execute T1}}
+</li>
+<ul>
+</p></div>
+
+
+
+
 ## Start Vault
 
 `mkdir -p ~/log`{{execute T1}}
@@ -10,5 +32,5 @@
 
 <div style="background-color:#fcf6ea; color:#866d42; border:1px solid #f8ebcf; padding:1em; border-radius:3px;">
   <p><strong>Warning: </strong>
-  This lab lanches Vault in dev mode. This is not suggested for production.
+  This lab launches Vault in dev mode. This is not suggested for production.
 </p></div>

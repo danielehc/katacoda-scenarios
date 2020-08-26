@@ -13,13 +13,18 @@ The lab includes a Consul binary on the same Virtual Machine that will be used t
   <p><strong>Info: </strong>
 
 Alternatively, you can use any method that can create 16 random bytes encoded in base64.
+<br/>
 
-* **Method 2: openssl**
+<ul>
+<li>
+* **Method 2: openssl** <br/>
 `openssl rand -base64 16`{{execute T1}}
-
-* **Method 3: dd**
+</li>
+<li>
+* **Method 3: dd** <br/>
 `dd if=/dev/urandom bs=16 count=1 status=none | base64`{{execute T1}}
-
+</li>
+<ul>
 </p></div>
 
 
