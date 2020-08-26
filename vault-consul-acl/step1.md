@@ -20,13 +20,13 @@ By enabling token persistence, tokens will be persisted to disk and reloaded whe
 
 Once configuration is distributed on the nodes, it is possible to start the Consul server.
 
-`nohup sh -c "consul agent -config-file server.hcl -advertise '{{ GetInterfaceIP "ens3" }}' >~/log/consul.log 2>&1" > ~/log/nohup_consul.log &`{{execute T1}}
+`nohup sh -c "consul agent -config-file server.hcl -advertise '{{ GetInterfaceIP \"ens3\" }}' >~/log/consul.log 2>&1" > ~/log/nohup_consul.log &`{{execute T1}}
 
 ### Check server logs
 
 You can verify the Consul server started correctly by checking the logs.
 
-`tail -f ~/log/consul.log`{{execute T1}}
+`cat ~/log/consul.log`{{execute T1}}
 
 You should get a log message like the following when ACLs are enabled:
 
