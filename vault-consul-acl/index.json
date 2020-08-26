@@ -54,6 +54,7 @@
     },
     "assets": {
         "client": [
+          { "file": "server.hcl", "target": "./" },
           { "file": "ca.crt.tpl", "target": "./" },
           { "file": "agent.crt.tpl", "target": "./" },
           { "file": "agent.key.tpl", "target": "./" },
