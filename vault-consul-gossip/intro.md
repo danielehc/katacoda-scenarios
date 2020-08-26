@@ -13,3 +13,23 @@ Specifically, you will:
 
 
 If you are already familiar with the basics of Consul, [Secure Gossip Communication with Encryption](https://learn.hashicorp.com/tutorials/consul/gossip-encryption-secure) provides a reference guide for the steps required to enable gossip encryption on both new and existing datacenters.
+
+
+
+<div style="background-color:#eff5ff; color:#416f8c; border:1px solid #d0e0ff; padding:1em; border-radius:3px; margin:24px 0;">
+  <p><strong>Info: </strong>
+
+Alternatively, you can use any method that can create 16 random bytes encoded in base64.
+<br/>
+
+<ul>
+<li>
+* **Method 2: openssl** <br/>
+`openssl rand -base64 16`{{execute T1}}
+</li>
+<li>
+* **Method 3: dd** <br/>
+`dd if=/dev/urandom bs=16 count=1 status=none | base64`{{execute T1}}
+</li>
+<ul>
+</p></div>
