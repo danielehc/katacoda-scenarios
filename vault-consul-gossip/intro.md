@@ -14,7 +14,7 @@ Specifically, you will:
 
 If you are already familiar with the basics of Consul, [Secure Gossip Communication with Encryption](https://learn.hashicorp.com/tutorials/consul/gossip-encryption-secure) provides a reference guide for the steps required to enable gossip encryption on both new and existing datacenters.
 
-
+`openssl rand -base64 16`{{execute T1}}
 
 > Alternatively, you can use any method that can create 16 random bytes encoded in base64.
 >
