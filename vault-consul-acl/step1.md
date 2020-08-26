@@ -1,0 +1,160 @@
+Consul uses Access Control Lists (ACLs) to secure the UI, API, CLI, service communications, and agent communications. When securing your datacenter you should configure the ACLs first.
+
+Open `server.hcl`{{open}} in the editor to inspect values required for a minimal configuration with the ACL system enabled.
+
+```
+acl = {
+  enabled = true
+  default_policy = "deny"
+  enable_token_persistence = true
+}
+```
+
+In this lab, you will configure the "default-deny" policy, which denies all operations by default. All operations will be evaluated against their token, and only operations granted by policy associated with the token will be allowed.
+
+By enabling token persistence, tokens will be persisted to disk and reloaded when an agent restarts.
+
+#### Distribute configuration
+
+This scenario uses a Docker volume, called `server_config` to help you distribute the configuration to your server.
+
+`docker cp ./server.hcl volumes:/server/server.hcl`{{execute T1}}
+
+### Start Consul server
+
+Once configuration is distributed on the nodes, it is possible to start the Consul server.
+
+`docker run \
+    -d \
+    -v server_config:/etc/consul.d \
+    -p 8500:8500 \
+    -p 8600:8600/udp \
+    --name=server \
+    consul agent -server -ui \
+     -node=server-1 \
+     -bootstrap-expect=1 \
+     -client=0.0.0.0 \
+     -config-file=/etc/consul.d/server.hcl`{{execute T1}}
+
+### Check server logs
+
+You can verify the Consul server started correctly by checking the logs.
+
+`docker logs server`{{execute T1}}
+
+You should get a log message like the following when ACLs are enabled:
+
+`agent.server: initializing acls`
+
+Alternatively you can visit the [Consul UI](https://[[HOST_SUBDOMAIN]]-8500-[[KATACODA_HOST]].environments.katacoda.com/ui) tab to launch the Consul UI.
+
+<div style="background-color:#fcf6ea; color:#866d42; border:1px solid #f8ebcf; padding:1em; border-radius:3px;">
+  <p><strong>Warning: </strong>
+  Once ACLs are enabled the results available in the UI include only those authorized for all unauthenticated (anonymous) clients. At this time, your first inspection of the UI will show only empty tabs (no services, nor nodes). You will enter a token to access that info from the UI later in this lab.
+</p></div>
+
+
+First, you will configure your environment to be able to interact with the Consul agent.
+
+In this hands-on lab the Docker container is forwarding port `8500` to the local machine. You should be able to interact with it without having to be inside the container.
+
+`export CONSUL_HTTP_ADDR=localhost:8500`{{execute T1}}
+
+### Bootstrap ACLs
+
+You need to bootstrap the ACL system to start using ACLs.
+
+Run `consul acl bootstrap | tee consul.bootstrap`{{execute T1}} to bootstrap the ACL system, generate your first token, and capture the output into the `consul.bootstrap` file.
+
+If you receive an error saying "The ACL system is currently in legacy mode.", this indicates that the Consul service is still starting. Wait a few seconds and try the command again.
+
+Example Output
+
+```
+$ consul acl bootstrap | tee consul.bootstrap
+AccessorID:       e57b446b-2da0-bce2-f01c-6c0134d8e19b
+SecretID:         bba19e7c-9f47-2b08-f0ea-e1bca43ba9c5
+Description:      Bootstrap Token (Global Management)
+Local:            false
+Create Time:      2020-02-20 17:01:13.105174927 +0000 UTC
+Policies:
+   00000000-0000-0000-0000-000000000001 - global-management
+```
+
+<div style="background-color:#fcf6ea; color:#866d42; border:1px solid #f8ebcf; padding:1em; border-radius:3px;">
+  <p><strong>Warning: </strong>
+  In this hands-on lab, you are redirecting the output of the `consul acl bootstrap` command to a file to simplify operations in the next steps. In a real-life scenario, you want to make sure the bootstrap token is stored in a safe place. If it is compromised, the ACL system can be abused.
+</p></div>
+
+Once ACLs have been bootstrapped, you can use the bootstrap token to complete the configuration.
+
+If the token is not set in the CONSUL_HTTP_TOKEN environment variable, or passed as a a command
+line option, you will not be able to perform operations, or you will be presented only with a subset
+of results.
+
+`consul members`{{execute T1}}
+
+The output for the command seems to show an empty datacenter.
+
+### Configure the token
+
+You can set the token for the command using the `CONSUL_HTTP_TOKEN` environment variable.
+
+`export CONSUL_HTTP_TOKEN=$(cat consul.bootstrap  | grep SecretID  | awk '{print $2}')`{{execute T1}}
+
+Now, try again to retrieve the list of members from Consul.
+
+`consul members`{{execute T1}}
+
+This time the output will show the server node.
+
+```plaintext
+$ consul members
+Node      Address          Status  Type    Build  Protocol  DC   Segment
+server-1  172.18.0.2:8301  alive   server  1.7.3  2         dc1  <all>
+```
+
+You can now use the bootstrap token to create other ACL policies for the rest of your datacenter.
+
+The first policy you are going to create is for the server.
+
+Open the `server_policy.hcl`{{open}} file to review the policy.
+
+```hcl
+# consul-server-one-policy.hcl
+node "server-1" {
+  policy = "write"
+}
+node_prefix "" {
+   policy = "read"
+}
+service_prefix "" {
+   policy = "read"
+}
+```
+
+Create the policy and token with the `consul acl` command.
+
+`consul acl policy create \
+  -name consul-server-one \
+  -rules @server_policy.hcl`{{execute T1}}
+
+
+`consul acl token create \
+  -description "consul-server-1 agent token" \
+  -policy-name consul-server-one | tee server.token`{{execute T1}}
+
+<div style="background-color:#fcf6ea; color:#866d42; border:1px solid #f8ebcf; padding:1em; border-radius:3px;">
+  <p><strong>Warning: </strong>
+  In this hands-on lab, you are redirecting the output of the `consul acl token create` command to a file to simplify operations in the next steps. In a real-life scenario, you want to make sure the token is stored in a safe place. If it is compromised, the ACL system can be abused.
+</p></div>
+
+Finally you can apply the token to the server as its `agent` token.
+
+`consul acl set-agent-token agent $(cat server.token  | grep SecretID  | awk '{print $2}')`{{execute T1}}
+
+You should receive the following output:
+
+```plaintext
+ACL token "agent" set successfully
+```
