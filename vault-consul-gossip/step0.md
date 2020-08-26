@@ -7,3 +7,8 @@
 `export VAULT_ADDR='http://127.0.0.1:8200'`{{execute T1}}
 
 `export VAULT_TOKEN="root"`{{execute T1}}
+
+<div style="background-color:#fcf6ea; color:#866d42; border:1px solid #f8ebcf; padding:1em; border-radius:3px;">
+  <p><strong>Warning: </strong>
+  This lab lanches Vault in dev mode. This is not suggested for production.
+</p></div>
