@@ -13,20 +13,3 @@
   <p><strong>Warning: </strong>
   This lab launches Vault in dev mode. This is not suggested for production.
 </p></div>
-
-
-<div style="background-color:#eff5ff; color:#416f8c; border:1px solid #d0e0ff; padding:1em; border-radius:3px; margin:24px 0;">
-  <p><strong>Info: </strong>
-
-Alternatively, you can use any method that can create 16 random bytes encoded in base64.
-<br/>
-
-<ul>
-<li>
-* **Method 2: openssl** - `openssl rand -base64 16`{{execute T1}}
-</li>
-<li>
-* **Method 3: dd** - `dd if=/dev/urandom bs=16 count=1 status=none | base64`{{execute T1}}
-</li>
-<ul>
-</p></div>

@@ -13,22 +13,22 @@
                 "verify": "provision.verify.sh"
             },
             {
-                "title": "Setup Vault as CA",
+                "title": "Start Vault",
                 "code": "set-env.sh",
                 "text": "step0.md"
             },
             {
-                "title": "Create Secrets for Consul",
+                "title": "Configure Vault secrets engine",
                 "code": "set-env.sh",
                 "text": "step1.md"
             },
             {
-                "title": "Bootstrap ACLs",
+                "title": "Retrieve gossip encryption key from Vault",
                 "code": "set-env.sh",
                 "text": "step2.md"
             },
             {
-                "title": "Set the bootstrap token",
+                "title": "Configure and start Consul",
                 "code": "set-env.sh",
                 "text": "step3.md"
             }

@@ -29,12 +29,6 @@ If you decide to use one of these methods for the lab make sure you use the `CON
 </p></div>
 
 
-
-
-
-
-
-
 https://learn.hashicorp.com/tutorials/vault/static-secrets
 
 https://learn.hashicorp.com/tutorials/nomad/vault-nomad-secrets?in=nomad/access-control
