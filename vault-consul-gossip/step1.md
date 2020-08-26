@@ -7,7 +7,7 @@ https://learn.hashicorp.com/tutorials/nomad/security-gossip-encryption#generate-
 
 The lab includes a Consul binary on the same Virtual Machine that will be used to test Consul gossip encryption. The `consul` binary can be used to generate a valid gossip encryption key:
 
-`consul keygen`{{execute T1}}
+`export CONSUL_GOSSIP_KEY=$(consul keygen)`{{execute T1}}
 
 <div style="background-color:#eff5ff; color:#416f8c; border:1px solid #d0e0ff; padding:1em; border-radius:3px; margin:24px 0;">
   <p><strong>Info: </strong>
@@ -17,14 +17,15 @@ Alternatively, you can use any method that can create 16 random bytes encoded in
 
 <ul>
 <li>
-* **Method 2: openssl** <br/>
-`openssl rand -base64 16`{{execute T1}}
+* **Method 2: openssl** - `openssl rand -base64 16`
 </li>
 <li>
-* **Method 3: dd** <br/>
-`dd if=/dev/urandom bs=16 count=1 status=none | base64`{{execute T1}}
+* **Method 3: dd** - `dd if=/dev/urandom bs=16 count=1 status=none | base64`
 </li>
 <ul>
+
+If you decide to use one of these methods for the lab make sure you use the `CONSUL_GOSSIP_KEY` variable to store the result of the command or to take note of the value of the key generated to manually enter it into Consul's configuration file later.
+
 </p></div>
 
 
