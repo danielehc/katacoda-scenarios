@@ -38,7 +38,7 @@
                 "text": "step4.md"
             },
             {
-                "title": "Configure CLI tokens",
+                "title": "Configure CLI certificates",
                 "code": "set-env.sh",
                 "text": "step5.md"
             }
