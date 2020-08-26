@@ -20,8 +20,8 @@ If you are already familiar with the basics of Consul, [Secure Gossip Communicat
   <p><strong>Info: </strong>
 
 Alternatively, you can use any method that can create 16 random bytes encoded in base64.
-<br/>
 
 * **Method 2: openssl** `openssl rand -base64 16`{{execute T1}}
 * **Method 3: dd** `dd if=/dev/urandom bs=16 count=1 status=none | base64`{{execute T1}}
+
 </p></div>
