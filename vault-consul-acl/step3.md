@@ -1,4 +1,44 @@
-## Need to start Consul first with ACL enabled
+
+### Obtain and test consul token
+
+Finally obtain a consul Token using the existing Vault Token:
+
+`vault read consul/creds/consul-server-role`{{execute T1}}
+```
+
+Example output:
+
+```
+Key             Value
+---             -----
+lease_id        consul/creds/role-name/6fb22e25-0cd1-b4c9-494e-aba330c317b9
+lease_duration  768h0m0s
+lease_renewable true
+accessor_id     10b8fb49-7024-2126-8683-ab355b581db2
+secret_id       8898d19c-e5b3-35e4-649e-4153d63fbea9
+```
+
+Verify that the token is created correctly in Consul, looking it up by its accessor:
+
+`consul acl token info 10b8fb49-7024-2126-8683-ab355b581db2`{{execute T1}}
+
+```
+Accessor ID  = 10b8fb49-7024-2126-8683-ab355b581db2
+Secret ID    = 8898d19c-e5b3-35e4-649e-4153d63fbea9
+Name         = Vault test root 1507307164169530060
+Type         = management
+Global       = true
+Policies     = n/a
+Create Time  = 2017-10-06 16:26:04.170633207 +0000 UTC
+Create Index = 228
+Modify Index = 228
+```
+
+Any user or process with access to Vault can now obtain short lived Consul tokens in order to carry out operations, thus centralizing the access to consul tokens.
+
+
+## REMOVE AFTER THIS
+---
 
 `vault write consul/config/access \
     address=${CONSUL_HTTP_ADDR} \
@@ -31,7 +71,7 @@ $ vault write consul/role/role-name type=management global=true
 Success! Data written to: consul/role/role-name
 ```
 
-https://www.vaultproject.io/docs/secrets/consul
+https://www.vaultproject.io/docs/secrets/consul 
 
 ### Create Vault policy
 

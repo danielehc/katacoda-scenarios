@@ -99,15 +99,17 @@ Node      Address          Status  Type    Build  Protocol  DC   Segment
 server-1  172.18.0.2:8301  alive   server  1.7.3  2         dc1  <all>
 ```
 
+### Create server policy
+
 You can now use the bootstrap token to create other ACL policies for the rest of your datacenter.
 
-The first policy you are going to create is for the server.
+The first policy you are going to create is for the servers.
 
 Open the `server_policy.hcl`{{open}} file to review the policy.
 
 ```hcl
-# consul-server-one-policy.hcl
-node "server-1" {
+# consul-server-policy.hcl
+node_prefix "server-*" {
   policy = "write"
 }
 node_prefix "" {
@@ -121,9 +123,22 @@ service_prefix "" {
 Create the policy and token with the `consul acl` command.
 
 `consul acl policy create \
-  -name consul-server-one \
+  -name consul-servers \
   -rules @server_policy.hcl`{{execute T1}}
 
+This policy will be used to associate the generated Vault tokens.
+
+
+
+
+## REMOVE AFTER THIS
+
+--- 
+
+### Check Consul state
+
+* There is no Service registered because the node has no agent token
+* 
 
 `consul acl token create \
   -description "consul-server-1 agent token" \

@@ -18,19 +18,24 @@
                 "text": "step0.md"
             },
             {
-                "title": "Configure Vault secrets engine",
+                "title": "Start Consul and configure ACL",
                 "code": "set-env.sh",
                 "text": "step1.md"
             },
             {
-                "title": "Retrieve gossip encryption key from Vault",
+                "title": "Configure Vault secrets engine",
                 "code": "set-env.sh",
                 "text": "step2.md"
             },
             {
-                "title": "Configure and start Consul",
+                "title": "Retrieve gossip encryption key from Vault",
                 "code": "set-env.sh",
                 "text": "step3.md"
+            },
+            {
+                "title": "Configure and start Consul",
+                "code": "set-env.sh",
+                "text": "step4.md"
             }
         ],
     "intro": {
