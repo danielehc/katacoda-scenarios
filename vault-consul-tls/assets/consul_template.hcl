@@ -3,7 +3,7 @@
 vault {
   # This is the address of the Vault leader. The protocol (http(s)) portion
   # of the address is required.
-  address      = "http://active.vault.service.consul:8200"
+  address      = "<insert the address of your vault server here>"
 
   # This value can also be specified via the environment variable VAULT_TOKEN.
   token        = "<insert your token here>"
