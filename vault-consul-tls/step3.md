@@ -1,8 +1,14 @@
-### Configure consul-template on all nodes
+Once templates are created for the retrieval of the single files you can collect all the actions required by consul-template to retrieve the certificates in one configuration file.
 
-Provide the token you created based on `tls-policy` to the consul-template configuration file located at `/etc/consul-template.d/consul-template.hcl`
+Fir this lab you are going to use a template called `consul-template.hcl`{{open}}.
 
-Your consul-template.hcl configuration file should be similar to the following (you will need to provide this to each node in the datacenter).
+In it you will define the following parameters to make `consul-template` able to communicate with Vault:
+
+* `address` : the address of your Vault server. In this lab Vault runs on the same node as Consul so you can use `http://localhost:8200`.
+
+* `token`  : the Vault ACL token you created in the previous step.
+
+Here an example of the file you will create.
 
 ```
 # This denotes the start of the configuration section for Vault. All values
@@ -10,7 +16,7 @@ Your consul-template.hcl configuration file should be similar to the following (
 vault {
   # This is the address of the Vault leader. The protocol (http(s)) portion
   # of the address is required.
-  address      = "http://active.vault.service.consul:8200"
+  address      = "<insert the address of your vault server here>"
 
   # This value can also be specified via the environment variable VAULT_TOKEN.
   token        = "<insert your token here>"
@@ -82,10 +88,13 @@ template {
 
 ### Start consul-template
 
-Start consul-template.
+After configuration is completed you can start `consul-template` providing the file with the `-config` parameter.
 
 `consul-template -config "consul_template.hcl"`{{execute T1}}
 
 
+You can verify the certificates are being correctly retrieved by listing files in the destination directory:
+
+`ls -l /opt/consul/agent-certs`{{execute T1}}
 
 

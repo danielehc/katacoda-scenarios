@@ -1,4 +1,4 @@
-## Generate Root CA
+Vault's PKI secrets engine can dynamically generate X.509 certificates on demand. This allows services to acquire certificates without going through the usual manual process of generating a private key and Certificate Signing Request (CSR), submitting to a CA, and then waiting for the verification and signing process to complete.
 
 First, enable the `pki` secrets engine at the `pki` path.
 
@@ -15,6 +15,8 @@ Tune the `pki` secrets engine to issue certificates with a maximum time-to-live 
 ```
 Success! Tuned the secrets engine at: pki/`
 ```
+
+### Generate Root CA
 
 Generate the root certificate and save the certificate in `CA_cert.crt`.
 
