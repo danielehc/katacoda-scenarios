@@ -1,5 +1,3 @@
-### Configure and Start Consul
-
 This labs comes with a prepared Consul server configuration.
 
 Open `server.hcl`{{open}} in the editor to review the values required for a minimal server configuration with gossip encryption enabled.
@@ -18,16 +16,15 @@ First create the data directory for Consul as configured in the `server.hcl` fil
 
 `mkdir /opt/consul`{{execute}}
 
-Finally start Consul.
+Finally, start Consul.
 
 `consul agent -config-file server.hcl -advertise '{{ GetInterfaceIP "ens3" }}'`{{execute T1}}
 
-
-In the output, if the configuration was successful you will get an indication in the output that gossip encryption is now enabled:
+In the output, if the configuration was successful, you will get an indication in the output that gossip encryption is now enabled:
 
 ```
 ==> Starting Consul agent...
-           Version: '1.8.2'
+           Version: '1.8.3'
            Node ID: '7ebe9143-a085-7a37-33dc-23db6cd39a80'
          Node name: 'server1'
         Datacenter: 'dc1' (Segment: '<all>')

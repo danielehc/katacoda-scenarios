@@ -1,7 +1,24 @@
+For this lab you are going to use Vault kv secrets engine.
+
+First, you are going to enable a new secret engine, called `kv` at path `kv-v1`
+
+`vault secrets enable -path="kv-v1" kv`{{execute T1}}
+
+Example output:
+
+```
+Success! Enabled the kv secrets engine at: kv-v1/
+```
+
+Once the secret engine is enabled you will be able to verify this using the following command:
+
+`vault secrets list -detailed`{{execute T1}}
 
 ### Generate consul gossip key
 
-https://learn.hashicorp.com/tutorials/nomad/security-gossip-encryption#generate-an-encryption-key
+Once you enabled Vault secrets engine you can now generate the COnsul gossip encryption key.
+
+There are multiple ways to generate a valid gossip encryption key:
 
 * **Method 1: consul binary** 
 
@@ -28,32 +45,11 @@ If you decide to use one of these methods for the lab make sure you use the `CON
 
 </p></div>
 
-
-https://learn.hashicorp.com/tutorials/vault/static-secrets
-
-https://learn.hashicorp.com/tutorials/nomad/vault-nomad-secrets?in=nomad/access-control
-
-https://www.vaultproject.io/docs/secrets/consul
-
-### Enable Vault secrets engine
-
-`vault secrets list -detailed`{{execute T1}}
-
-`vault secrets enable -path="kv-v1" kv`{{execute T1}}
-
-Example output:
-
-```
-Success! Enabled the kv secrets engine at: kv-v1/
-```
-
 ### Write encryption key in Vault
 
-`vault kv put kv-v1/consul/config/encryption key=cg8StVXbQJ0gPvMd9o7yrg==`{{execute T1}}
+`vault kv put kv-v1/consul/config/encryption key=${CONSUL_GOSSIP_KEY}`{{execute T1}}
 
 Example output:
 ```
 Success! Data written to: kv-v1/consul/config/encryption
 ```
-
-`vault kv get -field=key kv-v1/consul/config/encryption`{{execute T1}}
