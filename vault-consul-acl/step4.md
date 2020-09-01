@@ -8,7 +8,7 @@ You can verify the Consul server started correctly by checking the logs.
 `export CONSUL_SERVER_TOKEN=$(cat consul.server  | grep token  | awk '{print $2}')`{{execute T1}}
 
 
-Finally you can apply the token to the server as its `agent` token.
+Finally, you can apply the token to the server as its `agent` token.
 
 `consul acl set-agent-token agent $(cat consul.server  | grep token  | awk '{print $2}')`{{execute T1}}
 
