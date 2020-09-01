@@ -1,14 +1,17 @@
-Once templates are created for the retrieval of the single files you can collect all the actions required by consul-template to retrieve the certificates in one configuration file.
+Once templates are created for the retrieval of the single
+files, you can collect all the actions required by consul-template
+to retrieve the certificates in one configuration file.
 
-Fir this lab you are going to use a template called `consul-template.hcl`{{open}}.
+For this lab, you are going to use a template called `consul-template.hcl`{{open}}.
 
-In it you will define the following parameters to make `consul-template` able to communicate with Vault:
+In it, you will define the following parameters to allow
+`consul-template` to communicate with Vault:
 
-* `address` : the address of your Vault server. In this lab Vault runs on the same node as Consul so you can use `http://localhost:8200`.
+* `address` : the address of your Vault server. In this lab, Vault runs on the same node as Consul so you can use `http://localhost:8200`.
 
 * `token`  : the Vault ACL token you created in the previous step.
 
-Here an example of the file you will create.
+Here is an example of the file you will create.
 
 ```
 # This denotes the start of the configuration section for Vault. All values
@@ -88,12 +91,13 @@ template {
 
 ### Start consul-template
 
-After configuration is completed you can start `consul-template` providing the file with the `-config` parameter.
+After configuration is completed, you can start `consul-template`.
+You must provide the file with the `-config` parameter.
 
 `consul-template -config "consul_template.hcl"`{{execute T1}}
 
-
-You can verify the certificates are being correctly retrieved by listing files in the destination directory:
+Verify the certificates are being correctly retrieved
+by listing files in the destination directory:
 
 `ls -l /opt/consul/agent-certs`{{execute T1}}
 

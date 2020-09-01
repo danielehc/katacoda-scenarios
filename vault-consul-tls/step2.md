@@ -1,4 +1,6 @@
-You can use consul-template in your Consul datacenter to integrate with Vault's PKI Secrets Engine to generate and renew dynamic X.509 certificates.
+You can use consul-template in your Consul datacenter to
+integrate with Vault's PKI Secrets Engine to generate
+and renew dynamic X.509 certificates.
 
 Generate a token based on `tls-policy`.
 
@@ -8,9 +10,15 @@ Make a note of this token as you will need it in the upcoming steps.
 
 ### Create and populate the templates directory
 
-This lab will demonstrate the TLS certificate automation for the server instances so that you can deploy a Consul datacenter that will generate and retrieve certificates from Vault and configure the servers automatically.
+This lab will demonstrate the TLS certificate automation
+for the server instances so that you can deploy a Consul
+datacenter that will generate and retrieve certificates
+from Vault and configure the servers automatically.
 
-You need to create templates that consul-template can use to render the actual certificates and keys on the nodes in our cluster. In this lab, you will place these templates in `/opt/consul/templates`.
+You need to create templates that consul-template can use
+to render the actual certificates and keys on the nodes in
+your cluster. In this lab, you will place these templates
+in `/opt/consul/templates`.
 
 Create a directory called templates in `/opt/consul`.
 
@@ -25,7 +33,7 @@ To configure mTLS for Consul servers you need the following files:
 * `agent.key` : Consul server node private key for the dc1 datacenter.
 * `ca.crt`    : CA public certificate.
 
-You can instruct consul-template to generate and retrieve those files from Vault using the following templates: 
+You can instruct consul-template to generate and retrieve those files from Vault using the following templates:
 
 `agent.crt.tpl`{{open}}
 
@@ -59,7 +67,10 @@ Example content:
 
 ### Consul CLI templates
 
-The TLS certificates in the previous section will be used to configure TLE enscryption for your Consul datacenter. If you need to use Consul CLI on one of your agent nodes you might want to generate different certificates only for CLI operations.
+The TLS certificates in the previous section will be used to
+configure TLS enscryption for your Consul datacenter. If you
+need to use the Consul CLI on one of your agent nodes you should
+consider generating different certificates only for CLI operations.
 
 `cli.crt.tpl`{{open}}
 
@@ -81,7 +92,8 @@ Example content:
 {{ end }}
 ```
 
-Once you reviewed the templates for consul-template you can copy the templates into `/opt/consul/templates`.
+Once you have reviewed the templates for consul-template,
+you can copy the templates into `/opt/consul/templates`.
 
 `mkdir -p /opt/consul/templates`{{execute T1}}
 

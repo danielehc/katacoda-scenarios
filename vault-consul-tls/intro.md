@@ -8,7 +8,7 @@ Specifically, you will:
 
 - Start a Vault dev instance
 - Create a policy in Vault to allow certificate generation
-- Enable PKI engine in Vault
+- Enable the PKI engine in Vault
 - Initialize the CA and generate an intermediate certificate
 - Generate certificates for your Consul servers
 - Use consul-template to retrieve certificates at runtime
