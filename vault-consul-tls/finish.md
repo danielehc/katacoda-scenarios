@@ -8,7 +8,7 @@ Specifically, you:
 
 - Started a Vault dev instance
 - Created a policy in Vault to allow certificate generation
-- Enabled PKI engine in Vault
+- Enabled the PKI engine in Vault
 - Initialized the CA and generate an intermediate certificate
 - Generated certificates for your Consul servers
 - Used consul-template to retrieve certificates at runtime
