@@ -2,12 +2,6 @@ You can use consul-template in your Consul datacenter to
 integrate with Vault's PKI Secrets Engine to generate
 and renew dynamic X.509 certificates.
 
-Generate a token based on `tls-policy`.
-
-`vault token create -policy="tls-policy" -period=24h -orphan`{{execute T1}}
-
-Make a note of this token as you will need it in the upcoming steps.
-
 ### Create and populate the templates directory
 
 This lab will demonstrate the TLS certificate automation
