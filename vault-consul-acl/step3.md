@@ -1,7 +1,7 @@
 
 ### Obtain and test consul token
 
-Finally obtain a consul Token using the existing Vault Token:
+Next, create a Consul token using the existing Vault token:
 
 `vault read consul/creds/consul-server-role | tee consul.server`{{execute T1}}
 
@@ -20,7 +20,8 @@ token              5ea5eadc-807d-68c2-e47f-a1ac37e906b7
 
 `export CONSUL_SERVER_ACCESSOR=$(cat consul.server  | grep accessor  | awk '{print $2}')`{{execute T1}}
 
-Verify that the token is created correctly in Consul, looking it up by its accessor:
+Verify that the token is created correctly in Consul by
+looking it up by its accessor:
 
 `consul acl token read -id ${CONSUL_SERVER_ACCESSOR}`{{execute T1}}
 
@@ -34,4 +35,6 @@ Policies:
    6fa2c574-6951-51db-310a-672e328f2aba - consul-servers
 ```
 
-Any user or process with access to Vault can now obtain short lived Consul tokens in order to carry out operations, thus centralizing the access to consul tokens.
+Any user or process with access to Vault can now obtain
+short lived Consul tokens in order to carry out operations,
+thus centralizing the access to Consul tokens.
