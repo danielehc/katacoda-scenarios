@@ -1,29 +1,5 @@
-Vault's PKI secrets engine can dynamically generate X.509 certificates
-on demand. This allows services to acquire certificates without going
-through the usual manual process of generating a private key and
-Certificate Signing Request (CSR), submitting to a CA, and then waiting
-for the verification and signing process to complete.
 
-First, enable the `pki` secrets engine at the `pki` path.
-
-`vault secrets enable pki`{{execute T1}}
-
-```
-Success! Enabled the pki secrets engine at: pki/
-```
-
-Tune the `pki` secrets engine to issue certificates with a maximum
-time-to-live (TTL) of 87600 hours.
-
-`vault secrets tune -max-lease-ttl=87600h pki`{{execute T1}}
-
-Example output:
-
-```
-Success! Tuned the secrets engine at: pki/
-```
-
-### Generate Root CA
+## Generate Root CA
 
 Generate the root certificate and save the certificate in `CA_cert.crt`.
 
@@ -85,7 +61,7 @@ Example output:
 add me
 ```
 
-Sign the CSR.
+### Sign the CSR
 
 `vault write -format=json pki/root/sign-intermediate csr=@pki_intermediate.csr \
         format=pem_bundle ttl="43800h" \
@@ -133,9 +109,9 @@ For this lab, you are using the following options for the role:
 This completes the Vault configuration as a CA.
 Move to next step to generate certificates.
 
-## Generate First Server Certificate
+## Generate a server certificate
 
-You can test the `pki` engine by generating a first certificate.
+You can test the `pki` engine is configured correclty by generating your first certificate.
 
 `vault write pki_int/issue/consul-dc1 common_name="server.dc1.consul" ttl="24h"`{{execute T1}}
 
@@ -146,6 +122,8 @@ add me
 ```
 
 ### Create a policy to access the role endpoint
+
+<!--How do you feel about making this section optional or removing it? I think a call out is still good and maybe a link to the correct Vault tutorial. -->
 
 Earlier in the lab you used a root token to log in to Vault.
 Although you could use that token in the next steps to generate
@@ -167,4 +145,11 @@ Write the policy you created into Vault.
 ```
 Success! Uploaded policy: tls-policy
 ```
+
+Generate a token based on `tls-policy`.
+
+`vault token create -policy="tls-policy" -period=24h -orphan`{{execute T1}}
+
+Make a note of this token as you will need it in the upcoming steps.
+
 

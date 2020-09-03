@@ -1,4 +1,5 @@
-Nw configure Consul using the `server.json`{{execute T1}}
+<!-- How would you feel about moving this before the Consul template step? Then in the Conusl template step they can see the cert being rotated-->
+Now configure Consul using the `server.json`{{execute T1}}
 configuration file provided with the lab.
 
 Example content:
@@ -17,7 +18,7 @@ Example content:
 }
 ```
 
-### Start Consul
+## Start Consul
 
 Finally, start Consul:
 
@@ -29,3 +30,16 @@ you will get an indication in the output that TLS encryption is now enabled:
 ```
 add me
 ```
+
+## Manage TLS certificates
+
+Intro on how to distrubute and rotate certs. 
+
+### Client certificates
+
+Managed for you by Consul
+
+### Server certificates
+
+Can be managed by Consul template -> continue on to learn how. 
+
