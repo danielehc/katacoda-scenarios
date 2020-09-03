@@ -13,6 +13,11 @@
                 "verify": "provision.verify.sh"
             },
             {
+                "title": "All commands",
+                "code": "set-env.sh",
+                "text": "step0.md"
+            },
+            {
                 "title": "Inspect Lab",
                 "code": "set-env.sh",
                 "text": "step1.md"

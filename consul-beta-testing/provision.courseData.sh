@@ -14,26 +14,29 @@ log "Install prerequisites"
 # apt-get install -y apt-utils > /dev/null
 apt-get install -y unzip curl jq > /dev/null
 
-log Download App 0.14.1
+# log Download App 0.14.1
 
-curl -s https://github.com/nicholasjackson/fake-service/releases/download/v0.14.1/fake-service-linux
-
-
-log Install GO 1.5.1
-
-curl -s https://golang.org/dl/go1.15.1.linux-amd64.tar.gz
-
-tar -C /usr/local -xzf go1.14.3.linux-amd64.tar.gz
-
-echo "export PATH=$PATH:/usr/local/go/bin" >> /etc/profile
+# curl -s https://github.com/nicholasjackson/fake-service/releases/download/v0.14.1/fake-service-linux
 
 
-log Build Consul locally
+# log Install GO 1.5.1
 
-git clone git@github.com:hashicorp/consul.git
-cd consul
-git checkout envoy-lb-v2
-make dev
+# curl -s https://golang.org/dl/go1.15.1.linux-amd64.tar.gz
+
+# tar -C /usr/local -xzf go1.14.3.linux-amd64.tar.gz
+
+# echo "export PATH=$PATH:/usr/local/go/bin" >> /etc/profile
+
+
+# log Build Consul locally
+
+# # git clone git@github.com:hashicorp/consul.git
+# # cd consul
+
+# curl -s https://github.com/hashicorp/consul/archive/envoy-lb-v2.zip
+
+# git checkout envoy-lb-v2
+# make dev
 
 
 # log Install Consul locally
