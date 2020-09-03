@@ -39,6 +39,12 @@ Success! Data written to: consul/config/access
 
 For this lab, you are going to configure a role that maps a name
 in Vault to a Consul ACL policy. When users generate credentials,
+
+
+<!-- Suggestion
+* Should we add that it's for the server token?
+* Will users need to create a new role for each policy?
+-->
 they are generated against this role.
 
 `vault write consul/roles/consul-server-role policies=consul-servers`{{execute T1}}

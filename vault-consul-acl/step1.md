@@ -144,3 +144,7 @@ Create the policy and token with the `consul acl` command.
   -rules @server_policy.hcl`{{execute T1}}
 
 This policy will be used to associate the generated Vault tokens.
+
+<!-- Suggestion
+I'd actually move this up to be the second sentence since it's important and is when the users will start to understand how the Vault integration works.
+-->
