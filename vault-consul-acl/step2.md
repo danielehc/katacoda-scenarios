@@ -12,7 +12,7 @@ Success! Enabled the consul secrets engine at: consul/
 
 ### Configure Vault to connect and authenticate to Consul
 
-The secrets engine requires a management token to interact with Consul.
+The secrets engine requires a management token, with unrestricted privileges, to interact with Consul.
 
 First, create a management token in Consul:
 

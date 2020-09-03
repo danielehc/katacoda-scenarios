@@ -1,7 +1,7 @@
 
 ### Obtain and test consul token
 
-Next, obtain a Consul token using the existing Vault token:
+Next, create a Consul token using the existing Vault token:
 
 `vault read consul/creds/consul-server-role | tee consul.server`{{execute T1}}
 
