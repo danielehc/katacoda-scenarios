@@ -61,7 +61,7 @@ Example content:
 ### Consul CLI templates
 
 The TLS certificates in the previous section will be used to
-configure TLS enscryption for your Consul datacenter. If you
+configure TLS encryption for your Consul datacenter. If you
 need to use the Consul CLI on one of your agent nodes you should
 consider generating different certificates only for CLI operations.
 

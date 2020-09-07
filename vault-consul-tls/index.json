@@ -21,21 +21,26 @@
                 "title": "Configure Vault as CA",
                 "code": "set-env.sh",
                 "text": "step1.md"
-            },
+            },            
             {
-                "title": "Configure consul-template",
+                "title": "Configure Consul",
                 "code": "set-env.sh",
                 "text": "step2.md"
             },
             {
-                "title": "Start consul-template",
+                "title": "Configure consul-template",
                 "code": "set-env.sh",
                 "text": "step3.md"
             },
             {
-                "title": "Configure and start Consul",
+                "title": "Start consul-template",
                 "code": "set-env.sh",
                 "text": "step4.md"
+            },
+            {
+                "title": "Start Consul",
+                "code": "set-env.sh",
+                "text": "step5.md"
             },
             {
                 "title": "Configure CLI certificates",
