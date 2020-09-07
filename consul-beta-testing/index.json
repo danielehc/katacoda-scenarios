@@ -45,9 +45,13 @@
     "assets": {
         "client": [
           { "file": "server.hcl", "target": "./" },
-          { "file": "client_policy.hcl", "target": "./" },
-          { "file": "server_policy.hcl", "target": "./" },
-          { "file": "read_policy.hcl", "target": "./" }
+          { "file": "agent.hcl", "target": "./" },
+          { "file": "default.hcl", "target": "./" },
+          { "file": "hash-resolver.hcl", "target": "./" },
+          { "file": "last-req-resolver.hcl", "target": "./" },
+          { "file": "svc-client.hcl", "target": "./" },
+          { "file": "svc-clone.hcl", "target": "./" },
+          { "file": "svc-main.hcl", "target": "./" }
         ]
     }
     },
