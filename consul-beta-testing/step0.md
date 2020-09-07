@@ -1,39 +1,22 @@
-log Download App 0.14.1
 
-```
-curl -s https://github.com/nicholasjackson/fake-service/releases/download/v0.14.1/fake-service-linux
-```
 
-## Install GO 1.5.1
+### Start Server
 
-```
-curl -s https://golang.org/dl/go1.15.1.linux-amd64.tar.gz
-```
 
-```
-tar -C /usr/local -xzf go1.14.3.linux-amd64.tar.gz
-```
+docker run -d \
+    --name=server \
+    -p 8500:8500 \
+    danielehc/consul-envoy-service:v1.9.0-dev-v1.14.2 \
+    consul agent -server -ui \
+        -data-dir=/tmp \
+        -client=0.0.0.0 \
+        -config-file=/etc/consul.d/server.hcl
 
-```
-echo "export PATH=$PATH:/usr/local/go/bin" >> /etc/profile
-```
 
-## Build Consul locally
+### Start Client 1 FE
 
-```
-git clone git@github.com:hashicorp/consul.git
-```
 
-```
-cd consul
-```
+### Start Client 2 FE
 
-curl -s https://github.com/hashicorp/consul/archive/envoy-lb-v2.zip
 
-```
-git checkout envoy-lb-v2
-```
-
-```
-make dev
-```
+### Start CLient 3 BE
