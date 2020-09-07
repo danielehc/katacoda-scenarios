@@ -120,7 +120,9 @@ server-1  172.18.0.2:8301  alive   server  1.7.3  2         dc1  <all>
 You can now use the bootstrap token to create other ACL policies
 for the rest of your datacenter.
 
-The first policy you are going to create is for the servers.
+For the scope of this lab you are going to create a policy that is going to be used by server nodes to register themselves in the datacenter.
+
+This policy will be used to associate the generated Vault tokens.
 
 Open the `server_policy.hcl`{{open}} file to review the policy.
 
@@ -137,14 +139,8 @@ service_prefix "" {
 }
 ```
 
-Create the policy and token with the `consul acl` command.
+Create the policy with the `consul acl` command.
 
 `consul acl policy create \
   -name consul-servers \
   -rules @server_policy.hcl`{{execute T1}}
-
-This policy will be used to associate the generated Vault tokens.
-
-<!-- Suggestion
-I'd actually move this up to be the second sentence since it's important and is when the users will start to understand how the Vault integration works.
--->

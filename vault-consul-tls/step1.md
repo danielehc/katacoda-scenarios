@@ -120,36 +120,3 @@ Example output:
 ```
 add me
 ```
-
-### Create a policy to access the role endpoint
-
-<!--How do you feel about making this section optional or removing it? I think a call out is still good and maybe a link to the correct Vault tutorial. -->
-
-Earlier in the lab you used a root token to log in to Vault.
-Although you could use that token in the next steps to generate
-the TLS certs, the recommended security approach is to create
-a new token based on a specific policy with limited privileges.
-
-Create a policy file named `tls-policy.hcl` with the following contents.
-
-```
-path "pki_int/issue/consul-dc1" {
-  capabilities = ["update"]
-}
-```
-
-Write the policy you created into Vault.
-
-`vault policy write tls-policy tls-policy.hcl`{{execute T1}}
-
-```
-Success! Uploaded policy: tls-policy
-```
-
-Generate a token based on `tls-policy`.
-
-`vault token create -policy="tls-policy" -period=24h -orphan`{{execute T1}}
-
-Make a note of this token as you will need it in the upcoming steps.
-
-
