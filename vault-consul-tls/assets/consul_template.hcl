@@ -3,10 +3,10 @@
 vault {
   # This is the address of the Vault leader. The protocol (http(s)) portion
   # of the address is required.
-  address      = "<insert the address of your vault server here>"
+  address      = "http://localhost:8200"
 
   # This value can also be specified via the environment variable VAULT_TOKEN.
-  token        = "<insert your token here>"
+  token        = "root"
 
   # This should also be less than or around 1/3 of your TTL for a predictable
   # behaviour. Consult https://github.com/hashicorp/vault/issues/3414

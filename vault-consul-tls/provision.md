@@ -11,7 +11,6 @@ next step.
  - Installing consul-template x.y.z
  - Installing Vault locally
  - Installing Vault x.y.z
- - Complete! Move on to the next step.
 ```
 
 and concluding with
@@ -27,15 +26,15 @@ Once this message appears, you are ready to continue.
 While you wait for the provision to complete you can review the configuration files you are going to use for the lab:
 
 | File                           | Description |
-|:-------------------------------|-|
-| `ca.crt.tpl`{{open}}                    | Template for CA certificate |
-| `agent.crt.tpl`{{open}}                 | Template for agent certificate |
-| `agent.key.tpl`{{open}}                 | Template for agent key |
-| `consul_template.hcl`{{open}}           | `consul-template` configuration file |
-| `cli.crt.tpl`{{open}}                   | Template for CLI certificate |
-| `cli.key.tpl`{{open}}                   | Template for CLI key |
-| `server.json`{{open}}                   | Server agent configuration file |
-| `server-tls.json`{{open}}               | Server agent TLS configuration file |
+|:-------------------------------|-------------|
+| `ca.crt.tpl`{{open}}           | Template for CA certificate |
+| `agent.crt.tpl`{{open}}        | Template for agent certificate |
+| `agent.key.tpl`{{open}}        | Template for agent key |
+| `consul_template.hcl`{{open}}  | `consul-template` configuration file |
+| `cli.crt.tpl`{{open}}          | Template for CLI certificate |
+| `cli.key.tpl`{{open}}          | Template for CLI key |
+| `server.json`{{open}}          | Server agent configuration file |
+| `server-tls.json`{{open}}      | Server agent TLS configuration file |
 
 <!--
 

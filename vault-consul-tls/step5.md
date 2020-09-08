@@ -36,11 +36,11 @@ Read more on Vault authorization process in our [Vault Policies](https://learn.h
 After configuration is completed, you can start `consul-template`.
 You must provide the file with the `-config` parameter.
 
-`consul-template -config "consul_template.hcl"`{{execute T1}}
+`consul-template -config "consul_template.hcl"`{{execute T2}}
 
 Verify the certificates are being correctly retrieved
 by listing files in the destination directory:
 
-`ls -l /opt/consul/agent-certs`{{execute T1}}
+`ls -l /opt/consul/agent-certs`{{execute T3}}
 
 

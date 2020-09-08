@@ -16,7 +16,7 @@ in `/opt/consul/templates`.
 
 Create a directory called templates in `/opt/consul`.
 
-`sudo mkdir -p /opt/consul/templates`{{execute T1}}
+`sudo mkdir -p /opt/consul/templates`{{execute T2}}
 
 ### Server templates
 
@@ -88,4 +88,4 @@ Example content:
 Once you have reviewed the templates for consul-template,
 you can copy the templates into `/opt/consul/templates`.
 
-`cp *.tpl /opt/consul/templates/`{{execute T1}}
+`cp *.tpl /opt/consul/templates/`{{execute T2}}
