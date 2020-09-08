@@ -2,7 +2,7 @@ Consul requires that all clients and servers have key pairs that are generated b
 
 In this lab you will use the PKI engine to generate the necessary CA and certificates.
 
-## Generate Root CA
+## Generate root CA
 
 Generate the root certificate and save the certificate in `CA_cert.crt`.
 
@@ -29,7 +29,7 @@ Example output:
 Success! Data written to: pki/config/urls
 ```
 
-## Generate Intermediate CA
+## Generate intermediate CA
 
 First, enable the `pki` secrets engine at the `pki_int` path.
 
@@ -79,7 +79,7 @@ Example output:
 Success! Data written to: pki_int/intermediate/set-signed
 ```
 
-## Create a Role
+## Create a role
 
 A role is a logical name that maps to a policy used to generate credentials.
 
@@ -104,9 +104,11 @@ For this lab, you are using the following options for the role:
 This completes the Vault configuration as a CA.
 Move to next step to generate certificates.
 
+<!-- This could go to next step -->
+
 ## Generate a server certificate
 
-You can test the `pki` engine is configured correclty by generating your first certificate.
+You can test the `pki` engine is configured correctly by generating your first certificate.
 
 `vault write pki_int/issue/consul-dc1 common_name="server.dc1.consul" ttl="24h"`{{execute T1}}
 
@@ -134,3 +136,5 @@ private_key         -----BEGIN RSA PRIVATE KEY-----
 private_key_type    rsa
 serial_number       3f:ec:bd:ea:01:a6:35:49:a7:6d:17:ba:13:88:c1:b8:35:b4:fc:4c
 ```
+
+<!-- To start Consul we need to use this certificate and we will then rotate it using consul-template. -->
