@@ -1,0 +1,30 @@
+There are a few components that need to be added to the environment; we are
+adding them now. Wait for the complete message and then move to the
+next step.
+
+**Example Output**
+
+```screenshot
+
+```
+
+and concluding with
+
+```
+- Complete! Move on to the next step.
+```
+
+Once this message appears, you are ready to continue.
+
+While you wait for the environment to complete deploy you can review the files you are going to use for this lab later:
+
+| File                              | Description |
+|-----------------------------------|-------------|
+| `server.hcl`{{open}}              | Server configuration file |
+| `agent.hcl`{{open}}               | Client configuration file|
+| `default.hcl`{{open}}             | |
+| `hash-resolver.hcl`{{open}}       | |
+| `least-req-resolver.hcl`{{open}}  | |
+| `svc-client.hcl`{{open}}          | Service configuration file for `client`|
+| `svc-clone.hcl`{{open}}           | Service configuration file for `backend-clone`|
+| `svc-main.hcl`{{open}}            | Service configuration file for `backend-main`|
