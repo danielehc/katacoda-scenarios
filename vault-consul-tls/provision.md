@@ -32,8 +32,8 @@ While you wait for the provision to complete you can review the configuration fi
 | `agent.crt.tpl`{{open}}                 | Template for agent certificate |
 | `agent.key.tpl`{{open}}                 | Template for agent key |
 | `consul_template.hcl`{{open}}           | `consul-template` configuration file |
-| `cli.crt.hcl`{{open}}                   | Template for CLI certificate |
-| `cli.key.hcl`{{open}}                   | Template for CLI key |
+| `cli.crt.tpl`{{open}}                   | Template for CLI certificate |
+| `cli.key.tpl`{{open}}                   | Template for CLI key |
 | `server.json`{{open}}                   | Server agent configuration file |
 
 <!--
