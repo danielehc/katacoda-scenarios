@@ -66,6 +66,7 @@
           { "file": "cli.crt.tpl", "target": "./" },
           { "file": "cli.key.tpl", "target": "./" },
           { "file": "server.json", "target": "./" },
+          { "file": "server-tls.json", "target": "./" },
           { "file": "tls-policy.hcl", "target": "./" },
           { "file": "vault_provisioner_policy.hcl", "target": "./" }
         ]

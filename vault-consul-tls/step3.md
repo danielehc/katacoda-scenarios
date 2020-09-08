@@ -4,7 +4,11 @@ First create Consul data directory
 
 `mkdir -p /opt/consul/data`{{execute T1}}
 
-`consul agent -config-file server.json -advertise '{{ GetInterfaceIP "ens3" }}' -data-dir=/opt/consul/data`{{execute T1}}
+`consul agent \
+     -config-file server.json \
+     -config-file server-tls.json \
+     -advertise '{{ GetInterfaceIP "ens3" }}' \
+     -data-dir=/opt/consul/data`{{execute T1}}
 
 In the output, if the configuration was successful,
 you will get an indication in the output that TLS encryption is now enabled:

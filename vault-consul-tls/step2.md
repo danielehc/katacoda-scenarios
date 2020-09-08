@@ -32,6 +32,8 @@ For the first Consul startup you will use the certificate generated earlier.
 
 You can manually create the files using the output of the command before now stored in `certs.txt` or you can use the following commands to extract the content from the file and place it into the right file and location.
 
+`mkdir -p /opt/consul/agent-certs`{{execute T1}}
+
 `grep -Pzo "(?s)(?<=certificate)[^\-]*.*?END CERTIFICATE[^\n]*\n" certs.txt | sed 's/^\s*-/-/g' > /opt/consul/agent-certs/agent.crt`{{execute T1}}
 
 `grep -Pzo "(?s)(?<=issuing_ca)[^\-]*.*?END CERTIFICATE[^\n]*\n" certs.txt | sed 's/^\s*-/-/g' > /opt/consul/agent-certs/ca.crt`{{execute T1}}

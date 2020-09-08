@@ -35,6 +35,7 @@ While you wait for the provision to complete you can review the configuration fi
 | `cli.crt.tpl`{{open}}                   | Template for CLI certificate |
 | `cli.key.tpl`{{open}}                   | Template for CLI key |
 | `server.json`{{open}}                   | Server agent configuration file |
+| `server-tls.json`{{open}}               | Server agent TLS configuration file |
 
 <!--
 
