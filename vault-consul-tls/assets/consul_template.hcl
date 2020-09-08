@@ -10,7 +10,7 @@ vault {
 
   # This should also be less than or around 1/3 of your TTL for a predictable
   # behaviour. Consult https://github.com/hashicorp/vault/issues/3414
-  grace        = "1s"
+  # grace        = "1s"
 
   # This tells consul-template that the provided token is actually a wrapped
   # token that should be unwrapped using Vault's cubbyhole response wrapping
@@ -24,17 +24,19 @@ vault {
   # Template will automatically renew the token at half the lease duration of
   # the token. The default value is true, but this option can be disabled if
   # you want to renew the Vault token using an out-of-band process.
-  renew_token  = true
+  # If you are using the Vault root token for the configuration you should set 
+  # this value to false.
+  renew_token  = false
 }
 
 # This block defines the configuration for connecting to a syslog server for
 # logging.
-syslog {
-  enabled  = true
+# syslog {
+#  enabled  = true
 
-  # This is the name of the syslog facility to log to.
-  facility = "LOCAL5"
-}
+#  # This is the name of the syslog facility to log to.
+#  facility = "LOCAL5"
+# }
 
 # This block defines the configuration for a template. Unlike other blocks,
 # this block may be specified multiple times to configure multiple templates.

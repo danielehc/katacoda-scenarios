@@ -88,6 +88,4 @@ Example content:
 Once you have reviewed the templates for consul-template,
 you can copy the templates into `/opt/consul/templates`.
 
-`mkdir -p /opt/consul/templates`{{execute T1}}
-
 `cp *.tpl /opt/consul/templates/`{{execute T1}}
