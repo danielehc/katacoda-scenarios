@@ -31,7 +31,7 @@ log Copying configuration files
 docker cp ./server.hcl volumes:/server/server.hcl
 docker cp ./default.hcl volumes:/server/default.hcl
 docker cp ./hash-resolver.hcl volumes:/server/hash-resolver.hcl
-docker cp ./last-req-resolver.hcl volumes:/server/last-req-resolver.hcl
+docker cp ./least-req-resolver.hcl volumes:/server/least-req-resolver.hcl
 
 # Client files
 docker cp ./agent.hcl volumes:/client/agent.hcl
