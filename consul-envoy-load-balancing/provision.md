@@ -5,7 +5,18 @@ next step.
 **Example Output**
 
 ```screenshot
-
+ - Install prerequisites
+ - Pulling Docker Image
+ - Creating Docker volumes
+ - Copying configuration files
+ - Starting Consul Server
+ ...
+ - Starting Consul Clients
+ ...
+ ...
+ ...
+ - Starting Applications and configuring service mesh
+ - Complete! Move on to the next step.
 ```
 
 and concluding with
