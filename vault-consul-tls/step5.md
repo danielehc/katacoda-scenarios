@@ -1,39 +1,46 @@
-Finally, start Consul:
+Once templates are created for the retrieval of the single
+files, you can collect all the actions required by consul-template
+to retrieve the certificates in one configuration file.
 
-`mkdir -p /tmp/consul`{{execute T1}}
+For this lab, you are going to use a template called `consul-template.hcl`{{open}}.
 
-`consul agent -config-file server.json -advertise '{{ GetInterfaceIP "ens3" }}' -data-dir=/tmp/consul`{{execute T1}}
+In it, you will define the following parameters to allow
+`consul-template` to communicate with Vault:
 
-In the output, if the configuration was successful,
-you will get an indication in the output that TLS encryption is now enabled:
+* `address` : the address of your Vault server. In this lab, Vault runs on the same node as Consul so you can use `http://localhost:8200`.
 
+* `token`  : a valid Vault ACL token with appropriate permissions. You will use Vault root token for this lab.
+
+<div style="background-color:#eff5ff; color:#416f8c; border:1px solid #d0e0ff; padding:1em; border-radius:3px; margin:24px 0;">
+  <p><strong>Info: </strong>
+
+Earlier in the lab you used a root token to log in to Vault.
+You will use that token in the next steps to generate
+the TLS certs. This is not a best practice; the recommended security approach is to create
+a new token based on a specific policy with limited privileges.
+<br/>
+In this case the appropriate policy would have been the following.
+<br/>
 ```
-==> Starting Consul agent...
-           Version: '1.8.3'
-           Node ID: '61d2c6c7-60e3-d856-78c3-37b47dcdbef0'
-         Node name: 'host01'
-        Datacenter: 'dc1' (Segment: '<all>')
-            Server: true (Bootstrap: true)
-       Client Addr: [127.0.0.1] (HTTP: 8500, HTTPS: -1, gRPC: -1, DNS: 8600)
-      Cluster Addr: 172.17.0.79 (LAN: 8301, WAN: 8302)
-           Encrypt: Gossip: false, TLS-Outgoing: true, TLS-Incoming: true, Auto-Encrypt-TLS: true
-
-==> Log data will now stream in as it occurs:
+path "pki_int/issue/consul-dc1" {
+  capabilities = ["update"]
+}
 ```
+<br/>
+Read more on Vault authorization process in our [Vault Policies](https://learn.hashicorp.com/tutorials/vault/getting-started-policies) tutorial. 
 
-## Use CLI certificates
+</p></div>
 
+### Start consul-template
 
+After configuration is completed, you can start `consul-template`.
+You must provide the file with the `-config` parameter.
 
-## Manage TLS certificates
+`consul-template -config "consul_template.hcl"`{{execute T1}}
 
-Intro on how to distribute and rotate certs. 
+Verify the certificates are being correctly retrieved
+by listing files in the destination directory:
 
-### Client certificates
+`ls -l /opt/consul/agent-certs`{{execute T1}}
 
-Managed for you by Consul
-
-### Server certificates
-
-Can be managed by Consul template -> continue on to learn how. 
 

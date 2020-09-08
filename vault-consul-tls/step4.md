@@ -1,46 +1,91 @@
-Once templates are created for the retrieval of the single
-files, you can collect all the actions required by consul-template
-to retrieve the certificates in one configuration file.
+You can use consul-template in your Consul datacenter to
+integrate with Vault's PKI Secrets Engine to generate
+and renew dynamic X.509 certificates.
 
-For this lab, you are going to use a template called `consul-template.hcl`{{open}}.
+### Create and populate the templates directory
 
-In it, you will define the following parameters to allow
-`consul-template` to communicate with Vault:
+This lab will demonstrate the TLS certificate automation
+for the server instances so that you can deploy a Consul
+datacenter that will generate and retrieve certificates
+from Vault and configure the servers automatically.
 
-* `address` : the address of your Vault server. In this lab, Vault runs on the same node as Consul so you can use `http://localhost:8200`.
+You need to create templates that consul-template can use
+to render the actual certificates and keys on the nodes in
+your cluster. In this lab, you will place these templates
+in `/opt/consul/templates`.
 
-* `token`  : a valid Vault ACL token with appropriate permissions. You will use Vault root token for this lab.
+Create a directory called templates in `/opt/consul`.
 
-<div style="background-color:#eff5ff; color:#416f8c; border:1px solid #d0e0ff; padding:1em; border-radius:3px; margin:24px 0;">
-  <p><strong>Info: </strong>
+`sudo mkdir -p /opt/consul/templates`{{execute T1}}
 
-Earlier in the lab you used a root token to log in to Vault.
-You will use that token in the next steps to generate
-the TLS certs. This is not a best practice; the recommended security approach is to create
-a new token based on a specific policy with limited privileges.
-<br/>
-In this case the appropriate policy would have been the following.
-<br/>
+### Server templates
+
+As mentioned earlier, to configure mTLS for Consul servers you need the following files:
+
+* `agent.crt` : Consul server node public certificate for the dc1 datacenter.
+* `agent.key` : Consul server node private key for the dc1 datacenter.
+* `ca.crt`    : CA public certificate.
+
+You can instruct consul-template to generate and retrieve those files from Vault using the following templates:
+
+`agent.crt.tpl`{{open}}
+
+Example content:
+
 ```
-path "pki_int/issue/consul-dc1" {
-  capabilities = ["update"]
-}
+{{ with secret "pki_int/issue/consul-datacenter" "common_name=server.dc1.consul" "ttl=24h" "alt_names=localhost" "ip_sans=127.0.0.1"}}
+{{ .Data.certificate }}
+{{ end }}
 ```
-<br/>
-Read more on Vault authorization process in our [Vault Policies](https://learn.hashicorp.com/tutorials/vault/getting-started-policies) tutorial. 
 
-</p></div>
+`agent.key.tpl`{{open}}
 
-### Start consul-template
+Example content:
 
-After configuration is completed, you can start `consul-template`.
-You must provide the file with the `-config` parameter.
+```
+{{ with secret "pki_int/issue/consul-datacenter" "common_name=server.dc1.consul" "ttl=24h" "alt_names=localhost" "ip_sans=127.0.0.1"}}
+{{ .Data.private_key }}
+{{ end }}
+```
 
-`consul-template -config "consul_template.hcl"`{{execute T1}}
+`ca.crt.tpl`{{open}}
 
-Verify the certificates are being correctly retrieved
-by listing files in the destination directory:
+Example content:
 
-`ls -l /opt/consul/agent-certs`{{execute T1}}
+```
+{{ with secret "pki_int/issue/consul-datacenter" "common_name=server.dc1.consul" "ttl=24h"}}
+{{ .Data.issuing_ca }}
+{{ end }}
+```
 
+### Consul CLI templates
 
+The TLS certificates in the previous section will be used to
+configure TLS encryption for your Consul datacenter. If you
+need to use the Consul CLI on one of your agent nodes you should
+consider generating different certificates only for CLI operations.
+
+`cli.crt.tpl`{{open}}
+
+Example content:
+
+```
+{{ with secret "pki_int/issue/consul-datacenter" "ttl=24h" }}
+{{ .Data.certificate }}
+{{ end }}
+```
+
+`cli.key.tpl`{{open}}
+
+Example content:
+
+```
+{{ with secret "pki_int/issue/consul-datacenter" "ttl=24h" }}
+{{ .Data.private_key }}
+{{ end }}
+```
+
+Once you have reviewed the templates for consul-template,
+you can copy the templates into `/opt/consul/templates`.
+
+`cp *.tpl /opt/consul/templates/`{{execute T1}}

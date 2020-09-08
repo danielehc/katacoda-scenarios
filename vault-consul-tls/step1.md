@@ -110,7 +110,9 @@ Move to next step to generate certificates.
 
 You can test the `pki` engine is configured correctly by generating your first certificate.
 
-`vault write pki_int/issue/consul-dc1 common_name="server.dc1.consul" ttl="24h"`{{execute T1}}
+`vault write pki_int/issue/consul-dc1 \
+  common_name="server.dc1.consul" \
+  ttl="24h" | tee certs.txt`{{execute T1}}
 
 Example output:
 
@@ -137,4 +139,7 @@ private_key_type    rsa
 serial_number       3f:ec:bd:ea:01:a6:35:49:a7:6d:17:ba:13:88:c1:b8:35:b4:fc:4c
 ```
 
-<!-- To start Consul we need to use this certificate and we will then rotate it using consul-template. -->
+<div style="background-color:#fcf6ea; color:#866d42; border:1px solid #f8ebcf; padding:1em; border-radius:3px;">
+  <p><strong>Warning: </strong>
+  In this hands-on lab, you are redirecting the output of the `vault write` command to a file to simplify operations in the next steps.
+</p></div>

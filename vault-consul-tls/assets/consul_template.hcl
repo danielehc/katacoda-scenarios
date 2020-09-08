@@ -73,3 +73,15 @@ template {
   destination = "/opt/consul/agent-certs/ca.crt"
   command     = "consul reload"
 }
+
+# The following template stanzas are for the CLI certs
+
+template {
+  source      = "/opt/consul/templates/cli.crt.tpl"
+  destination = "/opt/consul/cli-certs/cli.crt"
+}
+
+template {
+  source      = "/opt/consul/templates/cli.key.tpl"
+  destination = "/opt/consul/cli-certs/cli.key"
+}

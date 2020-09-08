@@ -28,6 +28,14 @@ To configure TLS encryption for Consul, three files are required:
 * `cert_file` - Consul agent public certificate
 * `key_file`  - Consul agent private key
 
-One possible approach would be to use the files generated in the previous steps and distribute them manually to the Consul agents.
+For the first Consul startup you will use the certificate generated earlier.
 
-In this lab, you will automate certificate distribution using consul-template to generate and retrieve the files for you and configure short-lived certificate rotation.
+You can manually create the files using the output of the command before now stored in `certs.txt` or you can use the following commands to extract the content from the file and place it into the right file and location.
+
+`grep -Pzo "(?s)(?<=certificate)[^\-]*.*?END CERTIFICATE[^\n]*\n" certs.txt | sed 's/^\s*-/-/g' > /opt/consul/agent-certs/agent.crt`{{execute T1}}
+
+`grep -Pzo "(?s)(?<=issuing_ca)[^\-]*.*?END CERTIFICATE[^\n]*\n" certs.txt | sed 's/^\s*-/-/g' > /opt/consul/agent-certs/ca.crt`{{execute T1}}
+
+`grep -Pzo "(?s)(?<=private_key)[^\-]*.*?END RSA PRIVATE KEY[^\n]*\n" certs.txt | sed 's/^\s*-/-/g' > /opt/consul/agent-certs/agent.key`{{execute T1}}
+
+Proceed to the next step to start Consul server with TLS encryption enabled.
