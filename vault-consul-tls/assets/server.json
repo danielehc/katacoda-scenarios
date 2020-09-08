@@ -3,7 +3,7 @@
   "log_level": "DEBUG",
   "node_name": "server1",
   "server": true,
-  "bootstrap-expect": 1,
+  "bootstrap_expect": 1,
   "addresses": {
     "https": "0.0.0.0"
   },
