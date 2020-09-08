@@ -27,6 +27,8 @@ and concluding with
 
 Once this message appears, you are ready to continue.
 
+### Configuration files
+
 While you wait for the environment to complete deploy you can review the files you are going to use for this lab later:
 
 | File                              | Description |

@@ -2,10 +2,10 @@
 
 # Set backend to http and apply resolver
 
-`docker exec server consul config write /server/default.hcl`{{execute}}
+`docker exec server consul config write /etc/consul.d/default.hcl`{{execute}}
 
 # Apply resolver for sticky session
-`docker exec server consul config write /server/hash-resolver.hcl`{{execute}}
+`docker exec server consul config write /etc/consul.d/hash-resolver.hcl`{{execute}}
 
 # Run requests against client proxy with header in service resolver
 
@@ -19,7 +19,7 @@ It should reach the same backend service instance every time
 
 # Apply new resolver with least_request algorithm
 
-`docker exec server consul config write /server/least-req-resolver.hcl`{{execute}}
+`docker exec server consul config write /etc/consul.d/least-req-resolver.hcl`{{execute}}
 
 # Requests should bounce around between backend instances
 
