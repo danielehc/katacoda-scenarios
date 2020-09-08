@@ -62,7 +62,6 @@ log Starting Consul Clients
 docker run \
     -d \
     -v client_config:/etc/consul.d \
-    -p 9192:9192 \
     --name=client \
     danielehc/consul-envoy-service:v1.9.0-dev-v1.14.2 \
     consul agent \
