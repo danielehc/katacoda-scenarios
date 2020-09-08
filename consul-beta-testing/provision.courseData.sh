@@ -96,8 +96,8 @@ docker run \
 log Starting Applications and configuring service mesh
 
 # Start applications
-docker exec backend-main env LISTEN_ADDR=:9091 NAME=main fake-service
-docker exec backend-clone env LISTEN_ADDR=:9092 NAME=clone fake-service
+docker exec backend-main env LISTEN_ADDR=:9091 NAME=main fake-service > /tmp/service.log &
+docker exec backend-clone env LISTEN_ADDR=:9092 NAME=clone fake-service > /tmp/service.log &
 # # docker exec client 
 
 # Start sidecar proxies
