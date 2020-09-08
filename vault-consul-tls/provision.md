@@ -5,11 +5,13 @@ next step.
 **Example Output**
 
 ```screenshot
-- Install prerequisites
-- Install Consul locally
-- Installing Consul x.y.z
-- Pulling Docker image for Consul x.y.z
-- Creating Docker volumes
+ - Install prerequisites
+ - Install Consul locally
+ - Installing Consul x.y.z
+ - Installing consul-template x.y.z
+ - Installing Vault locally
+ - Installing Vault x.y.z
+ - Complete! Move on to the next step.
 ```
 
 and concluding with
@@ -19,3 +21,24 @@ and concluding with
 ```
 
 Once this message appears, you are ready to continue.
+
+### Configuration files
+
+While you wait for the provision to complete you can review the configuration files you are going to use for the lab:
+
+| File                           | Description |
+|:-------------------------------|-|
+| `ca.crt.tpl`{{open}}                    | Template for CA certificate |
+| `agent.crt.tpl`{{open}}                 | Template for agent certificate |
+| `agent.key.tpl`{{open}}                 | Template for agent key |
+| `consul_template.hcl`{{open}}           | `consul-template` configuration file |
+| `cli.crt.hcl`{{open}}                   | Template for CLI certificate |
+| `cli.key.hcl`{{open}}                   | Template for CLI key |
+| `server.json`{{open}}                   | Server agent configuration file |
+
+<!--
+
+| `tls-policy.hcl`{{open}}                |  |
+| `vault_provisioner_policy.hcl`{{open}}  |  |
+
+-->
