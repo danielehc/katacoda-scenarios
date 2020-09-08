@@ -63,6 +63,7 @@ docker run \
     -d \
     -v client_config:/etc/consul.d \
     --name=client \
+    danielehc/consul-envoy-service:v1.9.0-dev-v1.14.2 \
     consul agent \
      -node=client-1 \
      -join=${SERVER_IP} \
@@ -73,6 +74,7 @@ docker run \
     -d \
     -v client_config:/etc/consul.d \
     --name=backend-main \
+    danielehc/consul-envoy-service:v1.9.0-dev-v1.14.2 \
     consul agent \
      -node=service-1 \
      -join=${SERVER_IP} \
@@ -83,6 +85,7 @@ docker run \
     -d \
     -v client_config:/etc/consul.d \
     --name=backend-clone \
+    danielehc/consul-envoy-service:v1.9.0-dev-v1.14.2 \
     consul agent \
      -node=service-2 \
      -join=${SERVER_IP} \
