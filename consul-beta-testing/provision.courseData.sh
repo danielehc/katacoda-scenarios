@@ -96,14 +96,14 @@ docker run \
 log Starting Applications and configuring service mesh
 
 # Start applications
-# docker exec backend-main env LISTEN_ADDR=:9091 NAME=main fake-service
-# docker exec backend-clone env LISTEN_ADDR=:9092 NAME=clone fake-service
+docker exec backend-main env LISTEN_ADDR=:9091 NAME=main fake-service
+docker exec backend-clone env LISTEN_ADDR=:9092 NAME=clone fake-service
 # # docker exec client 
 
 # Start sidecar proxies
-# docker exec backend-main consul connect envoy -proxy-id backend-main-sidecar-proxy > /tmp/proxy.log &
-# docker exec backend-clone consul connect envoy -admin-bind=localhost:19001 -proxy-id backend-clone-sidecar-proxy > /tmp/proxy.log &
-# docker exec client consul connect envoy -admin-bind=localhost:19002 -proxy-id client-sidecar-proxy > /tmp/proxy.log &
+docker exec backend-main consul connect envoy -proxy-id backend-main-sidecar-proxy > /tmp/proxy.log &
+docker exec backend-clone consul connect envoy -admin-bind=localhost:19001 -proxy-id backend-clone-sidecar-proxy > /tmp/proxy.log &
+docker exec client consul connect envoy -admin-bind=localhost:19002 -proxy-id client-sidecar-proxy > /tmp/proxy.log &
 
 
 
