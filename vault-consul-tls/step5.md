@@ -2,7 +2,7 @@ Once templates are created for the retrieval of the single
 files, you can collect all the actions required by consul-template
 to retrieve the certificates in one configuration file.
 
-For this lab, you are going to use a template called `consul-template.hcl`{{open}}.
+For this lab, you are going to use a template called `consul_template.hcl`{{open}}.
 
 In it, you will define the following parameters to allow
 `consul-template` to communicate with Vault:
