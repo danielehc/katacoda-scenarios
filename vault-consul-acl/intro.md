@@ -19,8 +19,7 @@ Specifically, you will:
 - Create a management token for Vault
 - Create a Vault role to map Consul policy
 - Create a Vault token associated with the role
-- Verify the token was present in Consul and applied it to the agent
+- Verify the token was present in Consul and apply it to the agent
 
-If you are already familiar with the basics of Consul,
-[Secure Consul with ACLs](https://learn.hashicorp.com/consul/security-networking/production-acls)
-provides a reference guide for the steps required to enable and use ACLs on your Consul datacenter.
+If you are already familiar with the basics of Consul, but are not familiar with Consul ACL system encryption review the
+[Secure Consul with ACLs](https://learn.hashicorp.com/consul/security-networking/production-acls) tutorial and learn how to enable and use ACLs on your Consul datacenter.

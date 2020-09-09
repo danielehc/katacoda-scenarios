@@ -19,7 +19,5 @@ Specifically, you:
 
 ## Next Steps
 
-If you are already familiar with the basics of Consul,
-[Secure Consul with ACLs](https://learn.hashicorp.com/consul/security-networking/production-acls)
-provides a reference guide for the steps required to
-enable and use ACLs on your Consul datacenter.
+If you are already familiar with the basics of Consul, but are not familiar with Consul ACL system encryption review the
+[Secure Consul with ACLs](https://learn.hashicorp.com/consul/security-networking/production-acls) tutorial and learn how to enable and use ACLs on your Consul datacenter.
