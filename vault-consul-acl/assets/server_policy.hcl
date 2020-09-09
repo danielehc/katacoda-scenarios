@@ -8,3 +8,6 @@ node_prefix "" {
 service_prefix "" {
    policy = "read"
 }
+agent "server" {
+   policy = "write"
+}
