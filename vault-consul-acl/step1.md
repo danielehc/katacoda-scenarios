@@ -128,7 +128,7 @@ Open the `server_policy.hcl`{{open}} file to review the policy.
 
 ```hcl
 # consul-server-policy.hcl
-node_prefix "server-*" {
+node_prefix "server-" {
   policy = "write"
 }
 node_prefix "" {

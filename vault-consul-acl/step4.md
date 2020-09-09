@@ -6,8 +6,8 @@ You can verify the Consul server started correctly by checking the logs.
 In the logs you should get some warning lines similar to the following:
 
 ```
-2020-09-09T12:58:53.805Z [WARN]  agent: Coordinate update blocked by ACLs: accessorID=00000000-0000-0000-0000-000000000002
-2020-09-09T12:59:11.618Z [WARN]  agent: Node info update blocked by ACLs: node=6e24f8cd-33b5-645a-a2b3-b332e59e9f84 accessorID=00000000-0000-0000-0000-000000000002
+[WARN]  agent: Coordinate update blocked by ACLs: accessorID=00000000-0000-0000-0000-000000000002
+[WARN]  agent: Node info update blocked by ACLs: node=6e24f8cd-33b5-645a-a2b3-b332e59e9f84 accessorID=00000000-0000-0000-0000-000000000002
 ```
 
 These warnings signal that Consul started properly but it cannot communicate with the rest of the datacenter because of ACL restrictions.
@@ -29,10 +29,23 @@ I think it would be good to note in this step the relation between accessorId/se
 The way Vault and Consul refer to tokens in the command output is slightly different. The following table expresses the relations between the two outputs:
 <br/>
 
-| Consul       | Vault      | Meaning |
-|--------------|------------|---------|
-| `AccessorID` | `accessor` | The unique identifier for the token inside Consul and Vault.  |
-| `SecretID`   | `token`    | The actual token to be used for configuration and operations. |
+<table style="width:auto">
+  <tr>
+    <th>Consul</th>
+    <th>Vault</th> 
+    <th>Meaning</th>
+  </tr>
+  <tr>
+    <td>`AccessorID`</td>
+    <td>`accessor`</td>
+    <td>The unique identifier for the token inside Consul and Vault.</td>
+  </tr>
+  <tr>
+    <td>`SecretID`</td>
+    <td>`token`</td>
+    <td>The actual token to be used for configuration and operations.</td>
+  </tr>
+</table>
 
 Using Consul secrets engine with Vault ensures that these values are kept consistent when the tokens are replicated to Consul.
 
@@ -51,6 +64,12 @@ ACL token "agent" set successfully
 Once the token is applied you can check once more the Consul logs and verify that the warning lines are not being logged anymore.
 
 `cat ~/log/consul.log`{{execute T1}}
+
+```
+...
+[INFO]  agent: Updated agent's ACL token: token=agent
+[INFO]  agent: Synced node info
+```
 
 <!-- Not sure if needed 
 
