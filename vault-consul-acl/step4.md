@@ -69,10 +69,5 @@ Once the token is applied you can check once more the Consul logs and verify tha
 ...
 [INFO]  agent: Updated agent's ACL token: token=agent
 [INFO]  agent: Synced node info
+...
 ```
-
-<!-- Not sure if needed 
-
-`consul reload`{{execute T1}}
-
--->
