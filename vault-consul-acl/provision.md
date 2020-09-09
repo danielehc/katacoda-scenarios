@@ -19,3 +19,13 @@ and concluding with
 ```
 
 Once this message appears, you are ready to continue.
+
+
+### Configuration files
+
+While you wait for the provision to complete you can review the configuration files you are going to use for the lab:
+
+| File                           | Description |
+|:-------------------------------|-------------|
+| `server.hcl`{{open}}           | Configuration for Server node |
+| `server_policy.hcl`{{open}}    | Server ACL policy for token generation |

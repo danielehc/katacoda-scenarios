@@ -1,5 +1,5 @@
 # consul-server-policy.hcl
-node_prefix "server-*" {
+node_prefix "server-" {
   policy = "write"
 }
 node_prefix "" {
@@ -7,7 +7,4 @@ node_prefix "" {
 }
 service_prefix "" {
    policy = "read"
-}
-agent "server" {
-   policy = "write"
 }
