@@ -7,10 +7,10 @@ next step.
 ```screenshot
  - Install prerequisites
  - Install Consul locally
- - Installing Consul 1.8.2
- - Installing consul-template 0.25.1
+ - Installing Consul z.y.z
+ - Installing consul-template z.y.z
  - Installing Vault locally
- - Installing Vault 1.5.2
+ - Installing Vault z.y.z
 ...
 ```
 

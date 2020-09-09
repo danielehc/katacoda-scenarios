@@ -12,7 +12,7 @@ encrypt = "<insert gossip encryption here>"
 
 You will generate one using the previously saved output.
 
-`echo "encrypt ="$(cat encryption.key) > gossip_encryption.hcl`{{execute}} 
+`echo "encrypt = \""$(cat encryption.key)"\"" > gossip_encryption.hcl`{{execute}} 
 
 ## Start Consul
 
