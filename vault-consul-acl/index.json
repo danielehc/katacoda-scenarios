@@ -64,9 +64,7 @@
             {"name": "Consul UI", "port": 8500},
             {"name": "Vault UI", "port": 8200}
         ],
-        "terminals": [
-            {"name": "server", "target": "host01"}
-        ]
+        "terminals": []
     },
     "backend": {
         "port": 8080,
