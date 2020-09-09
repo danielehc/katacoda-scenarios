@@ -5,11 +5,12 @@ next step.
 **Example Output**
 
 ```screenshot
-- Install prerequisites
-- Install Consul locally
-- Installing Consul x.y.z
-- Pulling Docker image for Consul x.y.z
-- Creating Docker volumes
+ - Install prerequisites
+ - Install Consul locally
+ - Installing Consul x.y.z
+ - Installing consul-template x.y.z
+ - Installing Vault locally
+ - Installing Vault x.y.z
 ```
 
 and concluding with
