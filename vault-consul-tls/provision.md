@@ -25,16 +25,16 @@ Once this message appears, you are ready to continue.
 
 While you wait for the provision to complete you can review the configuration files you are going to use for the lab:
 
-| File                           | Description |
-|:-------------------------------|-------------|
-| `ca.crt.tpl`{{open}}           | Template for CA certificate |
-| `agent.crt.tpl`{{open}}        | Template for agent certificate |
-| `agent.key.tpl`{{open}}        | Template for agent key |
-| `consul_template.hcl`{{open}}  | `consul-template` configuration file |
-| `cli.crt.tpl`{{open}}          | Template for CLI certificate |
-| `cli.key.tpl`{{open}}          | Template for CLI key |
-| `server.json`{{open}}          | Server agent configuration file |
-| `server-tls.json`{{open}}      | Server agent TLS configuration file |
+| File                   | Description |
+|:-----------------------|-------------|
+| `ca.crt.tpl`           | Template for CA certificate |
+| `agent.crt.tpl`        | Template for agent certificate |
+| `agent.key.tpl`        | Template for agent key |
+| `consul_template.hcl`  | `consul-template` configuration file |
+| `cli.crt.tpl`          | Template for CLI certificate |
+| `cli.key.tpl`          | Template for CLI key |
+| `server.json`          | Server agent configuration file |
+| `server-tls.json`      | Server agent TLS configuration file |
 
 <!--
 
