@@ -13,7 +13,7 @@
                 "verify": "provision.verify.sh"
             },
             {
-                "title": "Start Vault",
+                "title": "Configure and start Vault",
                 "code": "set-env.sh",
                 "text": "step0.md"
             },
@@ -23,19 +23,24 @@
                 "text": "step1.md"
             },
             {
-                "title": "Configure Consul secrets engine",
+                "title": "Configure Consul secrets engine in Vault",
                 "code": "set-env.sh",
                 "text": "step2.md"
             },
             {
-                "title": "Create Vault policy",
+                "title": "Create Consul server policy",
                 "code": "set-env.sh",
                 "text": "step3.md"
             },
             {
-                "title": "Obtain and test Consul token",
+                "title": "Create Vault server role",
                 "code": "set-env.sh",
                 "text": "step4.md"
+            },
+            {
+                "title": "Obtain and test Consul token",
+                "code": "set-env.sh",
+                "text": "step5.md"
             }
         ],
     "intro": {

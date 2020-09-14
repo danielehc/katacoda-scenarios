@@ -1,40 +1,55 @@
 
-### Obtain and test consul token
+### Create Consul server policy
 
-Next, create a Consul token using the existing Vault token:
+Once the ACL system is initialized, if you check Consul logs again you should find some warnings in your logs:
 
-`vault read consul/creds/consul-server-role | tee consul.server`{{execute T1}}
-
-Example output:
+`cat ~/log/consul.log`{{execute T1}}
 
 ```
-Key                Value
----                -----
-lease_id           consul/creds/consul-server-role/bHDVG24vCO8BJ90ONjxrbKP6
-lease_duration     768h
-lease_renewable    true
-accessor           2b9bb86a-d632-ea28-3890-7d1e0690ff57
-local              false
-token              5ea5eadc-807d-68c2-e47f-a1ac37e906b7
+ [WARN]  agent: Node info update blocked by ACLs: node=c19d6af9-760b-a3cc-bbdd-b4f7209a79de accessorID=00000000-0000-0000-0000-000000000002
+ [WARN]  agent: Coordinate update blocked by ACLs: accessorID=00000000-0000-0000-0000-000000000002
 ```
 
-`export CONSUL_SERVER_ACCESSOR=$(cat consul.server  | grep accessor  | awk '{print $2}')`{{execute T1}}
+These warnings are ACL logs from which you can infer the following: 
+- one node is trying to update its info in your Consul datacenter and gets denied access by the ACL system.
+- the node is not using any token to perform the request (because `00000000-0000-0000-0000-000000000002` is the anonymous policy used when no token is presented)
 
-Verify that the token is created correctly in Consul by
-looking it up by its accessor:
+First steps towards a more fine grained ACL configuration is to create tokens for the server nodes so that they could interact properly with the rest of the Consul datacenter, without assigning them an administrative token.
 
-`consul acl token read -id ${CONSUL_SERVER_ACCESSOR}`{{execute T1}}
+For the scope of this lab you are going to create a policy that will permit server nodes to register themselves using a name template of "server-<count_or_id>" and has permissions to locate other nodes and resolve services.
 
+This policy will be used by Vault when creating tokens for Consul.
+
+Open the `server_policy.hcl`{{open}} file to review the policy.
+
+```hcl
+# consul-server-policy.hcl
+node_prefix "server-" {
+  policy = "write"
+}
+node_prefix "" {
+   policy = "read"
+}
+service_prefix "" {
+   policy = "read"
+}
 ```
-AccessorID:       2b9bb86a-d632-ea28-3890-7d1e0690ff57
-SecretID:         5ea5eadc-807d-68c2-e47f-a1ac37e906b7
-Description:      Vault consul-server-role token 1598547759570180867
-Local:            false
-Create Time:      2020-08-27 17:02:39.572006543 +0000 UTC
-Policies:
-   6fa2c574-6951-51db-310a-672e328f2aba - consul-servers
-```
 
-Any user or process with access to Vault can now obtain
-short lived Consul tokens in order to carry out operations,
-thus centralizing the access to Consul tokens.
+Create the policy with the `consul acl` command.
+
+`consul acl policy create \
+  -name consul-servers \
+  -rules @server_policy.hcl`{{execute T1}}
+
+Once the policy is created you need to associate it to a token in order to use it.  
+
+<div style="background-color:#eff5ff; color:#416f8c; border:1px solid #d0e0ff; padding:1em; border-radius:3px; margin:24px 0;">
+<p><strong>Info:</strong> In a standalone scenario, where Vault is not deployed yet, you can still configure your ACL system by storing them in Consul. You can use the `consul acl token create` command or the `/acl/token` REST API resource.
+<br/>
+Review [Secure Consul with Access Control Lists (ACLs)](https://learn.hashicorp.com/tutorials/consul/access-control-setup-production) to learn how.
+
+<!-- Follow the links in the last step to learn how. -->
+
+</p></div>
+
+
