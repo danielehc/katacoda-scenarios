@@ -33,7 +33,7 @@ You can instruct consul-template to generate and retrieve those files from Vault
 Example content:
 
 ```
-{{ with secret "pki_int/issue/consul-datacenter" "common_name=server.dc1.consul" "ttl=24h" "alt_names=localhost" "ip_sans=127.0.0.1"}}
+{{ with secret "pki_int/issue/consul-dc1" "common_name=server.dc1.consul" "ttl=24h" "alt_names=localhost" "ip_sans=127.0.0.1"}}
 {{ .Data.certificate }}
 {{ end }}
 ```
@@ -43,7 +43,7 @@ Example content:
 Example content:
 
 ```
-{{ with secret "pki_int/issue/consul-datacenter" "common_name=server.dc1.consul" "ttl=24h" "alt_names=localhost" "ip_sans=127.0.0.1"}}
+{{ with secret "pki_int/issue/consul-dc1" "common_name=server.dc1.consul" "ttl=24h" "alt_names=localhost" "ip_sans=127.0.0.1"}}
 {{ .Data.private_key }}
 {{ end }}
 ```
@@ -53,7 +53,7 @@ Example content:
 Example content:
 
 ```
-{{ with secret "pki_int/issue/consul-datacenter" "common_name=server.dc1.consul" "ttl=24h"}}
+{{ with secret "pki_int/issue/consul-dc1" "common_name=server.dc1.consul" "ttl=24h"}}
 {{ .Data.issuing_ca }}
 {{ end }}
 ```
@@ -70,7 +70,7 @@ consider generating different certificates only for CLI operations.
 Example content:
 
 ```
-{{ with secret "pki_int/issue/consul-datacenter" "ttl=24h" }}
+{{ with secret "pki_int/issue/consul-dc1" "ttl=24h" }}
 {{ .Data.certificate }}
 {{ end }}
 ```
@@ -80,7 +80,7 @@ Example content:
 Example content:
 
 ```
-{{ with secret "pki_int/issue/consul-datacenter" "ttl=24h" }}
+{{ with secret "pki_int/issue/consul-dc1" "ttl=24h" }}
 {{ .Data.private_key }}
 {{ end }}
 ```
