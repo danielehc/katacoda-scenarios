@@ -35,7 +35,7 @@
             {
                 "title": "Rotate key with consul-template",
                 "code": "set-env.sh",
-                "text": "step3.md"
+                "text": "step4.md"
             }
         ],
     "intro": {
