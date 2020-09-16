@@ -29,26 +29,17 @@ vault {
   renew_token  = false
 }
 
-# This block defines the configuration for connecting to a syslog server for
-# logging.
-# syslog {
-#  enabled  = true
-
-#  # This is the name of the syslog facility to log to.
-#  facility = "LOCAL5"
-# }
-
 # This block defines the configuration for a template. Unlike other blocks,
 # this block may be specified multiple times to configure multiple templates.
 template {
   # This is the source file on disk to use as the input template. This is often
   # called the "consul-template template".
-  source      = "agent.crt.tpl"
+  source      = "gossip.key.tpl"
 
   # This is the destination path on disk where the source template will render.
   # If the parent directories do not exist, consul-template will attempt to
   # create them, unless create_dest_dirs is false.
-  destination = "/opt/consul/agent-certs/agent.crt"
+  destination = "/opt/consul/gossip/gossip.key"
 
   # This is the permission to render the file. If this option is left
   # unspecified, consul-template will attempt to match the permissions of the
@@ -59,29 +50,4 @@ template {
   # This is the optional command to run when the template is rendered. The
   # command will only run if the resulting template changes.
   command     = "consul reload"
-}
-
-template {
-  source      = "agent.key.tpl"
-  destination = "/opt/consul/agent-certs/agent.key"
-  perms       = 0700
-  command     = "consul reload"
-}
-
-template {
-  source      = "ca.crt.tpl"
-  destination = "/opt/consul/agent-certs/ca.crt"
-  command     = "consul reload"
-}
-
-# The following template stanzas are for the CLI certs
-
-template {
-  source      = "/opt/consul/templates/cli.crt.tpl"
-  destination = "/opt/consul/cli-certs/cli.crt"
-}
-
-template {
-  source      = "/opt/consul/templates/cli.key.tpl"
-  destination = "/opt/consul/cli-certs/cli.key"
 }

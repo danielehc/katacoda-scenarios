@@ -39,9 +39,14 @@ KEYS=`curl -s localhost:8500/v1/operator/keyring`
 # This should only return one single key
 P_KEY=`echo ${KEYS} | jq -r '.[].PrimaryKeys| to_entries[].key' | sort | uniq`
 
+# Check if key is  
+
 # <!-- All Keys -->
 ALL_KEYS=`echo ${KEYS} | jq -r '.[].Keys| to_entries[].key' | sort | uniq`
 
 for i in `echo ${ALL_KEYS}` do;
-    echo $in
+    echo $i
+
+    
+
 done

@@ -15,80 +15,9 @@ Create a directory called templates in `/opt/consul`.
 
 `sudo mkdir -p /opt/consul/templates`{{execute T2}}
 
-### 
+### Configure template file
 
-The only data needed to 
-
-
-### Server templates
-
-As mentioned earlier, to configure mTLS for Consul servers you need the following files:
-
-* `agent.crt` : Consul server node public certificate for the dc1 datacenter.
-* `agent.key` : Consul server node private key for the dc1 datacenter.
-* `ca.crt`    : CA public certificate.
-
-You can instruct consul-template to generate and retrieve those files from Vault using the following templates:
-
-`agent.crt.tpl`{{open}}
-
-Example content:
-
-```
-{{ with secret "pki_int/issue/consul-dc1" "common_name=server.dc1.consul" "ttl=24h" "alt_names=localhost" "ip_sans=127.0.0.1"}}
-{{ .Data.certificate }}
-{{ end }}
-```
-
-`agent.key.tpl`{{open}}
-
-Example content:
-
-```
-{{ with secret "pki_int/issue/consul-dc1" "common_name=server.dc1.consul" "ttl=24h" "alt_names=localhost" "ip_sans=127.0.0.1"}}
-{{ .Data.private_key }}
-{{ end }}
-```
-
-`ca.crt.tpl`{{open}}
-
-Example content:
-
-```
-{{ with secret "pki_int/issue/consul-dc1" "common_name=server.dc1.consul" "ttl=24h"}}
-{{ .Data.issuing_ca }}
-{{ end }}
-```
-
-### Consul CLI templates
-
-The TLS certificates in the previous section will be used to
-configure TLS encryption for your Consul datacenter. If you
-need to use the Consul CLI on one of your agent nodes you should
-consider generating different certificates only for CLI operations.
-
-`cli.crt.tpl`{{open}}
-
-Example content:
-
-```
-{{ with secret "pki_int/issue/consul-dc1" "ttl=24h" }}
-{{ .Data.certificate }}
-{{ end }}
-```
-
-`cli.key.tpl`{{open}}
-
-Example content:
-
-```
-{{ with secret "pki_int/issue/consul-dc1" "ttl=24h" }}
-{{ .Data.private_key }}
-{{ end }}
-```
-
-Once you have reviewed the templates for consul-template,
-you can copy the templates into `/opt/consul/templates`.
+`gossip.key.tpl`{{open}}
 
 `cp *.tpl /opt/consul/templates/`{{execute T2}}
 
