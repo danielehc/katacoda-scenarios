@@ -6,7 +6,7 @@ You can verify the rotation by checking that consul-template keeps listing, ever
 
 You can also use `openssl` to verify the certificate content:
 
-`openssl x509 -text -noout -in server1.dc1.consul.crt`{{execute T3}}
+`openssl x509 -text -noout -in /opt/consul/agent-certs/agent.crt`{{execute T3}}
 
 ```
 Certificate:
