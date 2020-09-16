@@ -38,6 +38,12 @@ You must provide the file with the `-config` parameter.
 
 `consul-template -config "consul_template.hcl"`{{execute T2}}
 
+Example output:
+
+```
+Configuration reload triggered
+```
+
 Verify the certificates are being correctly retrieved
 by listing files in the destination directory:
 

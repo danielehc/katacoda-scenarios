@@ -43,7 +43,7 @@
                 "text": "step5.md"
             },
             {
-                "title": "Configure CLI certificates",
+                "title": "Verify certificates rotation",
                 "code": "set-env.sh",
                 "text": "step6.md"
             }

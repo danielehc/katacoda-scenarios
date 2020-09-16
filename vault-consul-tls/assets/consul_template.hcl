@@ -58,20 +58,20 @@ template {
 
   # This is the optional command to run when the template is rendered. The
   # command will only run if the resulting template changes.
-  command     = "consul reload"
+  command     = "sh -c 'date && consul reload'"
 }
 
 template {
   source      = "agent.key.tpl"
   destination = "/opt/consul/agent-certs/agent.key"
   perms       = 0700
-  command     = "consul reload"
+  command     = "sh -c 'date && consul reload'"
 }
 
 template {
   source      = "ca.crt.tpl"
   destination = "/opt/consul/agent-certs/ca.crt"
-  command     = "consul reload"
+  command     = "sh -c 'date && consul reload'"
 }
 
 # The following template stanzas are for the CLI certs
