@@ -13,25 +13,25 @@ in `/opt/consul/templates`.
 
 Create a directory called templates in `/opt/consul`.
 
-`sudo mkdir -p /opt/consul/templates`{{execute T2}}
+`sudo mkdir -p /opt/consul/templates`{{execute}}
 
 ### Configure template file
 
 `gossip.key.tpl`{{open}}
 
-`cp *.tpl /opt/consul/templates/`{{execute T2}}
+`cp *.tpl /opt/consul/templates/`{{execute}}
 
 ### Start consul-template
 
 After configuration is completed, you can start `consul-template`.
 You must provide the file with the `-config` parameter.
 
-`consul-template -config "consul_template.hcl"`{{execute T2}}
+`consul-template -config "consul_template.hcl"`{{execute}}
 
 Verify the certificates are being correctly retrieved
 by listing files in the destination directory:
 
-`ls -l /opt/consul/agent-certs`{{execute T3}}
+`ls -l /opt/consul/agent-certs`{{execute}}
 
 
 

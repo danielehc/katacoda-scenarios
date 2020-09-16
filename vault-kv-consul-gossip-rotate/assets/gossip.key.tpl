@@ -1,1 +1,3 @@
-{{ key "kv-v1/consul/config/encryption" }}
+{{ with secret "kv-v1/consul/config/encryption" }}
+{{ .Data.key}}
+{{ end }}
