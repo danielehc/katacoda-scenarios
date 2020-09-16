@@ -51,7 +51,8 @@
         "client": [
           { "file": "server.hcl", "target": "./" },
           { "file": "gossip.key.tpl", "target": "./" },
-          { "file": "consul_template.hcl", "target": "./" }
+          { "file": "consul_template.hcl", "target": "./" },
+          { "file": "rotate_key.sh", "target": "./" }
         ]
     }
     },

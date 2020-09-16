@@ -103,3 +103,13 @@ Verify the certificates are being correctly retrieved
 by listing files in the destination directory:
 
 `ls -l /opt/consul/agent-certs`{{execute T3}}
+
+
+
+<!-- Primary keys -->
+curl -s localhost:8500/v1/operator/keyring | jq -r '.[].PrimaryKeys| to_entries[].key'
+
+<!-- All Keys -->
+curl -s localhost:8500/v1/operator/keyring | jq -r '.[].Keys| to_entries[].key'
+
+Sort and uniq and use the key retrieved as a value to grep -v
