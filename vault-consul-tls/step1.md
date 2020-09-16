@@ -112,7 +112,15 @@ You can test the `pki` engine is configured correctly by generating your first c
 
 `vault write pki_int/issue/consul-dc1 \
   common_name="server.dc1.consul" \
-  ttl="24h" | tee certs.txt`{{execute T1}}
+  ttl="5m" | tee certs.txt`{{execute T1}}
+
+<div style="background-color:#fcf6ea; color:#866d42; border:1px solid #f8ebcf; padding:1em; border-radius:3px; margin:24px 0;">
+  <p><strong>Warning:</strong><br>
+  
+  The TTL for the certificate is being set to 5 minutes in this lab, meaning that this certificate will be valid only for 5 minutes before expiring. This will permit you to test automatic renewal for certificates without having to wait too long. 
+
+</p></div>
+
 
 Example output:
 
