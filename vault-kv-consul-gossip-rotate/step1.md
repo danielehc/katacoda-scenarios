@@ -56,9 +56,18 @@ enter it into Consul's configuration file later.
 
 ### Write encryption key in Vault
 
-`vault kv put kv-v1/consul/config/encryption key=${CONSUL_GOSSIP_KEY}`{{execute}}
+`vault kv put kv-v1/consul/config/encryption key=${CONSUL_GOSSIP_KEY} ttl=10s`{{execute}}
 
 Example output:
 ```
 Success! Data written to: kv-v1/consul/config/encryption
 ```
+
+<div style="background-color:#eff5ff; color:#416f8c; border:1px solid #d0e0ff; padding:1em; border-radius:3px; margin:24px 0;">
+  <p><strong>Info:</strong><br>
+  
+  Unlike other secrets engines, the KV secrets engine does not enforce TTLs for expiration. Instead, the `lease_duration` is a hint for how often consumers should check back for a new value.
+
+  Yuu can change the `ttl` value or not use it in your case but you will need a TTL to integrate with `consul-template` and have it automatically check for new versions of the key.
+
+</p></div>
