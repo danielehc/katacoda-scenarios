@@ -2,7 +2,7 @@ For this lab, you will use the Vault KV secrets engine.
 
 First, enable a new secret engine called `kv` at path `kv-v1`
 
-`vault secrets enable -path="kv-v1" kv`{{execute T1}}
+`vault secrets enable -path="kv-v1" kv`{{execute}}
 
 Example output:
 
@@ -13,7 +13,7 @@ Success! Enabled the kv secrets engine at: kv-v1/
 Once the secret engine is enabled, verify it this using
 the following command:
 
-`vault secrets list -detailed`{{execute T1}}
+`vault secrets list -detailed`{{execute}}
 
 ### Generate Consul gossip key
 
