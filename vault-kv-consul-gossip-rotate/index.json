@@ -33,9 +33,14 @@
                 "text": "step3.md"
             },
             {
-                "title": "Rotate key with consul-template",
+                "title": "Retrieve key with consul-template",
                 "code": "set-env.sh",
                 "text": "step4.md"
+            },
+            {
+                "title": "Rotate key with consul-template",
+                "code": "set-env.sh",
+                "text": "step5.md"
             }
         ],
     "intro": {
