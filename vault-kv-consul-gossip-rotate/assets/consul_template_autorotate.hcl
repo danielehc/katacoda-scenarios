@@ -49,5 +49,5 @@ template {
 
   # This is the optional command to run when the template is rendered. The
   # command will only run if the resulting template changes.
-  command     = "echo New gossip key available"
+  command     = "rotate_key.sh"
 }

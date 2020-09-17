@@ -35,13 +35,14 @@ At this time you will have the gossip key saved in `/opt/consul/gossip/gossip.ke
 Example output:
 
 ```
+5EyLRD8B27B7kN+T547GDnj9dmABCyRvSvrPSw56rL0=
 ```
 
 consul-template will automatically update the file every time the key is updated in Vault.
 
 You can test this by generating a new key:
 
-`vault kv put kv-v1/consul/config/encryption key=$(consul keygen)`{{execute}}
+`vault kv put kv-v1/consul/config/encryption key=$(consul keygen) ttl=1s`{{execute}}
 
 Example output:
 ```
@@ -55,15 +56,7 @@ This will update the file:
 Example output:
 
 ```
+zHzhJvDyKMn+QJVNHDEhJYKUhnMu9pQw/4lQ82izTxc=
 ```
 
-
-
-
-<!-- Primary keys -->
-curl -s localhost:8500/v1/operator/keyring | jq -r '.[].PrimaryKeys| to_entries[].key'
-
-<!-- All Keys -->
-curl -s localhost:8500/v1/operator/keyring | jq -r '.[].Keys| to_entries[].key'
-
-Sort and uniq and use the key retrieved as a value to grep -v
+In the next step you will learn how to automate the gossip key rotation for your Consul datacenter.
