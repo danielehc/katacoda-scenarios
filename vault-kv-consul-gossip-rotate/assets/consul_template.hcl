@@ -34,7 +34,7 @@ vault {
 template {
   # This is the source file on disk to use as the input template. This is often
   # called the "consul-template template".
-  source      = "gossip.key.tpl"
+  source      = "/opt/consul/templates/gossip.key.tpl"
 
   # This is the destination path on disk where the source template will render.
   # If the parent directories do not exist, consul-template will attempt to

@@ -26,11 +26,11 @@ Create a directory called templates in `/opt/consul`.
 After configuration is completed, you can start `consul-template`.
 You must provide the file with the `-config` parameter.
 
-`consul-template -config "consul_template.hcl"`{{execute}}
+`consul-template -config "consul_template.hcl"`{{execute T2}}
 
 At this time you will have the gossip key saved in `/opt/consul/gossip/gossip.key`.
 
-`cat /opt/consul/gossip/gossip.key`{{execute}}
+`cat /opt/consul/gossip/gossip.key`{{execute T1}}
 
 Example output:
 

@@ -24,6 +24,7 @@ Finally, start Consul.
 
 `nohup sh -c "consul agent \
   -config-file server.hcl \
+  -config-file gossip_encryption.hcl \
   -advertise '{{ GetInterfaceIP \"ens3\" }}' >~/log/consul.log 2>&1" > ~/log/nohup_consul.log &`{{execute}}
 
 <!--

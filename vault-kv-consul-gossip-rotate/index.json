@@ -67,7 +67,7 @@
             {"name": "Vault UI", "port": 8200}
         ],
         "terminals": [
-            {"name": "server", "target": "host01"}
+            {"name": "consul-template", "target": "host01"}
         ]
     },
     "backend": {

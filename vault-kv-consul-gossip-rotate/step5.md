@@ -35,6 +35,7 @@ At this time you will have the gossip key saved in `/opt/consul/gossip/gossip.ke
 Example output:
 
 ```
+5EyLRD8B27B7kN+T547GDnj9dmABCyRvSvrPSw56rL0=
 ```
 
 consul-template will automatically update the file every time the key is updated in Vault.
@@ -55,9 +56,8 @@ This will update the file:
 Example output:
 
 ```
+zHzhJvDyKMn+QJVNHDEhJYKUhnMu9pQw/4lQ82izTxc=
 ```
-
-
 
 
 <!-- Primary keys -->
