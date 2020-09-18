@@ -48,10 +48,10 @@ Now you can restart it using the new configuration file `consul_template_autorot
 
 
 
-<!-- Primary keys -->
+<!-- Primary keys 
 curl -s localhost:8500/v1/operator/keyring | jq -r '.[].PrimaryKeys| to_entries[].key'
 
-<!-- All Keys -->
 curl -s localhost:8500/v1/operator/keyring | jq -r '.[].Keys| to_entries[].key'
 
 Sort and uniq and use the key retrieved as a value to grep -v
+-->

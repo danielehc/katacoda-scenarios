@@ -7,9 +7,11 @@ NEW_KEY=`cat /opt/consul/gossip/gossip.key`
 
 # Install the key
 
+echo "consul keyring -install ${NEW_KEY}"
 
 # Set as primary
 
+echo "consul keyring -use ${NEW_KEY}"
 
 # Check other keys
 
@@ -47,7 +49,7 @@ KEYS=`curl -s localhost:8500/v1/operator/keyring`
 # This should only return one single key
 P_KEY=`echo ${KEYS} | jq -r '.[].PrimaryKeys| to_entries[].key' | sort | uniq`
 
-# Check if key is  
+# Check if key is primary 
 
 # <!-- All Keys -->
 ALL_KEYS=`echo ${KEYS} | jq -r '.[].Keys| to_entries[].key' | sort | uniq`
