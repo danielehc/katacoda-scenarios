@@ -7,6 +7,13 @@ Consul provides a command, `consul keyring` that helps manage keys in the datace
 Example output
 
 ```
+==> Gathering installed encryption keys...
+
+WAN:
+  FfRV9j6NXU9LlCI4zLZjjpZdj4Nrqsdm7R8YgzSHzHw= [1/1]
+
+dc1 (LAN):
+  FfRV9j6NXU9LlCI4zLZjjpZdj4Nrqsdm7R8YgzSHzHw= [1/1]
 ```
 
 To install and use a new key the steps are the following:
@@ -29,7 +36,7 @@ This lab contains an example script, `rotate_key.sh`{{open}}, that you can use f
 
 First stop Consul template:
 
-`killall consul-template`{{execute T1}}
+`killall -9 consul-template`{{execute T1}}
 
 <div style="background-color:#fcf6ea; color:#866d42; border:1px solid #f8ebcf; padding:1em; border-radius:3px; margin:24px 0;">
   <p><strong>Warning:</strong><br>
@@ -38,9 +45,15 @@ First stop Consul template:
 
 </p></div>
 
-Then copy the script in a location contained in your `$PATH`:
+Then make the script executable:
 
-`cp rotate_key.sh /usr/local/bin`{{execute T1}}
+`chmod +x rotate_key.sh`{{execute T1}}
+
+Finally copy the script in a location contained in your `$PATH`:
+
+`cp rotate_key.sh /opt`{{execute T1}}
+
+
 
 Now you can restart it using the new configuration file `consul_template_autorotate.hcl`{{open}} that contains the configuration
 
