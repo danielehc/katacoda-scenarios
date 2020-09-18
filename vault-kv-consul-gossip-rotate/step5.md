@@ -16,6 +16,8 @@ dc1 (LAN):
   FfRV9j6NXU9LlCI4zLZjjpZdj4Nrqsdm7R8YgzSHzHw= [1/1]
 ```
 
+As you can notice the new key is not present into the output. This is because before using the new key uou need to install it into Consul.
+
 To install and use a new key the steps are the following:
 
 1. Get the new key.
@@ -53,11 +55,26 @@ Finally copy the script in a location contained in your `$PATH`:
 
 `cp rotate_key.sh /opt`{{execute T1}}
 
-
-
 Now you can restart it using the new configuration file `consul_template_autorotate.hcl`{{open}} that contains the configuration
 
 `consul-template -config "consul_template_autorotate.hcl"`{{execute T2}}
+
+The script will pick up the `gossip.key` file containing the new key and use it to rotate the Consul gossip encryption key.
+
+It should output the following lines:
+
+```
+==> Installing new gossip encryption key...
+==> Changing primary gossip encryption key...
+==> Removing gossip encryption key...
+```
+
+You can test the key is actually changed in Consul using again the `consul keyring` command:
+
+`consul keyring -list`{{execute T1}}
+
+
+Now every time you update the key value in Vault, consul-template will make sure that the key is installed in Consul too.
 
 
 

@@ -19,7 +19,7 @@ Create a directory called templates in `/opt/consul`.
 
 `gossip.key.tpl`{{open}}
 
-`cp *.tpl /opt/consul/templates/`{{execute}}
+`cp *.tpl /opt/consul/templates/`{{execute T1}}
 
 ### Start consul-template
 
@@ -42,7 +42,7 @@ consul-template will automatically update the file every time the key is updated
 
 You can test this by generating a new key:
 
-`vault kv put kv-v1/consul/config/encryption key=$(consul keygen) ttl=1s`{{execute}}
+`vault kv put kv-v1/consul/config/encryption key=$(consul keygen) ttl=1s`{{execute T1}}
 
 Example output:
 ```
@@ -51,7 +51,7 @@ Success! Data written to: kv-v1/consul/config/encryption
 
 This will update the file: 
 
-`cat /opt/consul/gossip/gossip.key`{{execute}}
+`cat /opt/consul/gossip/gossip.key`{{execute T1}}
 
 Example output:
 
