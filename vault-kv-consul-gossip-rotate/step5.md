@@ -73,15 +73,6 @@ You can test the key is actually changed in Consul using again the `consul keyri
 
 `consul keyring -list`{{execute T1}}
 
+Now every time you update the key value in Vault, `consul-template` will make sure that the key is installed in Consul too.
 
-Now every time you update the key value in Vault, consul-template will make sure that the key is installed in Consul too.
-
-
-
-<!-- Primary keys 
-curl -s localhost:8500/v1/operator/keyring | jq -r '.[].PrimaryKeys| to_entries[].key'
-
-curl -s localhost:8500/v1/operator/keyring | jq -r '.[].Keys| to_entries[].key'
-
-Sort and uniq and use the key retrieved as a value to grep -v
--->
+`vault kv put kv-v1/consul/config/encryption key=$(consul keygen) ttl=1s`{{execute T1}}
