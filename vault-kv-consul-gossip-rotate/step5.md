@@ -55,9 +55,17 @@ Finally copy the script in a location contained in your `$PATH`:
 
 `cp rotate_key.sh /opt`{{execute T1}}
 
+### Start consul-template with new configuration
+
 Now you can restart it using the new configuration file `consul_template_autorotate.hcl`{{open}} that contains the configuration
 
 `consul-template -config "consul_template_autorotate.hcl"`{{execute T2}}
+
+### Rotate Consul gossip key
+
+Now every time you update the key value in Vault, `consul-template` will make sure that the key is installed in Consul too.
+
+`vault kv put kv-v1/consul/config/encryption key=$(consul keygen) ttl=1s`{{execute T1}}
 
 The script will pick up the `gossip.key` file containing the new key and use it to rotate the Consul gossip encryption key.
 
@@ -73,6 +81,3 @@ You can test the key is actually changed in Consul using again the `consul keyri
 
 `consul keyring -list`{{execute T1}}
 
-Now every time you update the key value in Vault, `consul-template` will make sure that the key is installed in Consul too.
-
-`vault kv put kv-v1/consul/config/encryption key=$(consul keygen) ttl=1s`{{execute T1}}

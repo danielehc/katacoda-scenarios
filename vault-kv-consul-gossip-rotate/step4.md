@@ -38,6 +38,8 @@ Example output:
 5EyLRD8B27B7kN+T547GDnj9dmABCyRvSvrPSw56rL0=
 ```
 
+#### Test file update
+
 consul-template will automatically update the file every time the key is updated in Vault.
 
 You can test this by generating a new key:
