@@ -42,7 +42,6 @@ docker cp ./svc-client.hcl volumes:/client/svc-client.hcl
 docker cp ./svc-clone.hcl volumes:/client/svc-clone.hcl
 docker cp ./svc-main.hcl volumes:/client/svc-main.hcl
 
-
 log Starting Consul Server
 
 docker run \
