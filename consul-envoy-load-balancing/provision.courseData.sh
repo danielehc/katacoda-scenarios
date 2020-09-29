@@ -16,7 +16,10 @@ apt-get install -y unzip curl jq > /dev/null
 
 log Pulling Docker Image
 
-docker pull danielehc/consul-envoy-service:v1.9.0-dev-v1.14.2 > /dev/null
+IMAGE_TAG=v1.9.0-dev-v1.14.2
+IMAGE_TAG=latest
+
+docker pull danielehc/consul-envoy-service:${IMAGE_TAG} > /dev/null
 
 
 log Creating Docker volumes
@@ -48,7 +51,7 @@ docker run \
   -p 8500:8500 \
   -p 8600:8600/udp \
   --name=server \
-  danielehc/consul-envoy-service:v1.9.0-dev-v1.14.2 \
+  danielehc/consul-envoy-service:${IMAGE_TAG} \
   consul agent -server -ui \
     -node=server-1 \
     -bootstrap-expect=1 \
@@ -63,7 +66,7 @@ docker run \
     -d \
     -v client_config:/etc/consul.d \
     --name=client \
-    danielehc/consul-envoy-service:v1.9.0-dev-v1.14.2 \
+    danielehc/consul-envoy-service:${IMAGE_TAG} \
     consul agent \
      -node=client-1 \
      -join=${SERVER_IP} \
@@ -74,7 +77,7 @@ docker run \
     -d \
     -v client_config:/etc/consul.d \
     --name=backend-main \
-    danielehc/consul-envoy-service:v1.9.0-dev-v1.14.2 \
+    danielehc/consul-envoy-service:${IMAGE_TAG} \
     consul agent \
      -node=service-1 \
      -join=${SERVER_IP} \
@@ -85,7 +88,7 @@ docker run \
     -d \
     -v client_config:/etc/consul.d \
     --name=backend-clone \
-    danielehc/consul-envoy-service:v1.9.0-dev-v1.14.2 \
+    danielehc/consul-envoy-service:${IMAGE_TAG} \
     consul agent \
      -node=service-2 \
      -join=${SERVER_IP} \
