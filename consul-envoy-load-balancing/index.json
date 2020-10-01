@@ -51,7 +51,7 @@
           { "file": "least-req-resolver.hcl", "target": "./" },
           { "file": "svc-client.hcl", "target": "./" },
           { "file": "svc-clone.hcl", "target": "./" },
-          { "file": "svc-main.hcl", "target": "./" }
+          { "file": "svc-main.hcl", "target": "./" },
           { "file": "igw-backend.hcl", "target": "./" }
         ]
     }
