@@ -94,6 +94,9 @@ docker run \
      -config-file=/etc/consul.d/agent.hcl \
      -config-file=/etc/consul.d/svc-clone.hcl
 
+log Starting Ingress Gateway
+
+
 
 log Starting Applications and configuring service mesh
 
