@@ -13,12 +13,7 @@
                 "verify": "provision.verify.sh"
             },
             {
-                "title": "Test service and default load balancing policy",
-                "code": "set-env.sh",
-                "text": "step0.md"
-            },
-            {
-                "title": "Configure least_req policy",
+                "title": "Test environment and default load balancing policy",
                 "code": "set-env.sh",
                 "text": "step1.md"
             },
@@ -28,9 +23,14 @@
                 "text": "step2.md"
             },
             {
-                "title": "Read More",
+                "title": "Configure least_req policy",
                 "code": "set-env.sh",
                 "text": "step3.md"
+            },
+            {
+                "title": "Load balancing and ingress gateways",
+                "code": "set-env.sh",
+                "text": "step4.md"
             }
         ],
     "intro": {
