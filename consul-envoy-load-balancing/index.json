@@ -52,6 +52,7 @@
           { "file": "svc-client.hcl", "target": "./" },
           { "file": "svc-clone.hcl", "target": "./" },
           { "file": "svc-main.hcl", "target": "./" }
+          { "file": "igw-backend.hcl", "target": "./" }
         ]
     }
     },
@@ -63,6 +64,7 @@
         "uimessage1": "\u001b[32mOperator node terminal.\u001b[m\r\n",
         "dashboards": [
             {"name": "Consul UI", "port": 8500}
+            {"name": "Ingress GW", "port": 8080}
         ],
         "terminals": [
             {"name": "server", "target": "host01"},

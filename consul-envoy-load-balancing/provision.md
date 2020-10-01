@@ -33,11 +33,12 @@ While you wait for the environment to complete deploy you can review the files y
 
 | File                              | Description |
 |-----------------------------------|-------------|
-| `server.hcl`{{open}}              | Server configuration file |
-| `agent.hcl`{{open}}               | Client configuration file|
-| `default.hcl`{{open}}             | |
-| `hash-resolver.hcl`{{open}}       | |
-| `least-req-resolver.hcl`{{open}}  | |
-| `svc-client.hcl`{{open}}          | Service configuration file for `client`|
-| `svc-clone.hcl`{{open}}           | Service configuration file for `backend-clone`|
-| `svc-main.hcl`{{open}}            | Service configuration file for `backend-main`|
+| `server.hcl`              | Server configuration file |
+| `agent.hcl`               | Client configuration file|
+| `default.hcl`             | Service defaults configuration |
+| `hash-resolver.hcl`       | Maglev load balancing policy definition |
+| `least-req-resolver.hcl`  | Least request load balancing policy definition|
+| `svc-client.hcl`          | Service configuration file for `client`|
+| `svc-clone.hcl`           | Service configuration file for `backend-clone`|
+| `svc-main.hcl`            | Service configuration file for `backend-main`|
+| `igw-backend.hcl`         | Ingress Gateway central configuration | 

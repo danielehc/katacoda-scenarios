@@ -36,6 +36,8 @@ docker cp ./default.hcl volumes:/server/default.hcl
 docker cp ./hash-resolver.hcl volumes:/server/hash-resolver.hcl
 docker cp ./least-req-resolver.hcl volumes:/server/least-req-resolver.hcl
 
+docker cp ./igw-backend.hcl volumes:/server/igw-backend.hcl
+
 # Client files
 docker cp ./agent.hcl volumes:/client/agent.hcl
 docker cp ./svc-client.hcl volumes:/client/svc-client.hcl
@@ -96,7 +98,17 @@ docker run \
 
 log Starting Ingress Gateway
 
-
+docker run \
+    -d \
+    -v client_config:/etc/consul.d \
+    -p 8888:8888 \
+    -p 8080:8080 \
+    --name=ingress-gw \
+    danielehc/consul-envoy-service:${IMAGE_TAG} \
+    consul agent \
+     -node=ingress-gw \
+     -join=${SERVER_IP} \
+     -config-file=/etc/consul.d/agent.hcl
 
 log Starting Applications and configuring service mesh
 
@@ -109,6 +121,10 @@ docker exec backend-clone env LISTEN_ADDR=:9092 NAME=clone fake-service > /tmp/s
 docker exec backend-main consul connect envoy -proxy-id backend-main-sidecar-proxy > /tmp/proxy.log 2>&1 &
 docker exec backend-clone consul connect envoy -admin-bind=localhost:19001 -proxy-id backend-clone-sidecar-proxy > /tmp/proxy.log 2>&1 &
 docker exec client consul connect envoy -admin-bind=localhost:19002 -proxy-id client-sidecar-proxy > /tmp/proxy.log 2>&1 &
+
+# Configure and start ingress gateway
+docker exec server consul config write /etc/consul.d/igw-backend.hcl
+docker exec ingress-gw consul connect envoy -gateway=ingress -register -service ingress-service -address '{{ GetInterfaceIP "eth0" }}:8888' > /tmp/proxy.log 2>&1 &
 
 finish
 
