@@ -1,5 +1,25 @@
 Once verified you can access the _backend_ service and that the _random_ policy is applied you can apply new policies for the load balancing and verify how these affect the requests' resolution.
 
+### Configure service defaults
+
+In order to enable service resolution and apply load balancer policies you need to define the service protocol as a `service-defaults` entry.
+
+The lab provides a configuration file for this, `default.hcl`{{open}} that you can use to apply the configuration.
+
+```
+Kind           = "service-defaults"
+Name           = "backend"
+Protocol       = "http"
+```
+
+`docker exec server consul config write /etc/consul.d/default.hcl`{{execute}}
+
+Example output:
+
+```
+Config entry written: service-defaults/backend
+```
+
 ### Configure a sticky session for service resolution
 
 A common requirements for many applications is to have the possibility to redirect all the requests from a specific client to the same server.

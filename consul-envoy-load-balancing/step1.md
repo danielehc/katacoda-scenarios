@@ -1,13 +1,15 @@
-You can check the environment using `docker ps`{{execute}}
+You can check the environment using `docker ps`:
+
+`docker ps --format "{{.ID}}: {{.Names}}  \t {{.Ports}}"`{{execute}}
+
+Example output:
 
 ```
-$ docker ps
-CONTAINER ID        IMAGE                                   COMMAND                  CREATED             STATUS              PORTSNAMES
-e3e039a76965        danielehc/consul-envoy-service:latest   "/entrypoint.sh cons…"   2 minutes ago       Up 2 minutes        0.0.0.0:8080->8080/tcp, 0.0.0.0:8888->8888/tcp, 10000/tcpingress-gw
-e7af27a71618        danielehc/consul-envoy-service:latest   "/entrypoint.sh cons…"   2 minutes ago       Up 2 minutes        10000/tcpbackend-clone
-7ffb98ec487a        danielehc/consul-envoy-service:latest   "/entrypoint.sh cons…"   2 minutes ago       Up 2 minutes        10000/tcpbackend-main
-25aac3ad4961        danielehc/consul-envoy-service:latest   "/entrypoint.sh cons…"   2 minutes ago       Up 2 minutes        10000/tcpclient
-32b4c7c2ede8        danielehc/consul-envoy-service:latest   "/entrypoint.sh cons…"   2 minutes ago       Up 2 minutes        0.0.0.0:8500->8500/tcp, 0.0.0.0:8600->8600/udp, 10000/tcpserver
+8c49801f602d: ingress-gw    0.0.0.0:8080->8080/tcp, 0.0.0.0:8888->8888/tcp, 10000/tcp
+90e49a8e39e4: backend-clone 10000/tcp
+0f4b951627c0: backend-main  10000/tcp
+d54059138370: client        10000/tcp
+76bd086a2de4: server        0.0.0.0:8500->8500/tcp, 0.0.0.0:8600->8600/udp, 10000/tcp
 ```
 
 The output shows five running containers each one running a Consul agent.
