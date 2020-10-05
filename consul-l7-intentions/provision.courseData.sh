@@ -80,16 +80,34 @@ docker run \
      -config-file=/etc/consul.d/agent.hcl \
      -config-file=/etc/consul.d/svc-dashboard.json
 
+log Starting Ingress Gateway
+
+docker run \
+    -d \
+    -v client_config:/etc/consul.d \
+    -p 8888:8888 \
+    -p 8080:8080 \
+    --name=ingress-gw \
+    danielehc/consul-envoy-service:${IMAGE_TAG} \
+    consul agent \
+     -node=ingress-gw \
+     -join=${SERVER_IP} \
+     -config-file=/etc/consul.d/agent.hcl
 
 log Starting Applications and configuring service mesh
 
 # Start applications
 docker exec counter env PORT=9003 NAME=main counting-service > /tmp/service.log 2>&1 &
-docker exec backend-clone env PORT=9002 COUNTING_SERVICE_URL="http://localhost:5000" dashboard-service > /tmp/service.log 2>&1 &
+docker exec dashboard env PORT=9002 COUNTING_SERVICE_URL="http://localhost:5000" dashboard-service > /tmp/service.log 2>&1 &
 
 # Start sidecar proxies
-docker exec backend-main consul connect envoy -proxy-id dashbord-sidecar-proxy > /tmp/proxy.log 2>&1 &
-docker exec backend-clone consul connect envoy -admin-bind=localhost:19001 -proxy-id counting-1-sidecar-proxy > /tmp/proxy.log 2>&1 &
+docker exec dashboard consul connect envoy -proxy-id dashbord-sidecar-proxy > /tmp/proxy.log 2>&1 &
+docker exec counter consul connect envoy -admin-bind=localhost:19001 -proxy-id counting-1-sidecar-proxy > /tmp/proxy.log 2>&1 &
+
+# Configure and start ingress gateway
+docker exec server consul config write /etc/consul.d/igw-backend.hcl
+docker exec ingress-gw consul connect envoy -gateway=ingress -register -service ingress-service -address '{{ GetInterfaceIP "eth0" }}:8888' > /tmp/proxy.log 2>&1 &
+
 
 finish
 

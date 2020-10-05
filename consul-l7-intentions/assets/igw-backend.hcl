@@ -7,7 +7,7 @@ Listeners = [
    Protocol = "tcp"
    Services = [
      {
-       Name = "backend"
+       Name = "dashboard"
      }
    ]
  }
