@@ -84,7 +84,7 @@ docker run \
 log Starting Applications and configuring service mesh
 
 # Start applications
-docker exec counting env PORT=:9003 NAME=main counting-service > /tmp/service.log 2>&1 &
+docker exec counter env PORT=9003 NAME=main counting-service > /tmp/service.log 2>&1 &
 docker exec backend-clone env PORT=9002 COUNTING_SERVICE_URL="http://localhost:5000" dashboard-service > /tmp/service.log 2>&1 &
 
 # Start sidecar proxies
