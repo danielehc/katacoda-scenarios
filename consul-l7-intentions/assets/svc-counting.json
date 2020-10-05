@@ -3,7 +3,7 @@
   "service": {
     "name" : "counting",
     "id" : "counting-1",
-    "port" : "9003",
+    "port" : 9003,
     "connect": {
       "sidecar_service": {}
     },
