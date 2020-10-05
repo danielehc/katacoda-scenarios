@@ -8,7 +8,7 @@
           "upstreams": [
            {
             "destination_name": "counting",
-            "local_bind_port": 9001
+            "local_bind_port": 5000
            }
           ]
         }
