@@ -1,8 +1,8 @@
 {
-    "pathwayTitle": "Load balancing in Consul service mesh with Envoy",
+    "pathwayTitle": "L7 Intentions in Consul service mesh with Envoy",
     "icon": "fa-consul",
-    "title": "Load balancing in Consul service mesh with Envoy",
-    "description": "Configure different load balancing policies to share load across services in your service mesh configuring Envoy automatically",
+    "title": "L7 Intentions in Consul service mesh with Envoy",
+    "description": "L7 Intentions in Consul service mesh with Envoy",
     "details": {
         "steps": [
             {
