@@ -47,7 +47,8 @@
           { "file": "server.hcl", "target": "./" },
           { "file": "agent.hcl", "target": "./" },
           { "file": "svc-counting.json", "target": "./" },
-          { "file": "svc-dashboard.json", "target": "./" }
+          { "file": "svc-dashboard.json", "target": "./" },
+          { "file": "igw-dashboard.hcl", "target": "./" }
         ]
     }
     },

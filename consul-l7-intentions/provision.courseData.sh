@@ -37,6 +37,7 @@ docker cp ./server.hcl volumes:/server/server.hcl
 docker cp ./agent.hcl volumes:/client/agent.hcl
 docker cp ./svc-counting.json volumes:/client/svc-counting.json
 docker cp ./svc-dashboard.json volumes:/client/svc-dashboard.json
+docker cp ./igw-dashboard.hcl volumes:/client/igw-dashboard.hcl
 
 
 log Starting Consul Server
@@ -105,7 +106,7 @@ docker exec dashboard consul connect envoy -proxy-id dashbord-sidecar-proxy > /t
 docker exec counter consul connect envoy -admin-bind=localhost:19001 -proxy-id counting-1-sidecar-proxy > /tmp/proxy.log 2>&1 &
 
 # Configure and start ingress gateway
-docker exec server consul config write /etc/consul.d/igw-backend.hcl
+docker exec server consul config write /etc/consul.d/igw-dashboard.hcl
 docker exec ingress-gw consul connect envoy -gateway=ingress -register -service ingress-service -address '{{ GetInterfaceIP "eth0" }}:8888' > /tmp/proxy.log 2>&1 &
 
 
