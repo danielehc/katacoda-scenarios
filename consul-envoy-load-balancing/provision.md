@@ -28,6 +28,10 @@ and concluding with
 
 Once this message appears, you are ready to continue.
 
+## Architecture for the lab
+
+![Consul service mesh load balancing with client service](./assets/consul-lb-envoy-client-service.png)
+
 ### Configuration files
 
 While you wait for the environment to complete deploy you can review the files you are going to use for this lab later:
