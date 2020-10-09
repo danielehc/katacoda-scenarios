@@ -126,7 +126,7 @@ docker exec client consul connect envoy -admin-bind=localhost:19002 -proxy-id cl
 
 # Configure and start ingress gateway
 docker exec server consul config write /etc/consul.d/default.hcl
-docker exec server consul config write /etc/consul.d/igw-default.hcl
+# docker exec server consul config write /etc/consul.d/igw-default.hcl
 docker exec server consul config write /etc/consul.d/igw-backend.hcl
 docker exec ingress-gw consul connect envoy -gateway=ingress -register -service ingress-service -address '{{ GetInterfaceIP "eth0" }}:8888' > /tmp/proxy.log 2>&1 &
 
