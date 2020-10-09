@@ -8,7 +8,7 @@ Listeners = [
    Services = [
      {
        Name = "backend"
-       Hosts = ["*:8080"]
+       Hosts = ["*"]
      }
    ]
  }
