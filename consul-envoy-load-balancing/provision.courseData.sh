@@ -130,6 +130,10 @@ docker exec server consul config write /etc/consul.d/default.hcl
 docker exec server consul config write /etc/consul.d/igw-backend.hcl
 docker exec ingress-gw consul connect envoy -gateway=ingress -register -service ingress-service -address '{{ GetInterfaceIP "eth0" }}:8888' > /tmp/proxy.log 2>&1 &
 
+
+IGW_IP=`docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ingress-gw`
+echo "${IGW_IP} backend.ingress.consul" >> /etc/hosts
+
 finish
 
 EOFSRSLY
