@@ -18,7 +18,7 @@ log Pulling Docker Image
 
 IMAGE_TAG=v1.9.0-dev-v1.14.2
 IMAGE_TAG=latest
-IMAGE_TAG=v1.9.0-dev3-v1.14.2
+IMAGE_TAG=v1.9.0-dev4-v1.14.2
 
 docker pull danielehc/consul-envoy-service:${IMAGE_TAG} > /dev/null
 
