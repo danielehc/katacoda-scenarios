@@ -37,6 +37,8 @@ docker cp ./hash-resolver.hcl volumes:/server/hash-resolver.hcl
 docker cp ./least-req-resolver.hcl volumes:/server/least-req-resolver.hcl
 
 docker cp ./igw-backend.hcl volumes:/server/igw-backend.hcl
+docker cp ./igw-default.hcl volumes:/server/igw-default.hcl
+docker cp ./igw-hash-resolver.hcl volumes:/server/igw-hash-resolver.hcl
 
 # Client files
 docker cp ./agent.hcl volumes:/client/agent.hcl
