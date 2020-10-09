@@ -1,3 +1,3 @@
 Kind           = "service-defaults"
-Name           = "backend"
+Name           = "counting"
 Protocol       = "http"

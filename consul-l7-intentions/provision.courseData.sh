@@ -18,7 +18,7 @@ log Pulling Docker Image
 
 IMAGE_TAG=v1.9.0-dev-v1.14.2
 IMAGE_TAG=latest
-IMAGE_TAG=v1.9.0-dev4-v1.14.2
+IMAGE_TAG=v1.9.0-dev5-v1.14.2
 
 docker pull danielehc/consul-envoy-service:${IMAGE_TAG} > /dev/null
 
@@ -110,9 +110,13 @@ docker exec counter consul connect envoy -sidecar-for counting-1 -admin-bind loc
 # docker exec counter consul connect envoy -admin-bind=localhost:19001 -proxy-id counting-1-sidecar-proxy > /tmp/proxy.log 2>&1 &
 
 # Configure and start ingress gateway
+docker exec server consul config write /etc/consul.d/default-counting.hcl
+docker exec server consul config write /etc/consul.d/default-dashboard.hcl
 docker exec ingress-gw consul config write /etc/consul.d/igw-dashboard.hcl
 docker exec ingress-gw consul connect envoy -gateway=ingress -register -service ingress-service -address '{{ GetInterfaceIP "eth0" }}:8888' > /tmp/proxy.log 2>&1 &
 
+IGW_IP=`docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ingress-gw`
+echo "${IGW_IP} counting.ingress.consul" >> /etc/hosts
 
 finish
 

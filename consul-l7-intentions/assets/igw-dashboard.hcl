@@ -4,10 +4,11 @@ Name = "ingress-service"
 Listeners = [
  {
    Port = 8080
-   Protocol = "tcp"
+   Protocol = "http"
    Services = [
      {
        Name = "dashboard"
+       Hosts = ["*"]
      }
    ]
  }
