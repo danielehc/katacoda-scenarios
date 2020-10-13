@@ -27,30 +27,13 @@ service-1   172.18.0.4:8301  alive   client  1.9.0dev  2         dc1  <default>
 service-2   172.18.0.5:8301  alive   client  1.9.0dev  2         dc1  <default>
 ```
 
-In this configuration you can verify the backend service is accessible from the client container using `curl`
+In this configuration you can verify the counting service is accessible from the client container using `curl`
 
-`docker exec client curl -s localhost:9192`{{execute}}
+`docker exec dashboard curl -s localhost:5000`{{execute}}
 
 Example output:
 
 ```
-{
-  "name": "main",
-  "uri": "/",
-  "type": "HTTP",
-  "ip_addresses": [
-    "172.18.0.4"
-  ],
-  "start_time": "2020-10-01T16:15:54.151406",
-  "end_time": "2020-10-01T16:15:54.151885",
-  "duration": "478.867µs",
-  "body": "Hello World",
-  "code": 200
-}
+
 ```
 
-## Default load balancing policy
-
-By default Consul balances traffic across instances of the same service using the `random` policy.
-
-You can verify the balancing by issuing the `curl` command multiple times. 
