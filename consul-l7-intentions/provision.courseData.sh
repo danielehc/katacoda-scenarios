@@ -18,7 +18,7 @@ log Pulling Docker Image
 
 IMAGE_TAG=v1.9.0-dev-v1.14.2
 IMAGE_TAG=latest
-IMAGE_TAG=v1.9.0-dev5-v1.14.2
+IMAGE_TAG=v1.9.0-dev6-v1.14.2
 
 docker pull danielehc/consul-envoy-service:${IMAGE_TAG} > /dev/null
 
@@ -119,6 +119,10 @@ docker exec ingress-gw consul connect envoy -gateway=ingress -register -service 
 
 IGW_IP=`docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ingress-gw`
 echo "${IGW_IP} counting.ingress.consul" >> /etc/hosts
+
+log Starting External Applications
+
+
 
 finish
 
