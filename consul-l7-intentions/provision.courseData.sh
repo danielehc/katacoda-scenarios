@@ -60,6 +60,9 @@ docker run \
 
 SERVER_IP=`docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' server`
 
+docker exec server consul config write /etc/consul.d/default-counting.hcl
+docker exec server consul config write /etc/consul.d/default-dashboard.hcl
+
 log Starting Consul Clients
 
 docker run \
@@ -111,8 +114,6 @@ docker exec dashboard sh -c "consul connect envoy -sidecar-for dashboard > /tmp/
 set +x
 
 # Configure and start ingress gateway
-docker exec server consul config write /etc/consul.d/default-counting.hcl
-docker exec server consul config write /etc/consul.d/default-dashboard.hcl
 docker exec ingress-gw consul config write /etc/consul.d/igw-dashboard.hcl
 docker exec ingress-gw sh -c "consul connect envoy -gateway=ingress -register -service ingress-service -address '{{ GetInterfaceIP \"eth0\" }}:8888' > /tmp/proxy.log 2>&1 &"
 
