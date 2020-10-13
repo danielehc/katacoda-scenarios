@@ -35,6 +35,7 @@ log Copying configuration files
 docker cp ./server.hcl volumes:/server/server.hcl
 docker cp ./default-counting.hcl volumes:/server/default-counting.hcl
 docker cp ./default-dashboard.hcl volumes:/server/default-dashboard.hcl
+docker cp ./default-proxy.hcl volumes:/server/default-proxy.hcl
 
 # Client files
 docker cp ./agent.hcl volumes:/client/agent.hcl
