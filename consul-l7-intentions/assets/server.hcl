@@ -9,3 +9,5 @@ ports {
 enable_central_service_config = true
 
 data_dir = "/tmp/consul"
+
+bootstrap_expect = 1
