@@ -100,28 +100,25 @@ docker run \
 log Starting Applications and configuring service mesh
 
 # Start applications
-docker exec counter env PORT=9003 NAME=main counting-service > /tmp/service.log 2>&1 &
-docker exec dashboard env PORT=9002 COUNTING_SERVICE_URL="http://localhost:5000" dashboard-service > /tmp/service.log 2>&1 &
+docker exec counter sh -c "env PORT=9003 NAME=main counting-service > /tmp/service.log 2>&1 &"
+docker exec dashboard sh -c "env PORT=9002 COUNTING_SERVICE_URL="http://localhost:5000" dashboard-service > /tmp/service.log 2>&1 &"
 
 # Start sidecar proxies
-
-docker exec dashboard consul connect envoy -sidecar-for dashboard > /tmp/proxy.log 2>&1 &
-docker exec counter consul connect envoy -sidecar-for counting-1 -admin-bind localhost:19001 > /tmp/proxy.log 2>&1 &
-
-# docker exec dashboard consul connect envoy -proxy-id dashbord-sidecar-proxy > /tmp/proxy.log 2>&1 &
-# docker exec counter consul connect envoy -admin-bind=localhost:19001 -proxy-id counting-1-sidecar-proxy > /tmp/proxy.log 2>&1 &
+docker exec dashboard sh -c "consul connect envoy -sidecar-for dashboard > /tmp/proxy.log 2>&1 &"
+docker exec counter sh -c "consul connect envoy -sidecar-for counting-1 -admin-bind localhost:19001 > /tmp/proxy.log 2>&1 &"
 
 # Configure and start ingress gateway
 docker exec server consul config write /etc/consul.d/default-counting.hcl
 docker exec server consul config write /etc/consul.d/default-dashboard.hcl
 docker exec ingress-gw consul config write /etc/consul.d/igw-dashboard.hcl
-docker exec ingress-gw consul connect envoy -gateway=ingress -register -service ingress-service -address '{{ GetInterfaceIP "eth0" }}:8888' > /tmp/proxy.log 2>&1 &
+docker exec ingress-gw sh -c "consul connect envoy -gateway=ingress -register -service ingress-service -address '{{ GetInterfaceIP "eth0" }}:8888' > /tmp/proxy.log 2>&1 &"
 
 IGW_IP=`docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ingress-gw`
 echo "${IGW_IP} counting.ingress.consul" >> /etc/hosts
 
 log Starting External Applications
 
+docker cp dashboard:/usr/local/bin/dashboard-service .
 
 
 finish
