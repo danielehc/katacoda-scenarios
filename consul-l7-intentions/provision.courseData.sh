@@ -120,7 +120,6 @@ log Starting External Applications
 
 docker cp dashboard:/usr/local/bin/dashboard-service .
 
-
 finish
 
 EOFSRSLY
