@@ -1,3 +1,3 @@
 Kind           = "service-defaults"
 Name           = "api"
-Protocol       = "http2"
+Protocol       = "http"
