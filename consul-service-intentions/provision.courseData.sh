@@ -18,7 +18,7 @@ log Pulling Docker Image
 
 # IMAGE_TAG=v1.9.0-dev-v1.14.2
 # IMAGE_TAG=latest
-IMAGE_TAG=v1.8.4-v1.14.4
+# IMAGE_TAG=v1.8.4-v1.14.4
 IMAGE_TAG=v1.9.0-dev6-v1.14.4
 
 docker pull danielehc/consul-envoy-service:${IMAGE_TAG} > /dev/null
@@ -128,8 +128,6 @@ docker exec web sh -c "LISTEN_ADDR=127.0.0.1:9002 NAME=web UPSTREAM_URIS=\"http:
 docker exec api sh -c "consul connect envoy -sidecar-for api-1 > /tmp/proxy.log 2>&1 &"
 docker exec web sh -c "consul connect envoy -sidecar-for web > /tmp/proxy.log 2>&1 &"
 set +x
-
-
 
 # Configure and start ingress gateway
 docker exec server consul config write /etc/consul.d/default-proxy.hcl

@@ -13,22 +13,22 @@
                 "verify": "provision.verify.sh"
             },
             {
-                "title": "Test environment and default load balancing policy",
+                "title": "Test environment",
                 "code": "set-env.sh",
                 "text": "step1.md"
             },
             {
-                "title": "Configure sticky-bit with hash policy",
+                "title": "Configure initial intentions",
                 "code": "set-env.sh",
                 "text": "step2.md"
             },
             {
-                "title": "Configure least_req policy",
+                "title": "Configure L7 intentions",
                 "code": "set-env.sh",
                 "text": "step3.md"
             },
             {
-                "title": "Load balancing and ingress gateways",
+                "title": "Test Ingress GW",
                 "code": "set-env.sh",
                 "text": "step4.md"
             }
