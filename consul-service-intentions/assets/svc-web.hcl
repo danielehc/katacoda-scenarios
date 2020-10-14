@@ -15,7 +15,7 @@ service = {
   }
   check = {
     id = "web-check"
-    http = "http://localhost:9002
+    http = "http://localhost:9002"
     method = "GET"
     interval = "1s"
     timeout = "1s"
