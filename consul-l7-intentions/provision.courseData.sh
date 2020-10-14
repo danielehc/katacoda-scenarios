@@ -35,8 +35,6 @@ log Copying configuration files
 docker cp ./server.hcl volumes:/server/server.hcl
 docker cp ./default-counting.hcl volumes:/server/default-counting.hcl
 docker cp ./default-dashboard.hcl volumes:/server/default-dashboard.hcl
-docker cp ./default-web.hcl volumes:/server/default-web.hcl
-docker cp ./default-api.hcl volumes:/server/default-api.hcl
 docker cp ./default-proxy.hcl volumes:/server/default-proxy.hcl
 
 # Client files
@@ -44,9 +42,7 @@ docker cp ./agent.hcl volumes:/client/agent.hcl
 docker cp ./svc-counting.json volumes:/client/svc-counting.json
 docker cp ./svc-dashboard.json volumes:/client/svc-dashboard.json
 docker cp ./igw-dashboard.hcl volumes:/client/igw-dashboard.hcl
-docker cp ./igw-dashboard.hcl volumes:/client/igw-api.hcl
-docker cp ./svc-clone.hcl volumes:/client/svc-clone.hcl
-docker cp ./svc-main.hcl volumes:/client/svc-main.hcl
+
 
 log Starting Consul Server
 
@@ -70,26 +66,24 @@ log Starting Consul Clients
 docker run \
     -d \
     -v client_config:/etc/consul.d \
-    --name=api \
+    --name=counter \
     danielehc/consul-envoy-service:${IMAGE_TAG} \
     consul agent \
      -node=service-1 \
      -join=${SERVER_IP} \
      -config-file=/etc/consul.d/agent.hcl \
-     -config-file=/etc/consul.d/svc-counting.json \
-     -config-file=/etc/consul.d/svc-api.hcl
+     -config-file=/etc/consul.d/svc-counting.json
 
 docker run \
     -d \
     -v client_config:/etc/consul.d \
-    --name=web \
+    --name=dashboard \
     danielehc/consul-envoy-service:${IMAGE_TAG} \
     consul agent \
      -node=service-2 \
      -join=${SERVER_IP} \
      -config-file=/etc/consul.d/agent.hcl \
      -config-file=/etc/consul.d/svc-dashboard.json
-     -config-file=/etc/consul.d/svc-web.hcl
 
 log Starting Ingress Gateway
 
@@ -108,37 +102,21 @@ docker run \
 log Starting Applications and configuring service mesh
 
 # Start applications
-# set -x
-# docker exec counter sh -c "PORT=9003 counting-service > /tmp/service.log 2>&1 &"
-# docker exec dashboard sh -c "PORT=9002 COUNTING_SERVICE_URL=\"http://localhost:5000\" dashboard-service > /tmp/service.log 2>&1 &"
-
-
-# Start sidecar proxies
-# docker exec counter sh -c "consul connect envoy -sidecar-for counting-1 > /tmp/proxy.log 2>&1 &"
-# docker exec dashboard sh -c "consul connect envoy -sidecar-for dashboard > /tmp/proxy.log 2>&1 &"
-# set +x
-
-# Start applications
 set -x
-docker exec api sh -c "LISTEN_ADDR=:9003 NAME=api fake-service > /tmp/service.log 2>&1 &"
-docker exec web sh -c "LISTEN_ADDR=:9002 NAME=web UPSTREAM_URIS=\"http://localhost:5000\" fake-service > /tmp/service.log 2>&1 &"
+docker exec counter sh -c "PORT=9003 counting-service > /tmp/service.log 2>&1 &"
+docker exec dashboard sh -c "PORT=9002 COUNTING_SERVICE_URL=\"http://localhost:5000\" dashboard-service > /tmp/service.log 2>&1 &"
 
 
 # Start sidecar proxies
-docker exec api sh -c "consul connect envoy -sidecar-for api-1 > /tmp/proxy.log 2>&1 &"
-docker exec web sh -c "consul connect envoy -sidecar-for web > /tmp/proxy.log 2>&1 &"
+docker exec counter sh -c "consul connect envoy -sidecar-for counting-1 > /tmp/proxy.log 2>&1 &"
+docker exec dashboard sh -c "consul connect envoy -sidecar-for dashboard > /tmp/proxy.log 2>&1 &"
 set +x
-
-
 
 # Configure and start ingress gateway
 docker exec server consul config write /etc/consul.d/default-proxy.hcl
 docker exec server consul config write /etc/consul.d/default-counting.hcl
 docker exec server consul config write /etc/consul.d/default-dashboard.hcl
 docker exec ingress-gw consul config write /etc/consul.d/igw-dashboard.hcl
-docker exec server consul config write /etc/consul.d/default-api.hcl
-docker exec server consul config write /etc/consul.d/default-web.hcl
-docker exec ingress-gw consul config write /etc/consul.d/igw-web.hcl
 docker exec ingress-gw sh -c "consul connect envoy -gateway=ingress -register -service ingress-service -address '{{ GetInterfaceIP \"eth0\" }}:8888' > /tmp/proxy.log 2>&1 &"
 
 IGW_IP=`docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ingress-gw`

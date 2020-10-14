@@ -47,15 +47,10 @@
           { "file": "server.hcl", "target": "./" },
           { "file": "agent.hcl", "target": "./" },
           { "file": "svc-counting.json", "target": "./" },
-          { "file": "svc-dashboard.json", "target": "./" },,
-          { "file": "svc-api.hcl", "target": "./" },
-          { "file": "svc-web.hcl", "target": "./" },
+          { "file": "svc-dashboard.json", "target": "./" },
           { "file": "igw-dashboard.hcl", "target": "./" },
           { "file": "default-counting.hcl", "target": "./" },
           { "file": "default-dashboard.hcl", "target": "./" },
-          { "file": "igw-web.hcl", "target": "./" },
-          { "file": "default-api.hcl", "target": "./" },
-          { "file": "default-web.hcl", "target": "./" },
           { "file": "default-proxy.hcl", "target": "./" }
         ]
     }
