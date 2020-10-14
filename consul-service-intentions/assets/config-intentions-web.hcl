@@ -1,9 +1,17 @@
 Kind = "service-intentions"
-Name = "api"
+Name = "web"
 Sources = [
   {
-    Name   = "web"
-    Action = "allow"
+    Name = "ingress-service"
+    Permissions = [
+      {
+        Action = "allow"
+        HTTP {
+          PathExact = "/ui"
+          Methods   = ["GET"]
+        }
+      }
+    ]
   },
   # NOTE: a default catch-all based on the default ACL policy will apply to
   # unmatched connections and requests. Typically this will be DENY.
