@@ -110,8 +110,8 @@ docker exec dashboard sh -c "PORT=9002 COUNTING_SERVICE_URL=\"http://localhost:5
 
 
 # Start sidecar proxies
-docker exec counter sh -c "consul connect envoy -sidecar-for counting-1 -admin-bind 0.0.0.0:19001 > /tmp/proxy.log 2>&1 &"
-docker exec dashboard sh -c "consul connect envoy -sidecar-for dashboard  -admin-bind 0.0.0.0:19002 > /tmp/proxy.log 2>&1 &"
+docker exec counter sh -c "consul connect envoy -sidecar-for counting-1 -admin-bind 0.0.0.0:19001  -- -l debug> /tmp/proxy.log 2>&1 &"
+docker exec dashboard sh -c "consul connect envoy -sidecar-for dashboard  -admin-bind 0.0.0.0:19002 -- -l debug > /tmp/proxy.log 2>&1 &"
 set +x
 
 # Configure and start ingress gateway
