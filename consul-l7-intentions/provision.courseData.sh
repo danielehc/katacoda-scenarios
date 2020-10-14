@@ -67,6 +67,7 @@ docker run \
     -d \
     -v client_config:/etc/consul.d \
     --name=counter \
+    -p 19001:19001 \
     danielehc/consul-envoy-service:${IMAGE_TAG} \
     consul agent \
      -node=service-1 \
@@ -77,6 +78,7 @@ docker run \
 docker run \
     -d \
     -v client_config:/etc/consul.d \
+    -p 19002:19002 \
     --name=dashboard \
     danielehc/consul-envoy-service:${IMAGE_TAG} \
     consul agent \
@@ -108,8 +110,8 @@ docker exec dashboard sh -c "PORT=9002 COUNTING_SERVICE_URL=\"http://localhost:5
 
 
 # Start sidecar proxies
-docker exec counter sh -c "consul connect envoy -sidecar-for counting-1 > /tmp/proxy.log 2>&1 &"
-docker exec dashboard sh -c "consul connect envoy -sidecar-for dashboard > /tmp/proxy.log 2>&1 &"
+docker exec counter sh -c "consul connect envoy -sidecar-for counting-1 -admin-bind 0.0.0.0:19001 > /tmp/proxy.log 2>&1 &"
+docker exec dashboard sh -c "consul connect envoy -sidecar-for dashboard  -admin-bind 0.0.0.0:19002 > /tmp/proxy.log 2>&1 &"
 set +x
 
 # Configure and start ingress gateway

@@ -1,3 +1,3 @@
 Kind           = "service-defaults"
 Name           = "counting"
-Protocol       = "http"
+Protocol       = "http2"

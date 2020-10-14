@@ -72,6 +72,7 @@ log Starting Consul Clients
 docker run \
     -d \
     -v client_config:/etc/consul.d \
+    -p 19001:19001 \
     --name=api \
     danielehc/consul-envoy-service:${IMAGE_TAG} \
     consul agent \
@@ -84,6 +85,7 @@ docker run \
 docker run \
     -d \
     -v client_config:/etc/consul.d \
+    -p 19002:19002 \
     --name=web \
     danielehc/consul-envoy-service:${IMAGE_TAG} \
     consul agent \
@@ -127,8 +129,8 @@ docker exec web sh -c "LISTEN_ADDR=127.0.0.1:9002 NAME=web UPSTREAM_URIS=\"http:
 
 
 # Start sidecar proxies
-docker exec api sh -c "consul connect envoy -sidecar-for api-1 > /tmp/proxy.log 2>&1 &"
-docker exec web sh -c "consul connect envoy -sidecar-for web > /tmp/proxy.log 2>&1 &"
+docker exec api sh -c "consul connect envoy -sidecar-for api-1 -admin-bind 0.0.0.0:19001 > /tmp/proxy.log 2>&1 &"
+docker exec web sh -c "consul connect envoy -sidecar-for web -admin-bind 0.0.0.0:19002 > /tmp/proxy.log 2>&1 &"
 set +x
 
 # Configure and start ingress gateway
