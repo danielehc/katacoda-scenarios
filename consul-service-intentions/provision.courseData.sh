@@ -83,6 +83,7 @@ docker run \
     -d \
     -v client_config:/etc/consul.d \
     -p 19002:19002 \
+    -p 9002:9002 \
     --name=web \
     danielehc/consul-envoy-service:${IMAGE_TAG} \
     consul agent \
