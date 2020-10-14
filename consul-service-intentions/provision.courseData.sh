@@ -38,6 +38,8 @@ docker cp ./default-dashboard.hcl volumes:/server/default-dashboard.hcl
 docker cp ./default-web.hcl volumes:/server/default-web.hcl
 docker cp ./default-api.hcl volumes:/server/default-api.hcl
 docker cp ./default-proxy.hcl volumes:/server/default-proxy.hcl
+docker cp ./config-intentions-api.hcl volumes:/server/config-intentions-api.hcl
+docker cp ./config-intentions-web.hcl volumes:/server/config-intentions-web.hcl
 
 # Client files
 docker cp ./agent.hcl volumes:/client/agent.hcl
