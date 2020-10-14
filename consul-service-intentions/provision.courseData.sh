@@ -44,9 +44,11 @@ docker cp ./agent.hcl volumes:/client/agent.hcl
 docker cp ./svc-counting.json volumes:/client/svc-counting.json
 docker cp ./svc-dashboard.json volumes:/client/svc-dashboard.json
 docker cp ./igw-dashboard.hcl volumes:/client/igw-dashboard.hcl
-docker cp ./igw-dashboard.hcl volumes:/client/igw-api.hcl
 docker cp ./svc-clone.hcl volumes:/client/svc-clone.hcl
 docker cp ./svc-main.hcl volumes:/client/svc-main.hcl
+docker cp ./igw-api.hcl volumes:/client/igw-api.hcl
+docker cp ./svc-api.hcl volumes:/client/svc-api.hcl
+docker cp ./svc-web.hcl volumes:/client/svc-web.hcl
 
 log Starting Consul Server
 
