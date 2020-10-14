@@ -120,8 +120,8 @@ log Starting Applications and configuring service mesh
 
 # Start applications
 set -x
-docker exec api sh -c "LISTEN_ADDR=9003 NAME=api fake-service > /tmp/service.log 2>&1 &"
-docker exec web sh -c "LISTEN_ADDR=9002 NAME=web UPSTREAM_URIS=\"http://localhost:5000\" fake-service > /tmp/service.log 2>&1 &"
+docker exec api sh -c "LISTEN_ADDR=127.0.0.1:9003 NAME=api fake-service > /tmp/service.log 2>&1 &"
+docker exec web sh -c "LISTEN_ADDR=127.0.0.1:9002 NAME=web UPSTREAM_URIS=\"http://localhost:5000\" fake-service > /tmp/service.log 2>&1 &"
 
 
 # Start sidecar proxies
@@ -142,12 +142,12 @@ docker exec ingress-gw consul config write /etc/consul.d/igw-web.hcl
 docker exec ingress-gw sh -c "consul connect envoy -gateway=ingress -register -service ingress-service -address '{{ GetInterfaceIP \"eth0\" }}:8888' > /tmp/proxy.log 2>&1 &"
 
 IGW_IP=`docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ingress-gw`
-echo "${IGW_IP} counting.ingress.consul" >> /etc/hosts
-echo "${IGW_IP} dashboard.ingress.consul" >> /etc/hosts
+echo "${IGW_IP} api.ingress.consul" >> /etc/hosts
+echo "${IGW_IP} web.ingress.consul" >> /etc/hosts
 
 log Starting External Applications
 
-docker cp dashboard:/usr/local/bin/dashboard-service .
+docker cp api:/usr/local/bin/fake-service .
 
 finish
 
