@@ -37,6 +37,7 @@ docker cp ./default-api.hcl volumes:/server/default-api.hcl
 docker cp ./default-proxy.hcl volumes:/server/default-proxy.hcl
 docker cp ./config-intentions-api.hcl volumes:/server/config-intentions-api.hcl
 docker cp ./config-intentions-web.hcl volumes:/server/config-intentions-web.hcl
+docker cp ./config-intentions-default.hcl volumes:/server/config-intentions-default.hcl
 
 # Client files
 docker cp ./agent.hcl volumes:/client/agent.hcl
@@ -133,12 +134,13 @@ set +x
 
 # Configure and start ingress gateway
 docker exec server consul config write /etc/consul.d/default-proxy.hcl
-docker exec server consul config write /etc/consul.d/default-counting.hcl
-docker exec server consul config write /etc/consul.d/default-dashboard.hcl
-docker exec ingress-gw consul config write /etc/consul.d/igw-dashboard.hcl
+# docker exec server consul config write /etc/consul.d/default-counting.hcl
+# docker exec server consul config write /etc/consul.d/default-dashboard.hcl
+# docker exec ingress-gw consul config write /etc/consul.d/igw-dashboard.hcl
 docker exec server consul config write /etc/consul.d/default-api.hcl
 docker exec server consul config write /etc/consul.d/default-web.hcl
 docker exec ingress-gw consul config write /etc/consul.d/igw-web.hcl
+docker exec server consul config write /etc/consul.d/config-intentions-default.hcl
 docker exec ingress-gw sh -c "consul connect envoy -gateway=ingress -register -service ingress-service -address '{{ GetInterfaceIP \"eth0\" }}:8888' > /tmp/proxy.log 2>&1 &"
 
 IGW_IP=`docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ingress-gw`

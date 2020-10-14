@@ -11,6 +11,13 @@ Sources = [
           Methods   = ["GET"]
         }
       }
+      {
+        Action = "deny"
+        HTTP {
+          PathExact = "/"
+          Methods   = ["GET"]
+        }
+      }
     ]
   },
   # NOTE: a default catch-all based on the default ACL policy will apply to

@@ -58,7 +58,8 @@
           { "file": "default-web.hcl", "target": "./" },
           { "file": "default-proxy.hcl", "target": "./" },
           { "file": "config-intentions-api.hcl", "target": "./" },
-          { "file": "config-intentions-web.hcl", "target": "./" }
+          { "file": "config-intentions-web.hcl", "target": "./" },
+          { "file": "config-intentions-default.hcl", "target": "./" }
         ]
     }
     },
