@@ -88,7 +88,7 @@ docker run \
      -node=service-2 \
      -join=${SERVER_IP} \
      -config-file=/etc/consul.d/agent.hcl \
-     -config-file=/etc/consul.d/svc-dashboard.json
+     -config-file=/etc/consul.d/svc-dashboard.json \
      -config-file=/etc/consul.d/svc-web.hcl
 
 log Starting Ingress Gateway
@@ -120,8 +120,8 @@ log Starting Applications and configuring service mesh
 
 # Start applications
 set -x
-docker exec api sh -c "LISTEN_ADDR=:9003 NAME=api fake-service > /tmp/service.log 2>&1 &"
-docker exec web sh -c "LISTEN_ADDR=:9002 NAME=web UPSTREAM_URIS=\"http://localhost:5000\" fake-service > /tmp/service.log 2>&1 &"
+docker exec api sh -c "LISTEN_ADDR=9003 NAME=api fake-service > /tmp/service.log 2>&1 &"
+docker exec web sh -c "LISTEN_ADDR=9002 NAME=web UPSTREAM_URIS=\"http://localhost:5000\" fake-service > /tmp/service.log 2>&1 &"
 
 
 # Start sidecar proxies
