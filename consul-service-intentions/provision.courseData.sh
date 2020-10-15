@@ -29,24 +29,24 @@ docker container create --name volumes -v server_config:/server -v client_config
 log Copying configuration files 
 
 # Server files
-docker cp ./server.hcl volumes:/server/server.hcl
-docker cp ./default-counting.hcl volumes:/server/default-counting.hcl
-docker cp ./default-dashboard.hcl volumes:/server/default-dashboard.hcl
-docker cp ./default-web.hcl volumes:/server/default-web.hcl
-docker cp ./default-api.hcl volumes:/server/default-api.hcl
-docker cp ./default-proxy.hcl volumes:/server/default-proxy.hcl
-docker cp ./config-intentions-api.hcl volumes:/server/config-intentions-api.hcl
-docker cp ./config-intentions-web.hcl volumes:/server/config-intentions-web.hcl
-docker cp ./config-intentions-default.hcl volumes:/server/config-intentions-default.hcl
+docker cp ./config/server.hcl volumes:/server/server.hcl
+docker cp ./config/default-counting.hcl volumes:/server/default-counting.hcl
+docker cp ./config/default-dashboard.hcl volumes:/server/default-dashboard.hcl
+docker cp ./config/default-web.hcl volumes:/server/default-web.hcl
+docker cp ./config/default-api.hcl volumes:/server/default-api.hcl
+docker cp ./config/default-proxy.hcl volumes:/server/default-proxy.hcl
+docker cp ./config/config-intentions-api.hcl volumes:/server/config-intentions-api.hcl
+docker cp ./config/config-intentions-web.hcl volumes:/server/config-intentions-web.hcl
+docker cp ./config/config-intentions-default.hcl volumes:/server/config-intentions-default.hcl
 
 # Client files
-docker cp ./agent.hcl volumes:/client/agent.hcl
-docker cp ./svc-counting.json volumes:/client/svc-counting.json
-docker cp ./svc-dashboard.json volumes:/client/svc-dashboard.json
-docker cp ./igw-dashboard.hcl volumes:/client/igw-dashboard.hcl
-docker cp ./svc-api.hcl volumes:/client/svc-api.hcl
-docker cp ./svc-web.hcl volumes:/client/svc-web.hcl
-docker cp ./igw-web.hcl volumes:/client/igw-web.hcl
+docker cp ./config/agent.hcl volumes:/client/agent.hcl
+docker cp ./config/svc-counting.json volumes:/client/svc-counting.json
+docker cp ./config/svc-dashboard.json volumes:/client/svc-dashboard.json
+docker cp ./config/igw-dashboard.hcl volumes:/client/igw-dashboard.hcl
+docker cp ./config/svc-api.hcl volumes:/client/svc-api.hcl
+docker cp ./config/svc-web.hcl volumes:/client/svc-web.hcl
+docker cp ./config/igw-web.hcl volumes:/client/igw-web.hcl
 
 log Starting Consul Server
 
@@ -54,7 +54,7 @@ docker run \
   -d \
   -v server_config:/etc/consul.d \
   -p 8500:8500 \
-  -p 8600:8600/udp \
+  -p 53:8600/udp \
   --name=server \
   danielehc/consul-envoy-service:${IMAGE_TAG} \
   consul agent -server -ui \
@@ -143,11 +143,18 @@ docker exec ingress-gw consul config write /etc/consul.d/igw-web.hcl
 docker exec server consul config write /etc/consul.d/config-intentions-default.hcl
 docker exec ingress-gw sh -c "consul connect envoy -gateway=ingress -register -service ingress-service -address '{{ GetInterfaceIP \"eth0\" }}:8888' > /tmp/proxy.log 2>&1 &"
 
-IGW_IP=`docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ingress-gw`
-echo "${IGW_IP} api.ingress.consul" >> /etc/hosts
-echo "${IGW_IP} web.ingress.consul" >> /etc/hosts
+log Configure operator
 
-log Installing Applications Locally
+log - Setting Consul as DNS
+
+echo -en "# Consul DNS Configuration\nDNS=127.0.0.1\nDomains=~consul\n\n" > /etc/resolvconf/resolv.conf.d/head
+systemctl restart resolvconf.service
+
+# IGW_IP=`docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ingress-gw`
+# echo "${IGW_IP} api.ingress.consul" >> /etc/hosts
+# echo "${IGW_IP} web.ingress.consul" >> /etc/hosts
+
+log  - Installing Applications Locally
 
 docker cp api:/usr/local/bin/fake-service /usr/local/bin
 docker cp api:/usr/local/bin/consul /usr/local/bin
