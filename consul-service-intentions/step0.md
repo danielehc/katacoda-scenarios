@@ -1,6 +1,6 @@
 You can check the environment using `docker ps`:
 
-`docker ps --format "{{.Names}}\t\t{{.Ports}}"`{{execute}}
+`docker ps --format "{{.Names}}\t\t{{.Ports}}"`{{execute T1}}
 
 Example output:
 

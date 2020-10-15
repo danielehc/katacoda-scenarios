@@ -53,7 +53,7 @@ If you are interested in checking the configuration files that are being used to
 
 You can inspect the full list of configuration files available for the lab with:
 
-`ls ./config/`{{execute}}
+`ls ./config/`{{execute T2}}
 
 <!--
 | `svc-counting.json`             | Service config - `counting` |
