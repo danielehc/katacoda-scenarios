@@ -76,8 +76,8 @@ echo -en "# Consul DNS Configuration\nnameserver 127.0.0.1\n\n" > /etc/resolvcon
 systemctl restart resolvconf.service
 
 log  - Installing Applications Locally
-docker cp api:/usr/local/bin/fake-service /usr/local/bin
-docker cp api:/usr/local/bin/consul /usr/local/bin
+docker cp server:/usr/local/bin/fake-service /usr/local/bin
+docker cp server:/usr/local/bin/consul /usr/local/bin
 
 log Starting Consul Clients
 
