@@ -147,7 +147,7 @@ log Configure operator
 
 log - Setting Consul as DNS
 
-echo -en "# Consul DNS Configuration\nDNS=127.0.0.1\nDomains=~consul\n\n" > /etc/resolvconf/resolv.conf.d/head
+echo -en "# Consul DNS Configuration\nnameserver 127.0.0.1\n\n" > /etc/resolvconf/resolv.conf.d/head
 systemctl restart resolvconf.service
 
 # IGW_IP=`docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ingress-gw`
