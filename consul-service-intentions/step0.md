@@ -1,131 +1,55 @@
+You can check the environment using `docker ps`:
 
-
-# Set backend to http and apply resolver
-
-```
-Kind           = "service-defaults"
-Name           = "backend"
-Protocol       = "http"
-```
-
-`docker exec server consul config write /etc/consul.d/default.hcl`{{execute}}
+`docker ps --format "{{.Names}}\t\t{{.Ports}}"`{{execute}}
 
 Example output:
 
 ```
-Config entry written: service-defaults/backend
+ingress-gw      0.0.0.0:8080->8080/tcp, 0.0.0.0:8888->8888/tcp, 10000/tcp
+web             0.0.0.0:9002->9002/tcp, 0.0.0.0:19002->19002/tcp, 10000/tcp
+api             10000/tcp, 0.0.0.0:19001->19001/tcp
+server          0.0.0.0:8500->8500/tcp, 0.0.0.0:8600->8600/udp, 10000/tcp
 ```
 
-# Apply resolver for sticky session
+The output shows five running containers each one running a Consul agent.
+
+## Operator node
+
+The server port for Consul is been forwarded to the hosting node so you can use Consul without the need to login to a different node or to run a local agent in order to communicate with Consul. 
+
+You can verify this using `consul members` on the terminal
+
+`consul members`{{execute}}
 
 ```
-Kind           = "service-resolver"
-Name           = "backend"
-LoadBalancer = {
-  EnvoyConfig = {
-    Policy = "maglev"
-    HashPolicies = [
-      {
-        Field = "header"
-        FieldValue = "x-user-id"
-      }
-    ]
-  }
-}
+Node        Address          Status  Type    Build     Protocol  DC   Segment
+server-1    172.18.0.2:8301  alive   server  1.9.0dev  2         dc1  <all>
+ingress-gw  172.18.0.5:8301  alive   client  1.9.0dev  2         dc1  <default>
+service-1   172.18.0.3:8301  alive   client  1.9.0dev  2         dc1  <default>
+service-2   172.18.0.4:8301  alive   client  1.9.0dev  2         dc1  <default>
 ```
 
-`docker exec server consul config write /etc/consul.d/hash-resolver.hcl`{{execute}}
+<div style="background-color:#fcf6ea; color:#866d42; border:1px solid #f8ebcf; padding:1em; border-radius:3px; margin:24px 0;">
+  <p><strong>Production note:</strong> This scenario runs a non-secure configuration for Consul for test purposes. In a production scenario you want to [secure Consul agent communication with TLS encryption](https://learn.hashicorp.com/tutorials/consul/tls-encryption-secure?in=consul/security-networking) to make sure your requests to the Consul datacenter are encrypted. You also want to [secure Consul with Access Control Lists (ACLs)](https://learn.hashicorp.com/tutorials/consul/access-control-setup-production?in=consul/security-networking) to fine tune permissions you can perform from external requests.
 
-Example output:
+</p></div>
 
-```
-Config entry written: service-resolver/backend
-```
+## DNS Configuration
 
-# Run requests against client proxy with header in service resolver
+The DNS for the hosting node has been configured to use Consul as primary DNS.
 
-It should reach the same backend service instance every time
+You can now leverage the Consul DNS directly inside the node:
 
-`docker exec client curl -s localhost:9192 -H "x-user-id: 12345"`{{execute}}
+`ping -c 3 web.service.consul`{execute}
 
-Example output:
+```plaintext
+PING web.service.consul (172.18.0.4) 56(84) bytes of data.
+64 bytes from service-2.node.dc1.consul (172.18.0.4): icmp_seq=1 ttl=64 time=0.044 ms
+64 bytes from service-2.node.dc1.consul (172.18.0.4): icmp_seq=2 ttl=64 time=0.074 ms
+64 bytes from service-2.node.dc1.consul (172.18.0.4): icmp_seq=3 ttl=64 time=0.094 ms
 
-```
-{
-  "name": "main",
-  "uri": "/",
-  "type": "HTTP",
-  "ip_addresses": [
-    "172.18.0.4"
-  ],
-  "start_time": "2020-09-08T16:15:47.950151",
-  "end_time": "2020-09-08T16:15:47.950581",
-  "duration": "430.088µs",
-  "body": "Hello World",
-  "code": 200
-}
+--- web.service.consul ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 1998ms
+rtt min/avg/max/mdev = 0.044/0.070/0.094/0.022 ms
 ```
 
-# Run request with a different user-id and it should stick to a different instance
-
-`docker exec client curl -s localhost:9192 -H "x-user-id: 1010101"`{{execute}}
-
-Example output:
-
-```
-{
-  "name": "clone",
-  "uri": "/",
-  "type": "HTTP",
-  "ip_addresses": [
-    "172.18.0.5"
-  ],
-  "start_time": "2020-09-08T16:15:49.155875",
-  "end_time": "2020-09-08T16:15:49.155979",
-  "duration": "103.381µs",
-  "body": "Hello World",
-  "code": 200
-}
-```
-
-# Apply new resolver with least_request algorithm
-
-```
-Kind           = "service-resolver"
-Name           = "backend"
-LoadBalancer = {
-  EnvoyConfig = {
-    Policy = "least_request"
-  }
-}
-```
-
-`docker exec server consul config write /etc/consul.d/least-req-resolver.hcl`{{execute}}
-
-Example output:
-
-```
-Config entry written: service-resolver/backend
-```
-
-# Requests should bounce around between backend instances
-
-`docker exec client curl -s localhost:9192 -H "x-user-id: 12345"`{{execute}}
-
-Example output:
-
-```
-{
-  "name": "main",
-  "uri": "/",
-  "type": "HTTP",
-  "ip_addresses": [
-    "172.18.0.4"
-  ],
-  "start_time": "2020-09-08T16:15:54.151406",
-  "end_time": "2020-09-08T16:15:54.151885",
-  "duration": "478.867µs",
-  "body": "Hello World",
-  "code": 200
-}
-```

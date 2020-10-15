@@ -6,7 +6,7 @@
     "details": {
         "steps": [
             {
-                "title": "Provisioning Lab Infrastructure",
+                "title": "Lab Infrastructure Provisioning ",
                 "text": "provision.md",
                 "courseData": "provision.courseData.sh",
                 "code": "provision.code.sh",
@@ -15,12 +15,12 @@
             {
                 "title": "Test environment",
                 "code": "set-env.sh",
-                "text": "step1.md"
+                "text": "step0.md"
             },
             {
                 "title": "Configure initial intentions",
                 "code": "set-env.sh",
-                "text": "step2.md"
+                "text": "step1.md"
             },
             {
                 "title": "Configure L7 intentions",
@@ -64,14 +64,24 @@
     }
     },
     "environment": {
-        "showdashboard": true,
-        "dashboard": "Dashboard",
-        "uilayout": "editor-terminal",
+        "uilayout": "terminal-iframe",
         "hideHiddenFiles": true,
         "uimessage1": "\u001b[32mOperator node terminal.\u001b[m\r\n",
+        "showdashboard": false,
+        "dashboard": "Dashboard",
         "dashboards": [
-            {"name": "Consul UI", "port": 8500},
-            {"name": "Ingress GW", "port": 8080}
+            {
+                "name": "Consul UI", 
+                "href": "https://[[HOST_SUBDOMAIN]]-8500-[[KATACODA_HOST]].environments.katacoda.com"
+            },
+            {
+                "name": "Ingress GW", 
+                "href": "https://[[HOST_SUBDOMAIN]]-8080-[[KATACODA_HOST]].environments.katacoda.com"
+            },
+            {
+                "name": "Frontend", 
+                "href": "https://[[HOST_SUBDOMAIN]]-9002-[[KATACODA_HOST]].environments.katacoda.com"
+            }
         ],
         "terminals": [
             {"name": "server", "target": "host01"},

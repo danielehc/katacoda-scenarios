@@ -1,6 +1,7 @@
-# Load balancing in Consul service mesh with Envoy
+# Application Aware Intentions With Consul Service Mesh
 
-In this hands-on lab, you will operate a Consul datacenter, deployed using Docker, to configure load balancing policies on Envoy sidecar proxies.
+In this hands-on lab, you will operate a Consul datacenter, deployed using Docker, to configure application aware intentions.
+
 
 
 
