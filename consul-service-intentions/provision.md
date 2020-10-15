@@ -10,14 +10,19 @@ next step.
  - Creating Docker volumes
  - Copying configuration files
  - Starting Consul Server
- ...
+   ...
+ - Configuring Operator Node
+ - - Setting Consul as DNS
+ - - Installing Applications Locally
  - Starting Consul Clients
- ...
- - Starting Ingress Gateway
- ...
- ...
+   ...
+ - Starting Ingress Gateway Node
+   ...
  - Starting Applications and configuring service mesh
- - Complete! Move on to the next step.
+   ...
+ - Apply Configuration Entries
+   ...
+ - Start Ingress Gateway Instance
 ```
 
 and concluding with
@@ -30,12 +35,33 @@ Once this message appears, you are ready to continue.
 
 ### Configuration files
 
-While you wait for the environment to complete deploy you can review the files you are going to use for this lab later:
+If you are interested in checking the configuration files that are being used to initialize the environment you can find them inside the `config` folder in the editor. Here a list of files with a short description:
 
-| File                              | Description |
-|-----------------------------------|-------------|
-| `server.hcl`              | Server configuration file |
-| `agent.hcl`               | Client configuration file|
+| File                            | Description |
+|---------------------------------|-------------|
+| `agent-server.hcl`              | Server agent config file |
+| `agent-client.hcl`              | Client agent config file |
+| `svc-api.hcl`                   | Service configuration - `api`|
+| `svc-web.hcl`                   | Service configuration - `web`|
+| `igw-web.hcl`                   | Ingress Gateway configuration - `web` | 
+<!--
+| `svc-counting.json`             | Service config - `counting` |
+| `svc-dashboard.json`            | Service config - `dashboard` |
+| `igw-dashboard.hcl`             | Config entry - ingress GW - `dashboard`| 
+-->
+| `config-service-api.hcl`        | Set protocol for `api` to `http` |
+| `config-service-web.hcl`        | Set protocol for `web` to `http` |
+| `config-service-counting.hcl`   | Set protocol for `counting` to `http` |
+| `config-service-dashboard.hcl`  | Set protocol for `dashboard` to `http` |
+| `config-proxy-defaults.hcl`     | Set protocol for Envoy proxies to `http` |
+| `config-intentions-default.hcl` | Intention configuration * => * (deny) |
+
+<!--
+| `config-intentions-api.hcl`     | |
+| `config-intentions-web.hcl`     | |
+
+| `agent-server.hcl`        | Server configuration file |
+| `agent-client.hcl`        | Client configuration file|
 | `default.hcl`             | Service defaults configuration |
 | `hash-resolver.hcl`       | Maglev load balancing policy definition |
 | `least-req-resolver.hcl`  | Least request load balancing policy definition|
@@ -43,3 +69,4 @@ While you wait for the environment to complete deploy you can review the files y
 | `svc-clone.hcl`           | Service configuration file for `backend-clone`|
 | `svc-main.hcl`            | Service configuration file for `backend-main`|
 | `igw-backend.hcl`         | Ingress Gateway central configuration | 
+-->
