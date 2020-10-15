@@ -44,11 +44,6 @@ If you are interested in checking the configuration files that are being used to
 | `svc-api.hcl`                   | Service configuration - `api`|
 | `svc-web.hcl`                   | Service configuration - `web`|
 | `igw-web.hcl`                   | Ingress Gateway configuration - `web` | 
-<!--
-| `svc-counting.json`             | Service config - `counting` |
-| `svc-dashboard.json`            | Service config - `dashboard` |
-| `igw-dashboard.hcl`             | Config entry - ingress GW - `dashboard`| 
--->
 | `config-service-api.hcl`        | Set protocol for `api` to `http` |
 | `config-service-web.hcl`        | Set protocol for `web` to `http` |
 | `config-service-counting.hcl`   | Set protocol for `counting` to `http` |
@@ -56,6 +51,11 @@ If you are interested in checking the configuration files that are being used to
 | `config-proxy-defaults.hcl`     | Set protocol for Envoy proxies to `http` |
 | `config-intentions-default.hcl` | Intention configuration * => * (deny) |
 
+<!--
+| `svc-counting.json`             | Service config - `counting` |
+| `svc-dashboard.json`            | Service config - `dashboard` |
+| `igw-dashboard.hcl`             | Config entry - ingress GW - `dashboard`| 
+-->
 <!--
 | `config-intentions-api.hcl`     | |
 | `config-intentions-web.hcl`     | |
