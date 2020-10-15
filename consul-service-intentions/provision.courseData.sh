@@ -147,9 +147,10 @@ IGW_IP=`docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{en
 echo "${IGW_IP} api.ingress.consul" >> /etc/hosts
 echo "${IGW_IP} web.ingress.consul" >> /etc/hosts
 
-log Starting External Applications
+log Installing Applications Locally
 
-docker cp api:/usr/local/bin/fake-service .
+docker cp api:/usr/local/bin/fake-service /usr/local/bin
+docker cp api:/usr/local/bin/consul /usr/local/bin
 
 finish
 
