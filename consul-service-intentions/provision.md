@@ -35,7 +35,7 @@ Once this message appears, you are ready to continue.
 
 ### Configuration files
 
-If you are interested in checking the configuration files that are being used to initialize the environment you can find them inside the `config` folder in the editor. Here a list of files with a short description:
+If you are interested in checking the configuration files that are being used to initialize the environment you can find them inside the `config` folder in the editor. Here a list of files with a short description.
 
 | File                            | Description |
 |---------------------------------|-------------|
@@ -50,6 +50,10 @@ If you are interested in checking the configuration files that are being used to
 | `config-service-dashboard.hcl`  | Set protocol for `dashboard` to `http` |
 | `config-proxy-defaults.hcl`     | Set protocol for Envoy proxies to `http` |
 | `config-intentions-default.hcl` | Intention configuration `* => * (deny)` |
+
+You can inspect the full list of configuration files available for the lab with:
+
+`ls ./config/`{{execute}}
 
 <!--
 | `svc-counting.json`             | Service config - `counting` |
