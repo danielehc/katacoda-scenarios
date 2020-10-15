@@ -64,7 +64,7 @@ docker run \
     -node=server-1 \
     -bootstrap-expect=1 \
     -client=0.0.0.0 \
-    -config-file=/etc/consul.d/server.hcl
+    -config-file=/etc/consul.d/agent-server.hcl
 
 # Retrieve server IP for client join
 SERVER_IP=`docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' server`
@@ -91,7 +91,7 @@ docker run \
     consul agent \
      -node=service-1 \
      -join=${SERVER_IP} \
-     -config-file=/etc/consul.d/agent.hcl \
+     -config-file=/etc/consul.d/agent-client.hcl \
      -config-file=/etc/consul.d/svc-counting.json \
      -config-file=/etc/consul.d/svc-api.hcl
 
@@ -106,7 +106,7 @@ docker run \
     consul agent \
      -node=service-2 \
      -join=${SERVER_IP} \
-     -config-file=/etc/consul.d/agent.hcl \
+     -config-file=/etc/consul.d/agent-client.hcl \
      -config-file=/etc/consul.d/svc-dashboard.json \
      -config-file=/etc/consul.d/svc-web.hcl
 
@@ -123,7 +123,7 @@ docker run \
     consul agent \
      -node=ingress-gw \
      -join=${SERVER_IP} \
-     -config-file=/etc/consul.d/agent.hcl
+     -config-file=/etc/consul.d/agent-client.hcl
 
 log Starting Applications and configuring service mesh
 
@@ -150,7 +150,7 @@ set +x
 log Apply Configuration Entries
 
 ## Envoy Proxy Defaults
-consul config write ./config/default-proxy.hcl
+consul config write ./config/config-proxy-defaults.hcl
 
 ## Counting - Dashboard Applications
 consul config write ./config/config-service-counting.hcl
