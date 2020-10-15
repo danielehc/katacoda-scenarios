@@ -49,7 +49,7 @@ If you are interested in checking the configuration files that are being used to
 | `config-service-counting.hcl`   | Set protocol for `counting` to `http` |
 | `config-service-dashboard.hcl`  | Set protocol for `dashboard` to `http` |
 | `config-proxy-defaults.hcl`     | Set protocol for Envoy proxies to `http` |
-| `config-intentions-default.hcl` | Intention configuration * => * (deny) |
+| `config-intentions-default.hcl` | Intention configuration `* => * (deny)` |
 
 <!--
 | `svc-counting.json`             | Service config - `counting` |
