@@ -67,8 +67,7 @@
         "uilayout": "terminal-iframe",
         "hideHiddenFiles": true,
         "uimessage1": "\u001b[32mOperator node terminal.\u001b[m\r\n",
-        "showdashboard": false,
-        "dashboard": "Dashboard",
+        "showdashboard": true,
         "dashboards": [
             {
                 "name": "Consul UI", 
@@ -84,8 +83,7 @@
             }
         ],
         "terminals": [
-            {"name": "server", "target": "host01"},
-            {"name": "client", "target": "host01"}
+            {"name": "tty2", "target": "host01"}
         ]
     },
     "backend": {
