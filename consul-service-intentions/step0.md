@@ -40,16 +40,16 @@ The DNS for the hosting node has been configured to use Consul as primary DNS.
 
 You can now leverage the Consul DNS directly inside the node:
 
-`ping -c 3 web.service.consul`{{execute T1}}
+`ping -c 3 api.service.consul`{{execute T1}}
 
 ```plaintext
-PING web.service.consul (172.18.0.4) 56(84) bytes of data.
-64 bytes from service-2.node.dc1.consul (172.18.0.4): icmp_seq=1 ttl=64 time=0.044 ms
-64 bytes from service-2.node.dc1.consul (172.18.0.4): icmp_seq=2 ttl=64 time=0.074 ms
-64 bytes from service-2.node.dc1.consul (172.18.0.4): icmp_seq=3 ttl=64 time=0.094 ms
+PING api.service.consul (172.18.0.3) 56(84) bytes of data.
+64 bytes from service-1.node.dc1.consul (172.18.0.3): icmp_seq=1 ttl=64 time=0.056 ms
+64 bytes from service-1.node.dc1.consul (172.18.0.3): icmp_seq=2 ttl=64 time=0.079 ms
+64 bytes from service-1.node.dc1.consul (172.18.0.3): icmp_seq=3 ttl=64 time=0.057 ms
 
---- web.service.consul ping statistics ---
-3 packets transmitted, 3 received, 0% packet loss, time 1998ms
-rtt min/avg/max/mdev = 0.044/0.070/0.094/0.022 ms
+--- api.service.consul ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 2000ms
+rtt min/avg/max/mdev = 0.056/0.064/0.079/0.010 ms
 ```
 

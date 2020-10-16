@@ -10,7 +10,7 @@ Sources = [
           PathExact = "/ui"
           Methods   = ["GET"]
         }
-      }
+      },
       {
         Action = "deny"
         HTTP {
