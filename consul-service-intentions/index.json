@@ -23,6 +23,11 @@
                 "text": "step1.md"
             },
             {
+                "title": "Permit service communication",
+                "code": "set-env.sh",
+                "text": "step2.md"
+            },
+            {
                 "title": "Configure L7 intentions",
                 "code": "set-env.sh",
                 "text": "step3.md"
@@ -79,7 +84,7 @@
             },
             {
                 "name": "Frontend", 
-                "href": "https://[[HOST_SUBDOMAIN]]-9002-[[KATACODA_HOST]].environments.katacoda.com"
+                "href": "https://[[HOST_SUBDOMAIN]]-9002-[[KATACODA_HOST]].environments.katacoda.com/ui"
             }
         ],
         "terminals": [

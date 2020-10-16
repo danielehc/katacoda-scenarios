@@ -19,7 +19,7 @@ The server port for Consul is been forwarded to the hosting node so you can use 
 
 You can verify this using `consul members` on the terminal
 
-`consul members`{{execute}}
+`consul members`{{execute T1}}
 
 ```
 Node        Address          Status  Type    Build     Protocol  DC   Segment
@@ -40,7 +40,7 @@ The DNS for the hosting node has been configured to use Consul as primary DNS.
 
 You can now leverage the Consul DNS directly inside the node:
 
-`ping -c 3 web.service.consul`{execute}
+`ping -c 3 web.service.consul`{{execute T1}}
 
 ```plaintext
 PING web.service.consul (172.18.0.4) 56(84) bytes of data.
