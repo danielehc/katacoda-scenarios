@@ -38,35 +38,35 @@
                 "text": "step4.md"
             }
         ],
-    "intro": {
-        "text": "intro.md",
-        "code": "courseBase.sh",
-        "credits": "https://learn.hashicorp.com/consul"
+        "intro": {
+            "text": "intro.md",
+            "code": "courseBase.sh",
+            "credits": "https://learn.hashicorp.com/consul"
+            },
+        "finish": {
+            "text": "finish.md",
+            "credits": "https://learn.hashicorp.com/consul"
         },
-    "finish": {
-        "text": "finish.md",
-        "credits": "https://learn.hashicorp.com/consul"
-    },
-    "assets": {
-        "client": [
-          { "file": "agent-server.hcl", "target": "./config/" },
-          { "file": "agent-client.hcl", "target": "./config/" },
-          { "file": "svc-counting.json", "target": "./config/" },
-          { "file": "svc-dashboard.json", "target": "./config/" },
-          { "file": "igw-dashboard.hcl", "target": "./config/" },
-          { "file": "svc-api.hcl", "target": "./config/" },
-          { "file": "svc-web.hcl", "target": "./config/" },
-          { "file": "igw-web.hcl", "target": "./config/" },
-          { "file": "config-service-api.hcl", "target": "./config/" },
-          { "file": "config-service-web.hcl", "target": "./config/" },
-          { "file": "config-service-counting.hcl", "target": "./config/" },
-          { "file": "config-service-dashboard.hcl", "target": "./config/" },
-          { "file": "config-proxy-defaults.hcl", "target": "./config/" },
-          { "file": "config-intentions-default.hcl", "target": "./config/" },
-          { "file": "config-intentions-api.hcl", "target": "./" },
-          { "file": "config-intentions-web.hcl", "target": "./" }
-        ]
-    }
+        "assets": {
+            "client": [
+            { "file": "agent-server.hcl", "target": "./config/" },
+            { "file": "agent-client.hcl", "target": "./config/" },
+            { "file": "svc-counting.json", "target": "./config/" },
+            { "file": "svc-dashboard.json", "target": "./config/" },
+            { "file": "igw-dashboard.hcl", "target": "./config/" },
+            { "file": "svc-api.hcl", "target": "./config/" },
+            { "file": "svc-web.hcl", "target": "./config/" },
+            { "file": "igw-web.hcl", "target": "./config/" },
+            { "file": "config-service-api.hcl", "target": "./config/" },
+            { "file": "config-service-web.hcl", "target": "./config/" },
+            { "file": "config-service-counting.hcl", "target": "./config/" },
+            { "file": "config-service-dashboard.hcl", "target": "./config/" },
+            { "file": "config-proxy-defaults.hcl", "target": "./config/" },
+            { "file": "config-intentions-default.hcl", "target": "./config/" },
+            { "file": "config-intentions-api.hcl", "target": "./" },
+            { "file": "config-intentions-web.hcl", "target": "./" }
+            ]
+        }
     },
     "environment": {
         "uilayout": "terminal-iframe",
@@ -75,7 +75,8 @@
         "showdashboard": true,
         "dashboards": [
             {"name": "Consul UI", "port": 8500},
-            {"name": "Ingress GW", "port": 8080}
+            {"name": "Ingress GW", "port": 8080},
+            {"name": "Frontend", "port": 9002}
         ],
         "terminals": [
             {"name": "tty2", "target": "host01"}

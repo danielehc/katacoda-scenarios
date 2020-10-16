@@ -1,0 +1,3 @@
+The [intention match API](https://www.consul.io/api/connect/intentions#list-matching-intentions) should be periodically called to retrieve all relevant intentions for the target destination. After verifying the TLS client certificate, the cached intentions should be consulted for each incoming connection/request to determine if it should be accepted or rejected.
+
+The default intention behavior is defined by the default ACL policy. If the default ACL policy is "allow all", then all Connect connections are allowed by default. If the default ACL policy is "deny all", then all Connect connections or requests are denied by default.
