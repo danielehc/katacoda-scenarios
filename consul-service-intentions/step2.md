@@ -20,7 +20,7 @@ Sources = [
 This configuration entry defines an intention for service `api` allowing communication started from service `web`.
 
 <div style="background-color:#eff5ff; color:#416f8c; border:1px solid #d0e0ff; padding:1em; border-radius:3px; margin:24px 0;">
-  <p><strong>Info:</strong> This intention is not application aware and does not permit extra filtering on L7 attributes. These intentions are applicable to both tcp anf http service types. 
+  <p><strong>Info:</strong> This intention is not application aware and does not permit extra filtering on L7 attributes. These intentions are applicable to both tcp and http service types. 
 </p></div>
 
 Once you reviewed the fle, apply the configuration with:
@@ -67,4 +67,47 @@ Example output:
   }
 ]
 ```
+
+### Verify service connectivity
+
+If you [open the web frontend UI from inside the node](https://[[HOST_SUBDOMAIN]]-9002-[[KATACODA_HOST]].environments.katacoda.com/ui) yous should be able to verify that the connection is now permitted.
+
+The web service, aside from the web interface also has another endpoint on the root (`/`) that shows a json summary of the call chain across the service upstreams. It is also usable as health check since it will return a `200` code only if all the communication chain is successful:
+
+`curl --silent web.service.consul:9200 | jq`{{execute}}
+
+Example Output
+
+```json
+{
+  "name": "web",
+  "uri": "/",
+  "type": "HTTP",
+  "ip_addresses": [
+    "172.18.0.4"
+  ],
+  ## ...
+  "body": "Hello World",
+  "upstream_calls": [
+    {
+      "name": "api",
+      "uri": "http://localhost:5000",
+      "type": "HTTP",
+      "ip_addresses": [
+        "172.18.0.3"
+      ],
+      ## ...
+      "headers": {
+        ## ...
+      },
+      "body": "Hello World",
+      "code": 200
+    }
+  ],
+  "code": 200
+}
+```
+
+
+
 

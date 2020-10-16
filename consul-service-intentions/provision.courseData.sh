@@ -92,8 +92,9 @@ docker run \
      -node=service-1 \
      -join=${SERVER_IP} \
      -config-file=/etc/consul.d/agent-client.hcl \
-     -config-file=/etc/consul.d/svc-counting.json \
      -config-file=/etc/consul.d/svc-api.hcl
+
+# -config-file=/etc/consul.d/svc-counting.json \
 
 ## FRONTEND
 docker run \
@@ -107,8 +108,9 @@ docker run \
      -node=service-2 \
      -join=${SERVER_IP} \
      -config-file=/etc/consul.d/agent-client.hcl \
-     -config-file=/etc/consul.d/svc-dashboard.json \
      -config-file=/etc/consul.d/svc-web.hcl
+
+#  -config-file=/etc/consul.d/svc-dashboard.json \
 
 log Starting Ingress Gateway Node
 
