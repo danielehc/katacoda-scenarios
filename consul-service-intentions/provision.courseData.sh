@@ -161,7 +161,7 @@ consul config write ./config/igw-dashboard.hcl
 ## fake-service web/api
 consul config write ./config/config-service-api.hcl
 consul config write ./config/config-service-web.hcl
-consul config write ./config/igw-web.hcl
+# consul config write ./config/igw-web.hcl
 
 ## Default Deny intention
 ## [TODO] will be enabled by ACL default policy
