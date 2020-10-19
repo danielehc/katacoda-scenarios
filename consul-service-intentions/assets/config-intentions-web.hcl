@@ -14,7 +14,7 @@ Sources = [
       {
         Action = "deny"
         HTTP {
-          PathExact = "/"
+          PathExact = "/heath"
           Methods   = ["GET"]
         }
       }
