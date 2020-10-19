@@ -70,7 +70,7 @@ Example output:
 
 ### Verify service connectivity
 
-If you [open the web frontend UI from inside the node](https://[[HOST_SUBDOMAIN]]-9002-[[KATACODA_HOST]].environments.katacoda.com/ui) yous should be able to verify that the connection is now permitted.
+If you [open the web frontend UI from inside the node](https://[[HOST_SUBDOMAIN]]-9002-[[KATACODA_HOST]].environments.katacoda.com) yous should be able to verify that the connection is now permitted.
 
 The web service, aside from the web interface also has another endpoint on the root (`/`) that shows a json summary of the call chain across the service upstreams. It is also usable as health check since it will return a `200` code only if all the communication chain is successful:
 

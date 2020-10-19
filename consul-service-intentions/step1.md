@@ -12,6 +12,6 @@ You should get a configuration similar to one in the following picture:
 
 To prove the services are not able to communicate you can connect to the `web` service running on one of the client agents.
 
-[Open Web frontend UI from inside the node](https://[[HOST_SUBDOMAIN]]-9002-[[KATACODA_HOST]].environments.katacoda.com/ui)
+[Open Web frontend UI from inside the node](https://[[HOST_SUBDOMAIN]]-9002-[[KATACODA_HOST]].environments.katacoda.com)
 
 ![frontend fail](web-service-ui-fail.png)

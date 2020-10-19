@@ -55,7 +55,7 @@ Config entry written: service-intentions/web
 
 ### Verify service connectivity
 
-If you [open the ingress gateway](https://[[HOST_SUBDOMAIN]]-8080-[[KATACODA_HOST]].environments.katacoda.com/ui) yous should be able to verify that the connection is now permitted.
+If you [open the ingress gateway](https://[[HOST_SUBDOMAIN]]-8080-[[KATACODA_HOST]].environments.katacoda.com) yous should be able to verify that the connection is now permitted.
 
 And you can verify the `/` endpoint is actually denied:
 
