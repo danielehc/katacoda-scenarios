@@ -92,8 +92,9 @@ docker run \
      -node=service-1 \
      -join=${SERVER_IP} \
      -config-file=/etc/consul.d/agent-client.hcl \
-     -config-file=/etc/consul.d/svc-api.hcl \
-     -config-file=/etc/consul.d/svc-counting.json
+     -config-file=/etc/consul.d/svc-api.hcl
+
+# -config-file=/etc/consul.d/svc-counting.json \
 
 ## FRONTEND
 docker run \
@@ -107,9 +108,9 @@ docker run \
      -node=service-2 \
      -join=${SERVER_IP} \
      -config-file=/etc/consul.d/agent-client.hcl \
-     -config-file=/etc/consul.d/svc-web.hcl \
-     -config-file=/etc/consul.d/svc-dashboard.json
+     -config-file=/etc/consul.d/svc-web.hcl
 
+#  -config-file=/etc/consul.d/svc-dashboard.json \
 
 log Starting Ingress Gateway Node
 
@@ -129,24 +130,24 @@ docker run \
 log Starting Applications and configuring service mesh
 
 # Start applications
-set -x
-docker exec counter sh -c "PORT=9003 counting-service > /tmp/service.log 2>&1 &"
-docker exec dashboard sh -c "PORT=9002 COUNTING_SERVICE_URL=\"http://localhost:5000\" dashboard-service > /tmp/service.log 2>&1 &"
+# set -x
+# docker exec counter sh -c "PORT=9003 counting-service > /tmp/service.log 2>&1 &"
+# docker exec dashboard sh -c "PORT=9002 COUNTING_SERVICE_URL=\"http://localhost:5000\" dashboard-service > /tmp/service.log 2>&1 &"
 
 # Start sidecar proxies
-docker exec counter sh -c "consul connect envoy -sidecar-for counting-1 > /tmp/proxy.log 2>&1 &"
-docker exec dashboard sh -c "consul connect envoy -sidecar-for dashboard > /tmp/proxy.log 2>&1 &"
-set +x
-
-# # Start applications
-# set -x
-# docker exec api sh -c "LISTEN_ADDR=127.0.0.1:9003 NAME=api fake-service > /tmp/service.log 2>&1 &"
-# docker exec web sh -c "LISTEN_ADDR=0.0.0.0:9002 NAME=web UPSTREAM_URIS=\"http://localhost:5000\" fake-service > /tmp/service.log 2>&1 &"
-
-# # Start sidecar proxies
-# docker exec api sh -c "consul connect envoy -sidecar-for api-1 -admin-bind 0.0.0.0:19001 > /tmp/proxy.log 2>&1 &"
-# docker exec web sh -c "consul connect envoy -sidecar-for web -admin-bind 0.0.0.0:19001 > /tmp/proxy.log 2>&1 &"
+# docker exec counter sh -c "consul connect envoy -sidecar-for counting-1 > /tmp/proxy.log 2>&1 &"
+# docker exec dashboard sh -c "consul connect envoy -sidecar-for dashboard > /tmp/proxy.log 2>&1 &"
 # set +x
+
+# Start applications
+set -x
+docker exec api sh -c "LISTEN_ADDR=127.0.0.1:9003 NAME=api fake-service > /tmp/service.log 2>&1 &"
+docker exec web sh -c "LISTEN_ADDR=0.0.0.0:9002 NAME=web UPSTREAM_URIS=\"http://localhost:5000\" fake-service > /tmp/service.log 2>&1 &"
+
+# Start sidecar proxies
+docker exec api sh -c "consul connect envoy -sidecar-for api-1 -admin-bind 0.0.0.0:19001 > /tmp/proxy.log 2>&1 &"
+docker exec web sh -c "consul connect envoy -sidecar-for web -admin-bind 0.0.0.0:19001 > /tmp/proxy.log 2>&1 &"
+set +x
 
 log Apply Configuration Entries
 
