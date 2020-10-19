@@ -1,7 +1,7 @@
 
 Once you verified connectivity between `web` and `api` next step is to expose your web interface outside the mesh using the ingress gateway.
 
-You do not want to expose the root (`/`) path outside the mesh because, being used to monitor the health of the service it reveal details about the infrastructure state externally.
+You do not want to expose the root (`/health`) path outside the mesh because, being used to monitor the health of the service, it reveals details about the infrastructure state externally.
 
 Consul 1.9.0, with the `service-intention` config entry introduction also implemented a more powerful implementation of intentions for `http` services.
 
@@ -26,7 +26,7 @@ Sources = [
       {
         Action = "deny"
         HTTP {
-          PathExact = "/"
+          PathExact = "/health"
           Methods   = ["GET"]
         }
       }
@@ -37,7 +37,7 @@ Sources = [
 ]
 ```
 
-This configuration entry defines an intention for service `web` allowing GET http requests on `/ui` path and denying those on `/` started from service `ingress-service`, that is the service we configured as the ingress service representing `web` outside the mesh.
+This configuration entry defines an intention for service `web` allowing GET http requests on `/ui` path and denying those on `/health` started from service `ingress-service`, that is the service we configured as the ingress service representing `web` outside the mesh.
 
 <div style="background-color:#eff5ff; color:#416f8c; border:1px solid #d0e0ff; padding:1em; border-radius:3px; margin:24px 0;">
   <p><strong>Info:</strong> This intention is application aware and performs extra filtering on L7 attributes. These intentions are applicable only to http service types. Tcp services are not allowed to be defined as destination for an application aware intention. 
@@ -57,9 +57,9 @@ Config entry written: service-intentions/web
 
 If you [open the ingress gateway](https://[[HOST_SUBDOMAIN]]-8080-[[KATACODA_HOST]].environments.katacoda.com/ui) yous should be able to verify that the connection is now permitted.
 
-And you can verify the `/` endpoint is actually denied:
+And you can verify the `/health` endpoint is actually denied:
 
-`curl --silent web.ingress.consul:8080`{{execute}}
+`curl --silent web.ingress.consul:8080/health`{{execute}}
 
 Example Output
 
