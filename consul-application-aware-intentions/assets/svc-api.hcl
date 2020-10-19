@@ -7,7 +7,7 @@ service = {
   }
   check = {
     id = "api-check"
-    http = "http://localhost:9003"
+    http = "http://localhost:9003/health"
     method = "GET"
     interval = "1s"
     timeout = "1s"
