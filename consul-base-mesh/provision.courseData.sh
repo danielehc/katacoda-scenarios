@@ -22,11 +22,16 @@ docker pull ${IMAGE_NAME}:${IMAGE_TAG} > /dev/null
 
 log  Configuring Operator node
 
-docker rm-f $(docker ps -aq)
+docker rm -f $(docker ps -aq)
 
 log - Install Consul 
-docker run --rm --entrypoint /bin/sh ${IMAGE_NAME}:${IMAGE_TAG} -c "cat /usr/local/bin/consul" > /usr/local/bin/consul
+docker run --rm --entrypoint /bin/sh \
+  ${IMAGE_NAME}:${IMAGE_TAG} \
+  -c "cat /usr/local/bin/consul" > /usr/local/bin/consul
+
 chmod +x /usr/local/bin/consul
+
+consul -autocomplete-install
 
 log - Generates gertificates and keys
 
@@ -36,7 +41,6 @@ mkdir -p ./config/certs
 pushd ./config/certs
 
 consul tls ca create
-
 # ==> Saved consul-agent-ca.pem
 # ==> Saved consul-agent-ca-key.pem
 
@@ -49,20 +53,28 @@ consul tls cert create -server
 # ==> Saved dc1-server-consul-0.pem
 # ==> Saved dc1-server-consul-0-key.pem
 
-tree .
-
 popd
 
 log Creating Docker volumes
 
 docker volume create server_config > /dev/null
 docker volume create client_config > /dev/null
-docker container create --name volumes -v server_config:/server -v client_config:/client alpine > /dev/null
+docker container create \
+  --name volumes \
+  -v server_config:/server \
+  -v client_config:/client \
+  alpine > /dev/null
 
 log Copying configuration files 
 
 # Server files
 docker cp ./config/agent-server.hcl volumes:/server/agent-server.hcl
+docker cp ./config/agent-server-secure.hcl volumes:/server/agent-server-secure.hcl
+
+## Certs
+docker cp ./config/certs/consul-agent-ca.pem volumes:/server/consul-agent-ca.pem
+docker cp ./config/certs/dc1-server-consul-0.pem volumes:/server/dc1-server-consul-0.pem
+docker cp ./config/certs/dc1-server-consul-0-key.pem volumes:/server/dc1-server-consul-0-key.pem
 
 # Client files
 docker cp ./config/agent-client.hcl volumes:/client/agent-client.hcl
@@ -71,19 +83,8 @@ docker cp ./config/svc-web.hcl volumes:/client/svc-web.hcl
 docker cp ./config/svc-counting.json volumes:/client/svc-counting.json
 docker cp ./config/svc-dashboard.json volumes:/client/svc-dashboard.json
 
-# Not copying them anymore and applying them from the operator node
-# docker cp ./config/default-counting.hcl volumes:/server/default-counting.hcl
-# docker cp ./config/default-dashboard.hcl volumes:/server/default-dashboard.hcl
-# docker cp ./config/default-web.hcl volumes:/server/default-web.hcl
-# docker cp ./config/default-api.hcl volumes:/server/default-api.hcl
-# docker cp ./config/default-proxy.hcl volumes:/server/default-proxy.hcl
-# docker cp ./config/config-intentions-api.hcl volumes:/server/config-intentions-api.hcl
-# docker cp ./config/config-intentions-web.hcl volumes:/server/config-intentions-web.hcl
-# docker cp ./config/config-intentions-default.hcl volumes:/server/config-intentions-default.hcl
-# 
-# docker cp ./config/igw-dashboard.hcl volumes:/client/igw-dashboard.hcl
-# docker cp ./config/igw-web.hcl volumes:/client/igw-web.hcl
- 
+## Certs
+docker cp ./config/certs/consul-agent-ca.pem volumes:/client/consul-agent-ca.pem
 
 log Starting Consul Server
 
