@@ -28,7 +28,7 @@ docker pull ${IMAGE_NAME}:${IMAGE_TAG} > /dev/null
 # +-------------------------------------------------------+
 # | OPERATOR NODE                                         |
 # +-------------------------------------------------------+
-  header Configuring Operator node
+  header "Configuring Operator node"
 # +-------------------------------------------------------+
 
 ## Idempotency attempt (TO-DO)
@@ -127,7 +127,7 @@ docker cp ./config/certs/consul-agent-ca.pem volumes:/client/consul-agent-ca.pem
 # +-------------------------------------------------------+
 # | SERVER AGENTS                                         |
 # +-------------------------------------------------------+
-  header Starting Consul Servers
+  header "Starting Consul Servers"
 # +-------------------------------------------------------+
 
 docker run \
@@ -149,7 +149,7 @@ SERVER_IP=`docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{
 # +-------------------------------------------------------+
 # | CLIENT AGENTS                                         |
 # +-------------------------------------------------------+
-  header Starting Consul Clients
+  header "Starting Consul Clients"
 # +-------------------------------------------------------+
 
 # ++-----------------+
@@ -208,7 +208,7 @@ docker run \
 # +-------------------------------------------------------+
 # | SERVICE MESH                                          |
 # +-------------------------------------------------------+
-  header Starting Applications and configuring service mesh
+  header "Starting Applications and configuring service mesh"
 # +-------------------------------------------------------+
 
 # ++-----------------+
