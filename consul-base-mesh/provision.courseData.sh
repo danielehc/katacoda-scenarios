@@ -10,8 +10,6 @@ finish() {
   log "Complete!  Move on to the next step."
 }
 
-
-
 log "Install prerequisites"
 # apt-get install -y apt-utils > /dev/null
 apt-get install -y unzip curl jq > /dev/null
@@ -55,7 +53,7 @@ docker cp ./config/svc-dashboard.json volumes:/client/svc-dashboard.json
 # docker cp ./config/igw-web.hcl volumes:/client/igw-web.hcl
  
 log  - Installing Applications Locally
-docker run --rm --entrypoint /bin/sh danielehc/consul-envoy-service:${IMAGE_TAG} -c "cat /usr/local/bin/consul" > /usr/local/bin/consul
+docker run --rm --entrypoint /bin/sh ${IMAGE_NAME}:${IMAGE_TAG} -c "cat /usr/local/bin/consul" > /usr/local/bin/consul
 chmod +x /usr/local/bin/consul
 
 consul version
