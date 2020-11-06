@@ -1,8 +1,8 @@
 {
-    "pathwayTitle": "Application aware intentions in Consul service mesh with Envoy",
+    "pathwayTitle": "Consul Service Mesh Base Scenario",
     "icon": "fa-consul",
-    "title": "Application aware intentions in Consul service mesh with Envoy",
-    "description": "Setup intentions as config entries and create L7 intentions for HTTP traffic permissions",
+    "title": "Consul Service Mesh Base Scenario",
+    "description": "Base Environemnt for testing Consul service mesh in tutorials",
     "details": {
         "steps": [
             {
@@ -33,7 +33,7 @@
                 "text": "step3.md"
             },
             {
-                "title": "Test Ingress GW",
+                "title": "Use API to test intentions",
                 "code": "set-env.sh",
                 "text": "step4.md"
             }
@@ -51,6 +51,8 @@
             "client": [
             { "file": "agent-server.hcl", "target": "./config/" },
             { "file": "agent-client.hcl", "target": "./config/" },
+            { "file": "agent-server-secure.hcl", "target": "./config/" },
+            { "file": "agent-client-secure.hcl", "target": "./config/" },
             { "file": "svc-counting.json", "target": "./config/" },
             { "file": "svc-dashboard.json", "target": "./config/" },
             { "file": "igw-dashboard.hcl", "target": "./config/" },

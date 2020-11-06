@@ -16,9 +16,9 @@ apt-get install -y unzip curl jq > /dev/null
 
 log Pulling Docker Image
 
-IMAGE_TAG=v1.9.0-beta1-v1.15.0
+IMAGE_TAG=v1.8.4-v1.15.0
 
-docker pull danielehc/consul-envoy-service:${IMAGE_TAG} > /dev/null
+docker pull danielehc/consul-learn-image:${IMAGE_TAG} > /dev/null
 
 log Creating Docker volumes
 
@@ -51,6 +51,12 @@ docker cp ./config/svc-dashboard.json volumes:/client/svc-dashboard.json
 # docker cp ./config/igw-dashboard.hcl volumes:/client/igw-dashboard.hcl
 # docker cp ./config/igw-web.hcl volumes:/client/igw-web.hcl
  
+log  - Installing Applications Locally
+docker run --rm --entrypoint /bin/sh danielehc/consul-envoy-service:${IMAGE_TAG} -c "cat /usr/local/bin/consul" > /usr/local/bin/consul
+chmod +x /usr/local/bin/consul
+
+consul version
+
 log Starting Consul Server
 
 docker run \
@@ -77,7 +83,7 @@ systemctl restart resolvconf.service
 
 log  - Installing Applications Locally
 docker cp server:/usr/local/bin/fake-service /usr/local/bin
-docker cp server:/usr/local/bin/consul /usr/local/bin
+# docker cp server:/usr/local/bin/consul /usr/local/bin
 
 log Starting Consul Clients
 
@@ -92,9 +98,8 @@ docker run \
      -node=service-1 \
      -join=${SERVER_IP} \
      -config-file=/etc/consul.d/agent-client.hcl \
-     -config-file=/etc/consul.d/svc-api.hcl
-
-# -config-file=/etc/consul.d/svc-counting.json \
+     -config-file=/etc/consul.d/svc-api.hcl \
+     -config-file=/etc/consul.d/svc-counting.json
 
 ## FRONTEND
 docker run \
@@ -108,9 +113,9 @@ docker run \
      -node=service-2 \
      -join=${SERVER_IP} \
      -config-file=/etc/consul.d/agent-client.hcl \
-     -config-file=/etc/consul.d/svc-web.hcl
+     -config-file=/etc/consul.d/svc-web.hcl \
+     -config-file=/etc/consul.d/svc-dashboard.json
 
-#  -config-file=/etc/consul.d/svc-dashboard.json \
 
 log Starting Ingress Gateway Node
 
@@ -129,14 +134,14 @@ docker run \
 
 log Starting Applications and configuring service mesh
 
-# Start applications
+# # Start applications
 # set -x
-# docker exec counter sh -c "PORT=9003 counting-service > /tmp/service.log 2>&1 &"
-# docker exec dashboard sh -c "PORT=9002 COUNTING_SERVICE_URL=\"http://localhost:5000\" dashboard-service > /tmp/service.log 2>&1 &"
+# docker exec api sh -c "PORT=9003 counting-service > /tmp/service.log 2>&1 &"
+# docker exec web sh -c "PORT=9002 COUNTING_SERVICE_URL=\"http://localhost:5000\" dashboard-service > /tmp/service.log 2>&1 &"
 
-# Start sidecar proxies
-# docker exec counter sh -c "consul connect envoy -sidecar-for counting-1 > /tmp/proxy.log 2>&1 &"
-# docker exec dashboard sh -c "consul connect envoy -sidecar-for dashboard > /tmp/proxy.log 2>&1 &"
+# # Start sidecar proxies
+# docker exec api sh -c "consul connect envoy -sidecar-for counting-1 > /tmp/proxy.log 2>&1 &"
+# docker exec web sh -c "consul connect envoy -sidecar-for dashboard > /tmp/proxy.log 2>&1 &"
 # set +x
 
 # Start applications
@@ -162,21 +167,11 @@ consul config write ./config/igw-dashboard.hcl
 ## fake-service web/api
 consul config write ./config/config-service-api.hcl
 consul config write ./config/config-service-web.hcl
-consul config write ./config/igw-web.hcl
+# consul config write ./config/igw-web.hcl
 
 ## Default Deny intention
 ## [TODO] will be enabled by ACL default policy
 consul config write ./config/config-intentions-default.hcl
-
-# # Configure and start ingress gateway
-# docker exec server consul config write /etc/consul.d/default-proxy.hcl
-# # docker exec server consul config write /etc/consul.d/default-counting.hcl
-# # docker exec server consul config write /etc/consul.d/default-dashboard.hcl
-# # docker exec ingress-gw consul config write /etc/consul.d/igw-dashboard.hcl
-# docker exec server consul config write /etc/consul.d/default-api.hcl
-# docker exec server consul config write /etc/consul.d/default-web.hcl
-# docker exec ingress-gw consul config write /etc/consul.d/igw-web.hcl
-# docker exec server consul config write /etc/consul.d/config-intentions-default.hcl
 
 log Start Ingress Gateway Instance
 docker exec ingress-gw sh -c "consul connect envoy -gateway=ingress -register -service ingress-service -address '{{ GetInterfaceIP \"eth0\" }}:8888' > /tmp/proxy.log 2>&1 &"
