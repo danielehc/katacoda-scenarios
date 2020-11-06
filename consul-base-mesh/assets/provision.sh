@@ -19,11 +19,26 @@ IMAGE_TAG=v1.8.4-v1.15.0
 
 docker pull ${IMAGE_NAME}:${IMAGE_TAG} > /dev/null
 
-log  Configuring Operator node
+# +-------------------------------------------------------+
+# | OPERATOR NODE                                         |
+# +-------------------------------------------------------+
+  log  Configuring Operator node
+# +-------------------------------------------------------+
 
+## Idempotency attempt (TO-DO)
 docker rm -f $(docker ps -aq)
 
-log - Install Consul 
+## DNS Config
+log - Setting Consul as DNS
+echo -en "# Consul DNS Configuration\nnameserver 127.0.0.1\n\n" > /etc/resolvconf/resolv.conf.d/head
+systemctl restart resolvconf.service
+
+# ++-----------------+
+# || Binaries        |
+# ++-----------------+
+log - Installing Binaries Locally 
+
+## consul
 docker run --rm --entrypoint /bin/sh \
   ${IMAGE_NAME}:${IMAGE_TAG} \
   -c "cat /usr/local/bin/consul" > /usr/local/bin/consul
@@ -32,14 +47,24 @@ chmod +x /usr/local/bin/consul
 
 consul -autocomplete-install
 
-log - Generates gertificates and keys
+## fake-service
+docker run --rm --entrypoint /bin/sh \
+  ${IMAGE_NAME}:${IMAGE_TAG} \
+  -c "cat /usr/local/bin/fake-service" > /usr/local/bin/fake-service
 
+# ++-----------------+
+# || Consul Config   |
+# ++-----------------+
+log - Generate certificates and keys
+
+# Gossip Encryption Key
 CONSUL_GOSSIP_KEY=`consul keygen`
 
+# mTLS Certificates
 mkdir -p ./config/certs
 pushd ./config/certs
 
-consul tls ca create
+consul tls ca create 
 # ==> Saved consul-agent-ca.pem
 # ==> Saved consul-agent-ca-key.pem
 
@@ -59,6 +84,9 @@ consul tls cert create -cli
 
 popd
 
+# ++-----------------+
+# || Distribution    |
+# ++-----------------+
 log Creating Docker volumes
 
 docker volume create server_config > /dev/null
@@ -90,7 +118,11 @@ docker cp ./config/svc-dashboard.json volumes:/client/svc-dashboard.json
 ## Certs
 docker cp ./config/certs/consul-agent-ca.pem volumes:/client/consul-agent-ca.pem
 
-log Starting Consul Server
+# +-------------------------------------------------------+
+# | SERVER AGENTS                                         |
+# +-------------------------------------------------------+
+  log Starting Consul Server
+# +-------------------------------------------------------+
 
 docker run \
   -d \
@@ -108,19 +140,19 @@ docker run \
 # Retrieve server IP for client join
 SERVER_IP=`docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' server`
 
-log Configuring Operator Node
+# +-------------------------------------------------------+
+# | CLIENT AGENTS                                         |
+# +-------------------------------------------------------+
+  log Starting Consul Clients
+# +-------------------------------------------------------+
 
-log - Setting Consul as DNS
-echo -en "# Consul DNS Configuration\nnameserver 127.0.0.1\n\n" > /etc/resolvconf/resolv.conf.d/head
-systemctl restart resolvconf.service
+# ++-----------------+
+# || Services        |
+# ++-----------------+
 
-log  - Installing Applications Locally
-docker cp server:/usr/local/bin/fake-service /usr/local/bin
-# docker cp server:/usr/local/bin/consul /usr/local/bin
+## BACKEND (TO-DO)
 
-log Starting Consul Clients
-
-## BACKEND
+## API
 docker run \
     -d \
     -v client_config:/etc/consul.d \
@@ -149,10 +181,12 @@ docker run \
      -config-file=/etc/consul.d/svc-web.hcl \
      -config-file=/etc/consul.d/svc-dashboard.json
 
-
-log Starting Ingress Gateway Node
+# ++-----------------+
+# || Gateways        |
+# ++-----------------+
 
 ## INGRESS GW
+log Starting Ingress Gateway Node
 docker run \
     -d \
     -v client_config:/etc/consul.d \
@@ -165,41 +199,45 @@ docker run \
      -join=${SERVER_IP} \
      -config-file=/etc/consul.d/agent-client.hcl
 
-log Starting Applications and configuring service mesh
+# +-------------------------------------------------------+
+# | SERVICE MESH                                          |
+# +-------------------------------------------------------+
+  log Starting Applications and configuring service mesh
+# +-------------------------------------------------------+
 
-# Start applications
-
-## [FAKE-SERVICE]
-set -x
-docker exec api sh -c "LISTEN_ADDR=127.0.0.1:9003 NAME=api fake-service > /tmp/service.log 2>&1 &"
-docker exec web sh -c "LISTEN_ADDR=0.0.0.0:9002 NAME=web UPSTREAM_URIS=\"http://localhost:5000\" fake-service > /tmp/service.log 2>&1 &"
-
-# Start sidecar proxies
-docker exec api sh -c "consul connect envoy -sidecar-for api-1 -admin-bind 0.0.0.0:19001 > /tmp/proxy.log 2>&1 &"
-docker exec web sh -c "consul connect envoy -sidecar-for web -admin-bind 0.0.0.0:19001 > /tmp/proxy.log 2>&1 &"
-set +x
-## [FAKE-SERVICE]
-
-log Apply Configuration Entries
+# ++-----------------+
+# || Config          |
+# ++-----------------+
+log - Apply Configuration Entries
 
 ## Envoy Proxy Defaults
 consul config write ./config/config-proxy-defaults.hcl
 
-## Counting - Dashboard Applications
-consul config write ./config/config-service-counting.hcl
-consul config write ./config/config-service-dashboard.hcl
-consul config write ./config/igw-dashboard.hcl
-
 ## fake-service web/api
 consul config write ./config/config-service-api.hcl
 consul config write ./config/config-service-web.hcl
-# consul config write ./config/igw-web.hcl
+consul config write ./config/igw-web.hcl
 
 ## Default Deny intention
 ## [TODO] will be enabled by ACL default policy
 # consul config write ./config/config-intentions-default.hcl
 
-log Start Ingress Gateway Instance
+# ++-----------------+
+# || Deploy          |
+# ++-----------------+
+log - Deploy Services and start sidecar proxies
+## [FAKE-SERVICE]
+docker exec api sh -c "LISTEN_ADDR=127.0.0.1:9003 NAME=api fake-service > /tmp/service.log 2>&1 &"
+docker exec web sh -c "LISTEN_ADDR=0.0.0.0:9002 NAME=web UPSTREAM_URIS=\"http://localhost:5000\" fake-service > /tmp/service.log 2>&1 &"
+# Start sidecar proxies
+docker exec api sh -c "consul connect envoy -sidecar-for api-1 -admin-bind 0.0.0.0:19001 > /tmp/proxy.log 2>&1 &"
+docker exec web sh -c "consul connect envoy -sidecar-for web -admin-bind 0.0.0.0:19001 > /tmp/proxy.log 2>&1 &"
+## [FAKE-SERVICE]
+
+# ++-----------------+
+# || Federate        |
+# ++-----------------+
+log - Start Ingress Gateway Instance
 docker exec ingress-gw sh -c "consul connect envoy -gateway=ingress -register -service ingress-service -address '{{ GetInterfaceIP \"eth0\" }}:8888' > /tmp/proxy.log 2>&1 &"
 
 finish
