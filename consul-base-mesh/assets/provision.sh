@@ -4,6 +4,12 @@ log() {
   echo $(date) - ${@}
 }
 
+header() {
+  echo " ++--------- " 
+  echo " ||  ${1}"
+  echo " ++----      " 
+}
+
 finish() {
   touch /provision_complete
   log "Complete!  Move on to the next step."
@@ -22,7 +28,7 @@ docker pull ${IMAGE_NAME}:${IMAGE_TAG} > /dev/null
 # +-------------------------------------------------------+
 # | OPERATOR NODE                                         |
 # +-------------------------------------------------------+
-  log  Configuring Operator node
+  header Configuring Operator node
 # +-------------------------------------------------------+
 
 ## Idempotency attempt (TO-DO)
@@ -121,7 +127,7 @@ docker cp ./config/certs/consul-agent-ca.pem volumes:/client/consul-agent-ca.pem
 # +-------------------------------------------------------+
 # | SERVER AGENTS                                         |
 # +-------------------------------------------------------+
-  log Starting Consul Server
+  header Starting Consul Servers
 # +-------------------------------------------------------+
 
 docker run \
@@ -143,7 +149,7 @@ SERVER_IP=`docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{
 # +-------------------------------------------------------+
 # | CLIENT AGENTS                                         |
 # +-------------------------------------------------------+
-  log Starting Consul Clients
+  header Starting Consul Clients
 # +-------------------------------------------------------+
 
 # ++-----------------+
@@ -202,7 +208,7 @@ docker run \
 # +-------------------------------------------------------+
 # | SERVICE MESH                                          |
 # +-------------------------------------------------------+
-  log Starting Applications and configuring service mesh
+  header Starting Applications and configuring service mesh
 # +-------------------------------------------------------+
 
 # ++-----------------+
