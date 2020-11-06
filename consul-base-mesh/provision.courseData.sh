@@ -10,15 +10,18 @@ finish() {
   log "Complete!  Move on to the next step."
 }
 
+
+
 log "Install prerequisites"
 # apt-get install -y apt-utils > /dev/null
 apt-get install -y unzip curl jq > /dev/null
 
 log Pulling Docker Image
 
+IMAGE_NAME=danielehc/consul-learn-image
 IMAGE_TAG=v1.8.4-v1.15.0
 
-docker pull danielehc/consul-learn-image:${IMAGE_TAG} > /dev/null
+docker pull ${IMAGE_NAME}:${IMAGE_TAG} > /dev/null
 
 log Creating Docker volumes
 
@@ -65,7 +68,7 @@ docker run \
   -p 8500:8500 \
   -p 53:8600/udp \
   --name=server \
-  danielehc/consul-envoy-service:${IMAGE_TAG} \
+  ${IMAGE_NAME}:${IMAGE_TAG} \
   consul agent -server -ui \
     -node=server-1 \
     -bootstrap-expect=1 \
@@ -93,7 +96,7 @@ docker run \
     -v client_config:/etc/consul.d \
     -p 19001:19001 \
     --name=api \
-    danielehc/consul-envoy-service:${IMAGE_TAG} \
+    ${IMAGE_NAME}:${IMAGE_TAG} \
     consul agent \
      -node=service-1 \
      -join=${SERVER_IP} \
@@ -108,7 +111,7 @@ docker run \
     -p 19002:19001 \
     -p 9002:9002 \
     --name=web \
-    danielehc/consul-envoy-service:${IMAGE_TAG} \
+    ${IMAGE_NAME}:${IMAGE_TAG} \
     consul agent \
      -node=service-2 \
      -join=${SERVER_IP} \
@@ -126,7 +129,7 @@ docker run \
     -p 8888:8888 \
     -p 8080:8080 \
     --name=ingress-gw \
-    danielehc/consul-envoy-service:${IMAGE_TAG} \
+    ${IMAGE_NAME}:${IMAGE_TAG} \
     consul agent \
      -node=ingress-gw \
      -join=${SERVER_IP} \
