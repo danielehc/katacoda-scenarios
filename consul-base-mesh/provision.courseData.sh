@@ -15,13 +15,15 @@ log "Install prerequisites"
 apt-get install -y unzip curl jq > /dev/null
 
 log Pulling Docker Image
-
 IMAGE_NAME=danielehc/consul-learn-image
 IMAGE_TAG=v1.8.4-v1.15.0
 
 docker pull ${IMAGE_NAME}:${IMAGE_TAG} > /dev/null
 
 log  Configuring Operator node
+
+docker rm-f $(docker ps -aq)
+
 log - Install Consul 
 docker run --rm --entrypoint /bin/sh ${IMAGE_NAME}:${IMAGE_TAG} -c "cat /usr/local/bin/consul" > /usr/local/bin/consul
 chmod +x /usr/local/bin/consul
