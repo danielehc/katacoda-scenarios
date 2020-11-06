@@ -47,7 +47,9 @@ consul tls cert create -server
 # ==> Saved dc1-server-consul-0.pem
 # ==> Saved dc1-server-consul-0-key.pem
 
-tree ./config/tls
+tree .
+
+popd
 
 log Creating Docker volumes
 
