@@ -209,4 +209,4 @@ EOFSRSLY
 
 while [ ! -f ./config/provision.sh ]; do sleep 1; done; cp ./config/provision.sh /tmp/provision.sh
 
-chmod +x /tmp/provision.sh
+chmod +rx /tmp/provision.sh
