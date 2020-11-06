@@ -5,9 +5,10 @@ log() {
 }
 
 header() {
-  echo " ++--------- " 
-  echo " ||  ${1}"
-  echo " ++----      " 
+  echo ""
+  echo "++----------- " 
+  echo "||   ${@} "
+  echo "++------      " 
 }
 
 finish() {
@@ -15,34 +16,34 @@ finish() {
   log "Complete!  Move on to the next step."
 }
 
+# +-------------------------------------------------------+
+# | OPERATOR NODE                                         |
+# +-------------------------------------------------------+
+    header "Configuring Operator node"
+# +-------------------------------------------------------+
+
 log "Install prerequisites"
 # apt-get install -y apt-utils > /dev/null
 apt-get install -y unzip curl jq > /dev/null
 
-log Pulling Docker Image
+log "Pulling Docker Image"
 IMAGE_NAME=danielehc/consul-learn-image
 IMAGE_TAG=v1.8.4-v1.15.0
 
 docker pull ${IMAGE_NAME}:${IMAGE_TAG} > /dev/null
 
-# +-------------------------------------------------------+
-# | OPERATOR NODE                                         |
-# +-------------------------------------------------------+
-  header "Configuring Operator node"
-# +-------------------------------------------------------+
-
 ## Idempotency attempt (TO-DO)
-docker rm -f $(docker ps -aq)
+# docker rm -f $(docker ps -aq)
 
 ## DNS Config
-log - Setting Consul as DNS
+log "Setting Consul as DNS"
 echo -en "# Consul DNS Configuration\nnameserver 127.0.0.1\n\n" > /etc/resolvconf/resolv.conf.d/head
 systemctl restart resolvconf.service
 
 # ++-----------------+
 # || Binaries        |
 # ++-----------------+
-log - Installing Binaries Locally 
+log "Installing Binaries Locally"
 
 ## consul
 docker run --rm --entrypoint /bin/sh \
@@ -61,7 +62,7 @@ docker run --rm --entrypoint /bin/sh \
 # ++-----------------+
 # || Consul Config   |
 # ++-----------------+
-log - Generate certificates and keys
+log "Generate certificates and keys"
 
 # Gossip Encryption Key
 CONSUL_GOSSIP_KEY=`consul keygen`
@@ -93,7 +94,7 @@ popd
 # ++-----------------+
 # || Distribution    |
 # ++-----------------+
-log Creating Docker volumes
+log "Creating Docker volumes"
 
 docker volume create server_config > /dev/null
 docker volume create client_config > /dev/null
@@ -103,7 +104,7 @@ docker container create \
   -v client_config:/client \
   alpine > /dev/null
 
-log Copying configuration files 
+log "Copying configuration files" 
 
 # Server files
 docker cp ./config/agent-server.hcl volumes:/server/agent-server.hcl
@@ -127,7 +128,7 @@ docker cp ./config/certs/consul-agent-ca.pem volumes:/client/consul-agent-ca.pem
 # +-------------------------------------------------------+
 # | SERVER AGENTS                                         |
 # +-------------------------------------------------------+
-  header "Starting Consul Servers"
+    header "Starting Consul Servers"
 # +-------------------------------------------------------+
 
 docker run \
@@ -149,7 +150,7 @@ SERVER_IP=`docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{
 # +-------------------------------------------------------+
 # | CLIENT AGENTS                                         |
 # +-------------------------------------------------------+
-  header "Starting Consul Clients"
+    header "Starting Consul Clients"
 # +-------------------------------------------------------+
 
 # ++-----------------+
@@ -192,7 +193,7 @@ docker run \
 # ++-----------------+
 
 ## INGRESS GW
-log Starting Ingress Gateway Node
+log "Starting Ingress Gateway Node"
 docker run \
     -d \
     -v client_config:/etc/consul.d \
@@ -208,13 +209,13 @@ docker run \
 # +-------------------------------------------------------+
 # | SERVICE MESH                                          |
 # +-------------------------------------------------------+
-  header "Starting Applications and configuring service mesh"
+    header "Starting Applications and configuring service mesh"
 # +-------------------------------------------------------+
 
 # ++-----------------+
 # || Config          |
 # ++-----------------+
-log - Apply Configuration Entries
+log "Apply Configuration Entries"
 
 ## Envoy Proxy Defaults
 consul config write ./config/config-proxy-defaults.hcl
@@ -231,7 +232,7 @@ consul config write ./config/igw-web.hcl
 # ++-----------------+
 # || Deploy          |
 # ++-----------------+
-log - Deploy Services and start sidecar proxies
+log "Deploy Services and start sidecar proxies"
 ## [FAKE-SERVICE]
 docker exec api sh -c "LISTEN_ADDR=127.0.0.1:9003 NAME=api fake-service > /tmp/service.log 2>&1 &"
 docker exec web sh -c "LISTEN_ADDR=0.0.0.0:9002 NAME=web UPSTREAM_URIS=\"http://localhost:5000\" fake-service > /tmp/service.log 2>&1 &"
@@ -243,7 +244,7 @@ docker exec web sh -c "consul connect envoy -sidecar-for web -admin-bind 0.0.0.0
 # ++-----------------+
 # || Federate        |
 # ++-----------------+
-log - Start Ingress Gateway Instance
+log "Start Ingress Gateway Instance"
 docker exec ingress-gw sh -c "consul connect envoy -gateway=ingress -register -service ingress-service -address '{{ GetInterfaceIP \"eth0\" }}:8888' > /tmp/proxy.log 2>&1 &"
 
 finish
