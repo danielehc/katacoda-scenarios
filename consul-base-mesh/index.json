@@ -49,6 +49,7 @@
         },
         "assets": {
             "client": [
+            { "file": "provision.sh", "target": "./config/" },
             { "file": "agent-server.hcl", "target": "./config/" },
             { "file": "agent-client.hcl", "target": "./config/" },
             { "file": "agent-server-secure.hcl", "target": "./config/" },
