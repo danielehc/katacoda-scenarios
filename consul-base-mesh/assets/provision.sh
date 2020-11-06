@@ -1,4 +1,3 @@
-cat << 'EOFSRSLY' > /tmp/provision.sh
 #! /bin/bash
 
 log() {
@@ -204,9 +203,3 @@ log Start Ingress Gateway Instance
 docker exec ingress-gw sh -c "consul connect envoy -gateway=ingress -register -service ingress-service -address '{{ GetInterfaceIP \"eth0\" }}:8888' > /tmp/proxy.log 2>&1 &"
 
 finish
-
-EOFSRSLY
-
-while [ ! -f ./config/provision.sh ]; do sleep 1; done; cp ./config/provision.sh /tmp/provision.sh
-
-chmod +x /tmp/provision.sh
