@@ -21,6 +21,34 @@ IMAGE_TAG=v1.8.4-v1.15.0
 
 docker pull ${IMAGE_NAME}:${IMAGE_TAG} > /dev/null
 
+log  Configuring Operator node
+log - Install Consul 
+docker run --rm --entrypoint /bin/sh ${IMAGE_NAME}:${IMAGE_TAG} -c "cat /usr/local/bin/consul" > /usr/local/bin/consul
+chmod +x /usr/local/bin/consul
+
+log - Generates gertificates and keys
+
+CONSUL_GOSSIP_KEY=`consul keygen`
+
+mkdir -p ./config/certs
+pushd ./config/certs
+
+consul tls ca create
+
+# ==> Saved consul-agent-ca.pem
+# ==> Saved consul-agent-ca-key.pem
+
+consul tls cert create -server
+# ==> WARNING: Server Certificates grants authority to become a
+#     server and access all state in the cluster including root keys
+#     and all ACL tokens. Do not distribute them to production hosts
+#     that are not server nodes. Store them as securely as CA keys.
+# ==> Using consul-agent-ca.pem and consul-agent-ca-key.pem
+# ==> Saved dc1-server-consul-0.pem
+# ==> Saved dc1-server-consul-0-key.pem
+
+tree ./config/tls
+
 log Creating Docker volumes
 
 docker volume create server_config > /dev/null
@@ -52,11 +80,6 @@ docker cp ./config/svc-dashboard.json volumes:/client/svc-dashboard.json
 # docker cp ./config/igw-dashboard.hcl volumes:/client/igw-dashboard.hcl
 # docker cp ./config/igw-web.hcl volumes:/client/igw-web.hcl
  
-log  - Installing Applications Locally
-docker run --rm --entrypoint /bin/sh ${IMAGE_NAME}:${IMAGE_TAG} -c "cat /usr/local/bin/consul" > /usr/local/bin/consul
-chmod +x /usr/local/bin/consul
-
-consul version
 
 log Starting Consul Server
 
