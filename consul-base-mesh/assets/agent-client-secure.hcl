@@ -21,7 +21,6 @@ verify_incoming_rpc    = true
 verify_outgoing        = true
 verify_server_hostname = true
 
-
 ca_file = "/etc/consul.d/consul-agent-ca.pem"
 
 auto_encrypt {
@@ -32,6 +31,7 @@ auto_encrypt {
 acl {
   enabled        = true
   default_policy = "deny"
+  enable_token_persistence = true
   tokens {
     master = "root"
     agent  = "root"

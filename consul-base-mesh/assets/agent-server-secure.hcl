@@ -33,6 +33,7 @@ auto_encrypt {
 acl {
   enabled        = true
   default_policy = "deny"
+  enable_token_persistence = true
   tokens {
     master = "root"
     agent  = "root"

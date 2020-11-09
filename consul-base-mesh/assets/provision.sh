@@ -259,14 +259,35 @@ docker exec web sh -c "LISTEN_ADDR=0.0.0.0:9002 NAME=web UPSTREAM_URIS=\"http://
 # CONSUL_CLIENT_CERT=client.crt
 # CONSUL_CLIENT_KEY=client.key
 
-docker exec api sh -c "consul connect envoy -sidecar-for api-1 -admin-bind 0.0.0.0:19001 > /tmp/proxy.log 2>&1 &"
-docker exec web sh -c "consul connect envoy -sidecar-for web -admin-bind 0.0.0.0:19001 > /tmp/proxy.log 2>&1 &"
+docker exec \
+  --env CONSUL_HTTP_ADDR=127.0.0.1:8500 \
+  --env CONSUL_HTTP_TOKEN="root" \
+  --env CONSUL_HTTP_SSL=true \
+  --env CONSUL_CACERT=/etc/consul.d/consul-agent-ca.pem \
+  --env CONSUL_CLIENT_CERT=/etc/consul.d/dc1-cli-consul-0.pem \
+  --env CONSUL_CLIENT_KEY=/etc/consul.d/dc1-cli-consul-0-key.pem \
+  api sh -c "consul connect envoy -sidecar-for api-1 -admin-bind 0.0.0.0:19001 > /tmp/proxy.log 2>&1 &"
+docker exec \
+  --env CONSUL_HTTP_ADDR=127.0.0.1:8500 \
+  --env CONSUL_HTTP_TOKEN="root" \
+  --env CONSUL_HTTP_SSL=true \
+  --env CONSUL_CACERT=/etc/consul.d/consul-agent-ca.pem \
+  --env CONSUL_CLIENT_CERT=/etc/consul.d/dc1-cli-consul-0.pem \
+  --env CONSUL_CLIENT_KEY=/etc/consul.d/dc1-cli-consul-0-key.pem \
+  web sh -c "consul connect envoy -sidecar-for web -admin-bind 0.0.0.0:19001 > /tmp/proxy.log 2>&1 &"
 ## [FAKE-SERVICE]
 
 # ++-----------------+
 # || Gateway Config  |
 # ++-----------------+
 log "Start Ingress Gateway Instance"
-docker exec ingress-gw sh -c "consul connect envoy -gateway=ingress -register -service ingress-service -address '{{ GetInterfaceIP \"eth0\" }}:8888' > /tmp/proxy.log 2>&1 &"
+docker exec \
+  --env CONSUL_HTTP_ADDR=127.0.0.1:8500 \
+  --env CONSUL_HTTP_TOKEN="root" \
+  --env CONSUL_HTTP_SSL=true \
+  --env CONSUL_CACERT=/etc/consul.d/consul-agent-ca.pem \
+  --env CONSUL_CLIENT_CERT=/etc/consul.d/dc1-cli-consul-0.pem \
+  --env CONSUL_CLIENT_KEY=/etc/consul.d/dc1-cli-consul-0-key.pem \
+  ingress-gw sh -c "consul connect envoy -gateway=ingress -register -service ingress-service -address '{{ GetInterfaceIP \"eth0\" }}:8888' > /tmp/proxy.log 2>&1 &"
 
 finish
