@@ -77,7 +77,7 @@
         "uimessage1": "\u001b[32mOperator node terminal.\u001b[m\r\n",
         "showdashboard": true,
         "dashboards": [
-            {"name": "Consul UI", "port": 8500},
+            {"name": "Consul UI", "port": 8501},
             {"name": "Ingress GW", "port": 8080},
             {"name": "Frontend", "port": 9002}
         ],

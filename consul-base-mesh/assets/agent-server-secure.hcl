@@ -16,7 +16,8 @@ enable_central_service_config = true
 data_dir = "/tmp/consul"
 
 ## TLS Encryption (requires cert files to be present on the server nodes)
-verify_incoming        = true
+verify_incoming        = false
+verify_incoming_rpc    = true
 verify_outgoing        = true
 verify_server_hostname = true
 

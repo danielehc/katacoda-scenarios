@@ -15,10 +15,12 @@ enable_central_service_config = true
 ## Data Persistence
 data_dir = "/tmp/consul"
 
-## TLS Encryption (requires cert files to be present on the server nodes)
+## TLS Encryption (requires cert files to be present on the client nodes)
 verify_incoming        = false
+verify_incoming_rpc    = true
 verify_outgoing        = true
 verify_server_hostname = true
+
 
 ca_file = "/etc/consul.d/consul-agent-ca.pem"
 
