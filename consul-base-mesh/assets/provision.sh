@@ -221,7 +221,7 @@ log "Define Environment Variables"
 
 # TODO
 ## Environment Variables needed
-export CONSUL_HTTP_ADDR=127.0.0.1:8500
+export CONSUL_HTTP_ADDR=127.0.0.1:8501
 export CONSUL_HTTP_TOKEN="root"
 export CONSUL_HTTP_SSL=true
 export CONSUL_CACERT=./config/certs/consul-agent-ca.pem
