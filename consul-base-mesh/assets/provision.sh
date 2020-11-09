@@ -27,7 +27,7 @@ apt-get install -y unzip curl jq > /dev/null
 
 log "Pulling Docker Image"
 IMAGE_NAME=danielehc/consul-learn-image
-IMAGE_TAG=v1.8.4-v1.15.0
+# IMAGE_TAG=v1.8.4-v1.15.0
 IMAGE_TAG=v1.8.4-v1.14.4
 
 docker pull ${IMAGE_NAME}:${IMAGE_TAG} > /dev/null
@@ -144,7 +144,7 @@ docker run \
     -node=server-1 \
     -bootstrap-expect=1 \
     -client=0.0.0.0 \
-    -config-file=/etc/consul.d/agent-server.hcl \
+    -config-file=/etc/consul.d/agent-server-secure.hcl \
     -config-file=/etc/consul.d/agent-gossip-encryption.hcl
 
 # Retrieve server IP for client join
@@ -171,7 +171,7 @@ docker run \
     consul agent \
      -node=service-1 \
      -join=${SERVER_IP} \
-     -config-file=/etc/consul.d/agent-client.hcl \
+     -config-file=/etc/consul.d/agent-client-secure.hcl \
      -config-file=/etc/consul.d/agent-gossip-encryption.hcl \
      -config-file=/etc/consul.d/svc-api.hcl 
 
@@ -186,7 +186,7 @@ docker run \
     consul agent \
      -node=service-2 \
      -join=${SERVER_IP} \
-     -config-file=/etc/consul.d/agent-client.hcl \
+     -config-file=/etc/consul.d/agent-client-secure.hcl \
      -config-file=/etc/consul.d/agent-gossip-encryption.hcl \
      -config-file=/etc/consul.d/svc-web.hcl
 
@@ -206,7 +206,7 @@ docker run \
     consul agent \
      -node=ingress-gw \
      -join=${SERVER_IP} \
-     -config-file=/etc/consul.d/agent-client.hcl \
+     -config-file=/etc/consul.d/agent-client-secure.hcl \
      -config-file=/etc/consul.d/agent-gossip-encryption.hcl
 
 ########## ------------------------------------------------
