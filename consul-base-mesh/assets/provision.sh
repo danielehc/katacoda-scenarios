@@ -128,7 +128,7 @@ docker cp ./config/svc-web.hcl volumes:/client/svc-web.hcl
 ## Client Certificates
 docker cp ./config/certs/consul-agent-ca.pem volumes:/client/consul-agent-ca.pem
 docker cp ./config/certs/dc1-cli-consul-0.pem volumes:/client/dc1-cli-consul-0.pem
-docker cp ./config/certs/dc1-cli-consul-0-key.pem volumes:/client/dc1-cli-consul-0.key.pem
+docker cp ./config/certs/dc1-cli-consul-0-key.pem volumes:/client/dc1-cli-consul-0-key.pem
 ########## ------------------------------------------------
 header     "CONSUL - Starting Server Agents"
 ###### -----------------------------------------------
@@ -225,7 +225,7 @@ export CONSUL_HTTP_TOKEN="root"
 export CONSUL_HTTP_SSL=true
 export CONSUL_CACERT=./config/certs/consul-agent-ca.pem
 export CONSUL_CLIENT_CERT=./config/certs/dc1-cli-consul-0.pem
-export CONSUL_CLIENT_KEY=./config/certs/dc1-cli-consul-0.key.pem
+export CONSUL_CLIENT_KEY=./config/certs/dc1-cli-consul-0-key.pem
 
 log "Apply Configuration Entries"
 
