@@ -5,6 +5,8 @@
 
 ports {
   grpc = 8502
+  http = -1
+  https = 8501
 }
 
 ## Centralized configuration
