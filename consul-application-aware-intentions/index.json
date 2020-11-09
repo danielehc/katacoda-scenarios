@@ -33,7 +33,7 @@
                 "text": "step3.md"
             },
             {
-                "title": "Test Ingress GW",
+                "title": "Use API to test intentions",
                 "code": "set-env.sh",
                 "text": "step4.md"
             }

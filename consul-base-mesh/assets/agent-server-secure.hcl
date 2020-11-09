@@ -26,7 +26,6 @@ auto_encrypt {
   allow_tls = true
 }
 
-
 ## ACL (for now embedded with standard master token)
 acl {
   enabled        = true

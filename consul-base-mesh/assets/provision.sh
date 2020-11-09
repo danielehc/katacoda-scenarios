@@ -6,6 +6,7 @@ log() {
 
 header() {
   echo ""
+  echo ""
   echo "++----------- " 
   echo "||   ${@} "
   echo "++------      " 
@@ -16,11 +17,9 @@ finish() {
   log "Complete!  Move on to the next step."
 }
 
-# +-------------------------------------------------------+
-# | OPERATOR NODE                                         |
-# +-------------------------------------------------------+
-    header "Configuring Operator node"
-# +-------------------------------------------------------+
+########## ------------------------------------------------
+header     "CONFIGURING OPERATOR NODE"
+###### -----------------------------------------------
 
 log "Install prerequisites"
 # apt-get install -y apt-utils > /dev/null
@@ -59,41 +58,45 @@ docker run --rm --entrypoint /bin/sh \
   ${IMAGE_NAME}:${IMAGE_TAG} \
   -c "cat /usr/local/bin/fake-service" > /usr/local/bin/fake-service
 
+########## ------------------------------------------------
+header     "GENERATE CONFIGURATION"
+###### -----------------------------------------------
+
 # ++-----------------+
 # || Consul Config   |
 # ++-----------------+
-log "Generate certificates and keys"
+log "Generating Consul certificates and key"
 
-# Gossip Encryption Key
-CONSUL_GOSSIP_KEY=`consul keygen`
+## Gossip Encryption Key
+echo "encrypt = \""$(consul keygen)"\"" > ./config/agent-gossip-encryption.hcl 
 
-# mTLS Certificates
+## mTLS Certificates
 mkdir -p ./config/certs
 pushd ./config/certs
 
-consul tls ca create 
+## Generate CA certificates 
 # ==> Saved consul-agent-ca.pem
 # ==> Saved consul-agent-ca-key.pem
+consul tls ca create 
 
-consul tls cert create -server
-# ==> WARNING: Server Certificates grants authority to become a
-#     server and access all state in the cluster including root keys
-#     and all ACL tokens. Do not distribute them to production hosts
-#     that are not server nodes. Store them as securely as CA keys.
+## Generate Server certificates (ideally one per server)
 # ==> Using consul-agent-ca.pem and consul-agent-ca-key.pem
 # ==> Saved dc1-server-consul-0.pem
 # ==> Saved dc1-server-consul-0-key.pem
+consul tls cert create -server
 
-consul tls cert create -cli
+## Generate CLI certificate for running Consul locally
 # ==> Using consul-ca.pem and consul-ca-key.pem
 # ==> Saved consul-cli-0.pem
 # ==> Saved consul-cli-0-key.pem
+consul tls cert create -cli
 
 popd
 
-# ++-----------------+
-# || Distribution    |
-# ++-----------------+
+########## ------------------------------------------------
+header     "DISTRIBUTE CONFIGURATION"
+###### -----------------------------------------------
+
 log "Creating Docker volumes"
 
 docker volume create server_config > /dev/null
@@ -106,30 +109,28 @@ docker container create \
 
 log "Copying configuration files" 
 
-# Server files
+# Server configuration files
 docker cp ./config/agent-server.hcl volumes:/server/agent-server.hcl
 docker cp ./config/agent-server-secure.hcl volumes:/server/agent-server-secure.hcl
-
-## Certs
+docker cp ./config/agent-gossip-encryption.hcl volumes:/server/agent-gossip-encryption.hcl
+## Server Certificates
 docker cp ./config/certs/consul-agent-ca.pem volumes:/server/consul-agent-ca.pem
 docker cp ./config/certs/dc1-server-consul-0.pem volumes:/server/dc1-server-consul-0.pem
 docker cp ./config/certs/dc1-server-consul-0-key.pem volumes:/server/dc1-server-consul-0-key.pem
 
-# Client files
+# Client configuration files
 docker cp ./config/agent-client.hcl volumes:/client/agent-client.hcl
+docker cp ./config/agent-client-secure.hcl volumes:/client/agent-client-secure.hcl
+docker cp ./config/agent-gossip-encryption.hcl volumes:/client/agent-gossip-encryption.hcl
 docker cp ./config/svc-api.hcl volumes:/client/svc-api.hcl
 docker cp ./config/svc-web.hcl volumes:/client/svc-web.hcl
-docker cp ./config/svc-counting.json volumes:/client/svc-counting.json
-docker cp ./config/svc-dashboard.json volumes:/client/svc-dashboard.json
-
-## Certs
+## Client Certificates
 docker cp ./config/certs/consul-agent-ca.pem volumes:/client/consul-agent-ca.pem
-
-# +-------------------------------------------------------+
-# | SERVER AGENTS                                         |
-# +-------------------------------------------------------+
-    header "Starting Consul Servers"
-# +-------------------------------------------------------+
+docker cp ./config/certs/consul-cli-0.pem volumes:/client/consul-cli-0.pem
+docker cp ./config/certs/consul-cli-0-key.pem volumes:/client/consul-cli-0-key.pem
+########## ------------------------------------------------
+header     "CONSUL - Starting Server Agents"
+###### -----------------------------------------------
 
 docker run \
   -d \
@@ -142,20 +143,20 @@ docker run \
     -node=server-1 \
     -bootstrap-expect=1 \
     -client=0.0.0.0 \
-    -config-file=/etc/consul.d/agent-server.hcl
+    -config-file=/etc/consul.d/agent-server.hcl \
+    -config-file=/etc/consul.d/agent-gossip-encryption.hcl
 
 # Retrieve server IP for client join
 SERVER_IP=`docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' server`
 
-# +-------------------------------------------------------+
-# | CLIENT AGENTS                                         |
-# +-------------------------------------------------------+
-    header "Starting Consul Clients"
-# +-------------------------------------------------------+
+########## ------------------------------------------------
+header     "CONSUL - Starting Client Agents"
+###### -----------------------------------------------
 
 # ++-----------------+
 # || Services        |
 # ++-----------------+
+log "Starting Service Nodes"
 
 ## BACKEND (TO-DO)
 
@@ -170,8 +171,8 @@ docker run \
      -node=service-1 \
      -join=${SERVER_IP} \
      -config-file=/etc/consul.d/agent-client.hcl \
-     -config-file=/etc/consul.d/svc-api.hcl \
-     -config-file=/etc/consul.d/svc-counting.json
+     -config-file=/etc/consul.d/agent-gossip-encryption.hcl \
+     -config-file=/etc/consul.d/svc-api.hcl 
 
 ## FRONTEND
 docker run \
@@ -185,8 +186,8 @@ docker run \
      -node=service-2 \
      -join=${SERVER_IP} \
      -config-file=/etc/consul.d/agent-client.hcl \
-     -config-file=/etc/consul.d/svc-web.hcl \
-     -config-file=/etc/consul.d/svc-dashboard.json
+     -config-file=/etc/consul.d/agent-gossip-encryption.hcl \
+     -config-file=/etc/consul.d/svc-web.hcl
 
 # ++-----------------+
 # || Gateways        |
@@ -204,17 +205,27 @@ docker run \
     consul agent \
      -node=ingress-gw \
      -join=${SERVER_IP} \
-     -config-file=/etc/consul.d/agent-client.hcl
+     -config-file=/etc/consul.d/agent-client.hcl \
+     -config-file=/etc/consul.d/agent-gossip-encryption.hcl
 
-# +-------------------------------------------------------+
-# | SERVICE MESH                                          |
-# +-------------------------------------------------------+
-    header "Starting Applications and configuring service mesh"
-# +-------------------------------------------------------+
+########## ------------------------------------------------
+header     "CONSUL - Service Mesh configuration and deploy"
+###### -----------------------------------------------
 
 # ++-----------------+
 # || Config          |
 # ++-----------------+
+log "Define Environment Variables"
+
+# TODO
+## Environment Variables needed
+# CONSUL_HTTP_ADDR=127.0.0.1:8500
+# CONSUL_HTTP_TOKEN="root"
+# CONSUL_HTTP_SSL=true
+# CONSUL_CACERT=ca.crt
+# CONSUL_CLIENT_CERT=client.crt
+# CONSUL_CLIENT_KEY=client.key
+
 log "Apply Configuration Entries"
 
 ## Envoy Proxy Defaults
@@ -237,12 +248,21 @@ log "Deploy Services and start sidecar proxies"
 docker exec api sh -c "LISTEN_ADDR=127.0.0.1:9003 NAME=api fake-service > /tmp/service.log 2>&1 &"
 docker exec web sh -c "LISTEN_ADDR=0.0.0.0:9002 NAME=web UPSTREAM_URIS=\"http://localhost:5000\" fake-service > /tmp/service.log 2>&1 &"
 # Start sidecar proxies
+
+## Environment Variables needed
+# CONSUL_HTTP_ADDR=127.0.0.1:8500
+# CONSUL_HTTP_TOKEN="root"
+# CONSUL_HTTP_SSL=true
+# CONSUL_CACERT=ca.crt
+# CONSUL_CLIENT_CERT=client.crt
+# CONSUL_CLIENT_KEY=client.key
+
 docker exec api sh -c "consul connect envoy -sidecar-for api-1 -admin-bind 0.0.0.0:19001 > /tmp/proxy.log 2>&1 &"
 docker exec web sh -c "consul connect envoy -sidecar-for web -admin-bind 0.0.0.0:19001 > /tmp/proxy.log 2>&1 &"
 ## [FAKE-SERVICE]
 
 # ++-----------------+
-# || Federate        |
+# || Gateway Config  |
 # ++-----------------+
 log "Start Ingress Gateway Instance"
 docker exec ingress-gw sh -c "consul connect envoy -gateway=ingress -register -service ingress-service -address '{{ GetInterfaceIP \"eth0\" }}:8888' > /tmp/proxy.log 2>&1 &"
