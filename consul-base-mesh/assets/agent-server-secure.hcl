@@ -33,5 +33,6 @@ acl {
   tokens {
     master = "root"
     agent  = "root"
+    default  = "root"
   }
 }

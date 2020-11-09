@@ -28,7 +28,7 @@ apt-get install -y unzip curl jq > /dev/null
 log "Pulling Docker Image"
 IMAGE_NAME=danielehc/consul-learn-image
 # IMAGE_TAG=v1.8.4-v1.15.0
-IMAGE_TAG=v1.8.4-v1.14.4
+IMAGE_TAG=v1.8.5-v1.14.4
 
 docker pull ${IMAGE_NAME}:${IMAGE_TAG} > /dev/null
 
