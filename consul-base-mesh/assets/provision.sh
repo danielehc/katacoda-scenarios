@@ -259,16 +259,19 @@ docker exec web sh -c "LISTEN_ADDR=0.0.0.0:9002 NAME=web UPSTREAM_URIS=\"http://
 # CONSUL_CLIENT_CERT=client.crt
 # CONSUL_CLIENT_KEY=client.key
 
+## Start api sidecar
 docker exec \
-  --env CONSUL_HTTP_ADDR=127.0.0.1:8500 \
+  --env CONSUL_HTTP_ADDR=127.0.0.1:8501 \
   --env CONSUL_HTTP_TOKEN="root" \
   --env CONSUL_HTTP_SSL=true \
   --env CONSUL_CACERT=/etc/consul.d/consul-agent-ca.pem \
   --env CONSUL_CLIENT_CERT=/etc/consul.d/dc1-cli-consul-0.pem \
   --env CONSUL_CLIENT_KEY=/etc/consul.d/dc1-cli-consul-0-key.pem \
   api sh -c "consul connect envoy -sidecar-for api-1 -admin-bind 0.0.0.0:19001 > /tmp/proxy.log 2>&1 &"
+
+## Start web sidecar
 docker exec \
-  --env CONSUL_HTTP_ADDR=127.0.0.1:8500 \
+  --env CONSUL_HTTP_ADDR=127.0.0.1:8501 \
   --env CONSUL_HTTP_TOKEN="root" \
   --env CONSUL_HTTP_SSL=true \
   --env CONSUL_CACERT=/etc/consul.d/consul-agent-ca.pem \
@@ -282,7 +285,7 @@ docker exec \
 # ++-----------------+
 log "Start Ingress Gateway Instance"
 docker exec \
-  --env CONSUL_HTTP_ADDR=127.0.0.1:8500 \
+  --env CONSUL_HTTP_ADDR=127.0.0.1:8501 \
   --env CONSUL_HTTP_TOKEN="root" \
   --env CONSUL_HTTP_SSL=true \
   --env CONSUL_CACERT=/etc/consul.d/consul-agent-ca.pem \
