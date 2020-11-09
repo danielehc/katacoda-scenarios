@@ -220,12 +220,12 @@ log "Define Environment Variables"
 
 # TODO
 ## Environment Variables needed
-# CONSUL_HTTP_ADDR=127.0.0.1:8500
-# CONSUL_HTTP_TOKEN="root"
-# CONSUL_HTTP_SSL=true
-# CONSUL_CACERT=ca.crt
-# CONSUL_CLIENT_CERT=client.crt
-# CONSUL_CLIENT_KEY=client.key
+CONSUL_HTTP_ADDR=${SERVER_IP}:8500
+CONSUL_HTTP_TOKEN="root"
+CONSUL_HTTP_SSL=true
+CONSUL_CACERT=./config/certs/consul-agent-ca.pem
+CONSUL_CLIENT_CERT=./config/certs/consul-cli-0.pem
+CONSUL_CLIENT_KEY=./config/certs/consul-cli-0-key.pem
 
 log "Apply Configuration Entries"
 
