@@ -137,6 +137,7 @@ docker run \
   -d \
   -v server_config:/etc/consul.d \
   -p 8500:8500 \
+  -p 8501:8501 \
   -p 53:8600/udp \
   --name=server \
   ${IMAGE_NAME}:${IMAGE_TAG} \
