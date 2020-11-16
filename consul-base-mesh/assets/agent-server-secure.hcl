@@ -1,6 +1,11 @@
 ## Service Mesh Configuration
 connect {
   enabled = true
+  ca_provider = "consul"
+  ca_config   = {
+    private_key        = "/etc/consul.d/consul-agent-ca-key.pem"
+    root_cert          = "/etc/consul.d/consul-agent-ca.pem"
+  }
 }
 
 ports {

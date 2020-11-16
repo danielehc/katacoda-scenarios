@@ -116,6 +116,7 @@ docker cp ./config/agent-server-secure.hcl volumes:/server/agent-server-secure.h
 docker cp ./config/agent-gossip-encryption.hcl volumes:/server/agent-gossip-encryption.hcl
 ## Server Certificates
 docker cp ./config/certs/consul-agent-ca.pem volumes:/server/consul-agent-ca.pem
+docker cp ./config/certs/consul-agent-ca-key.pem volumes:/server/consul-agent-ca-key.pem
 docker cp ./config/certs/dc1-server-consul-0.pem volumes:/server/dc1-server-consul-0.pem
 docker cp ./config/certs/dc1-server-consul-0-key.pem volumes:/server/dc1-server-consul-0-key.pem
 
@@ -268,6 +269,14 @@ docker exec \
   --env CONSUL_CLIENT_CERT=/etc/consul.d/dc1-cli-consul-0.pem \
   --env CONSUL_CLIENT_KEY=/etc/consul.d/dc1-cli-consul-0-key.pem \
   api sh -c "consul connect envoy -sidecar-for api-1 -admin-bind 0.0.0.0:19001 > /tmp/proxy.log 2>&1 &"
+
+## Troubleshhot:
+
+# Error retrieving members: Get "https://127.0.0.1:8501/v1/agent/members?segment=_all": x509: certificate signed by unknown authority
+# https://github.com/hashicorp/consul/issues/7926
+# https://github.com/hashicorp/consul/issues/6791
+# https://github.com/hashicorp/consul/issues/8636
+# https://github.com/hashicorp/terraform/issues/16432
 
 ## Start web sidecar
 docker exec \
