@@ -52,9 +52,7 @@
                 { "file": "svc-client.hcl", "target": "./" },
                 { "file": "svc-clone.hcl", "target": "./" },
                 { "file": "svc-main.hcl", "target": "./" },
-                { "file": "igw-backend.hcl", "target": "./" },
-                { "file": "igw-default.hcl", "target": "./" },
-                { "file": "igw-hash-resolver.hcl", "target": "./" }
+                { "file": "igw-backend.hcl", "target": "./" }
             ]
         }
     },
