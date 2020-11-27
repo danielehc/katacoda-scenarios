@@ -59,11 +59,10 @@
     }
     },
     "environment": {
-        "showdashboard": true,
-        "dashboard": "Dashboard",
-        "uilayout": "editor-terminal",
+        "uilayout": "terminal-iframe",
         "hideHiddenFiles": true,
         "uimessage1": "\u001b[32mOperator node terminal.\u001b[m\r\n",
+        "showdashboard": true,
         "dashboards": [
             {"name": "Consul UI", "port": 8500},
             {"name": "Ingress GW", "port": 8080}
