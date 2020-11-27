@@ -1,9 +1,9 @@
-service = {
+service {
   name = "web"
   port = 9002
-  connect = {
-    sidecar_service = {
-      proxy = {
+  connect {
+    sidecar_service {
+      proxy {
         upstreams = [
           {
             destination_name = "api"
@@ -13,7 +13,7 @@ service = {
       }
     }
   }
-  check = {
+  check {
     id = "web-check"
     http = "http://localhost:9002/health"
     method = "GET"

@@ -1,12 +1,13 @@
 ## Service Mesh Configuration
-// connect {
-//   enabled = true
-// }
+connect {
+  enabled = true
+  ca_provider = "consul"
+}
 
 ports {
   grpc = 8502
-  http = -1
-  https = 8501
+  http = 8500
+  https = -1
 }
 
 ## Centralized configuration
@@ -22,6 +23,8 @@ verify_outgoing        = true
 verify_server_hostname = true
 
 ca_file = "/etc/consul.d/consul-agent-ca.pem"
+// cert_file = "/etc/consul.d/dc1-client-consul-0.pem"
+// key_file  = "/etc/consul.d/dc1-client-consul-0-key.pem"
 
 auto_encrypt {
   tls = true
@@ -35,6 +38,6 @@ acl {
   tokens {
     master = "root"
     agent  = "root"
-    default  = "root"
+    //default  = "root"
   }
 }

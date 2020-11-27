@@ -2,16 +2,20 @@
 connect {
   enabled = true
   ca_provider = "consul"
-  ca_config   = {
-    private_key        = "/etc/consul.d/consul-agent-ca-key.pem"
-    root_cert          = "/etc/consul.d/consul-agent-ca.pem"
-  }
 }
+
+addresses {
+  grpc = "127.0.0.1"
+  // http = "127.0.0.1"
+  // https = "127.0.0.1"
+  dns = "127.0.0.1"
+}
+
 
 ports {
   grpc = 8502
-  http = -1
-  https = 8501
+  http = 8500
+  https = -1
 }
 
 ## Centralized configuration
@@ -42,6 +46,6 @@ acl {
   tokens {
     master = "root"
     agent  = "root"
-    default  = "root"
+    // default  = "root"
   }
 }
