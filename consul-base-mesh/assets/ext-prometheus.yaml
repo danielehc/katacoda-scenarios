@@ -1,0 +1,33 @@
+global:
+  scrape_interval:     10s # scrape targets every 10 seconds.
+
+# A scrape configuration containing exactly one endpoint to scrape:
+# https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config
+# Here it's Prometheus itself.
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['127.0.0.1:9090']
+
+  # - job_name: 'node'
+  #   static_configs:
+  #     - targets: ['localhost:9100']
+
+  - job_name: '${HOSTNAME}_consul_metrics'
+    consul_sd_configs:
+    - server: '127.0.0.1:8500'
+      services: ['consul']
+      datacenter: "dc1"
+      token: "root"
+
+    relabel_configs:
+    - source_labels: ['__meta_consul_address']
+      separator: ';'
+      target_label:  '__address__'
+      replacement: '${1}:8500'
+      action: 'replace'
+
+    metrics_path: /v1/agent/metrics
+    params:
+      format: ['prometheus']
+    bearer_token: "root"

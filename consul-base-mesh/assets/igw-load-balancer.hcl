@@ -1,5 +1,5 @@
 Kind = "ingress-gateway"
-Name = "ingress-consul-api"
+Name = "ingress-load-balancer"
 
 Listeners = [
  {
@@ -7,7 +7,7 @@ Listeners = [
    Protocol = "http"
    Services = [
      {
-       Name = "consul-api"
+       Name = "load-balancer"
        Hosts = ["*"]
      }
    ]

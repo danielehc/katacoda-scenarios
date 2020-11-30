@@ -22,9 +22,17 @@ static_resources:
                 - "*"
               routes:
               - match:
+                  prefix: "/prometheus"
+                route:
+                  cluster: prometheus
+              - match:
+                  prefix: "/web"
+                route:
+                  cluster: web
+              - match:
                   prefix: "/"
                 route:
-                  cluster: targetCluster
+                  cluster: consul-api
           http_filters:
           - name: envoy.router
 
@@ -93,11 +101,27 @@ static_resources:
                     -----END PRIVATE KEY-----
 
   clusters:
-  - name: targetCluster
-    connect_timeout: 0.25s
+  - name: consul-api
+    connect_timeout: 5.0s
     type: STRICT_DNS
     dns_lookup_family: V4_ONLY
     lb_policy: ROUND_ROBIN
     hosts: [
       { socket_address: { address: 127.0.0.1, port_value: 8500 }}
+    ]
+  - name: prometheus
+    connect_timeout: 5.0s
+    type: STRICT_DNS
+    dns_lookup_family: V4_ONLY
+    lb_policy: ROUND_ROBIN
+    hosts: [
+      { socket_address: { address: 127.0.0.1, port_value: 9090 }}
+    ]
+  - name: web
+    connect_timeout: 5.0s
+    type: STRICT_DNS
+    dns_lookup_family: V4_ONLY
+    lb_policy: ROUND_ROBIN
+    hosts: [
+      { socket_address: { address: 127.0.0.1, port_value: 5000 }}
     ]

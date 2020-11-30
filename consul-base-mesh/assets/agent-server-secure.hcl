@@ -6,6 +6,7 @@ connect {
 
 addresses {
   grpc = "127.0.0.1"
+  http = "0.0.0.0"
   // http = "127.0.0.1"
   // https = "127.0.0.1"
   dns = "127.0.0.1"
@@ -13,9 +14,10 @@ addresses {
 
 
 ports {
-  grpc = 8502
-  http = 8500
+  grpc  = 8502
+  http  = 8500
   https = -1
+  // dns   = 53
 }
 
 ## Centralized configuration
@@ -31,8 +33,8 @@ verify_outgoing        = true
 verify_server_hostname = true
 
 ca_file   = "/etc/consul.d/consul-agent-ca.pem"
-cert_file = "/etc/consul.d/dc1-server-consul-0.pem"
-key_file  = "/etc/consul.d/dc1-server-consul-0-key.pem"
+cert_file = "/etc/consul.d/server-consul-0.pem"
+key_file  = "/etc/consul.d/server-consul-0-key.pem"
 
 auto_encrypt {
   allow_tls = true
@@ -48,4 +50,9 @@ acl {
     agent  = "root"
     // default  = "root"
   }
+}
+
+telemetry {
+  prometheus_retention_time = "24h"
+  disable_hostname= false
 }

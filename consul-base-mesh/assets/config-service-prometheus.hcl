@@ -1,3 +1,3 @@
 Kind           = "service-defaults"
-Name           = "consul-api"
+Name           = "prometheus"
 Protocol       = "http"
