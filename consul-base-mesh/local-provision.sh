@@ -52,14 +52,14 @@ finish() {
 ## Prints environment variables to be used to configur local machine
 print_vars() {
 
-echo "export CONSUL_HTTP_ADDR=https://${LB_IP}:443"
-echo "export CONSUL_HTTP_TOKEN=root"
-echo "export CONSUL_HTTP_SSL=true"
-## This is a boolean value (default true) to specify 
-# SSL certificate verification; setting this value to 
-# false is not recommended for production use. 
-# Example for development purposes:
-echo "export CONSUL_HTTP_SSL_VERIFY=false"
+  echo "export CONSUL_HTTP_ADDR=https://${LB_IP}:443"
+  echo "export CONSUL_HTTP_TOKEN=root"
+  echo "export CONSUL_HTTP_SSL=true"
+  ## This is a boolean value (default true) to specify 
+  # SSL certificate verification; setting this value to 
+  # false is not recommended for production use. 
+  # Example for development purposes:
+  echo "export CONSUL_HTTP_SSL_VERIFY=false"
 
 }
 
@@ -284,10 +284,12 @@ if [ ! -z "${BIN_PATH}" ] ; then
         ${IMAGE_NAME}:${IMAGE_TAG} \
         -c "cat /usr/local/bin/fake-service" > ${BIN_PATH}fake-service
       ;;
+
     Darwin*)    
       log  "OS: MacOS"
       install_from_zip consul ${BIN_PATH} https://releases.hashicorp.com/consul/${CONSUL_VERSION}/consul_${CONSUL_VERSION}_darwin_amd64.zip 
       ;;
+      
     *)
       echo "[ERROR] - OS: ${unameOut} not supported"
       exit 1;;
