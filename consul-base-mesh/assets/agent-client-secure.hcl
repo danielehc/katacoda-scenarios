@@ -30,8 +30,10 @@ ports {
   grpc  = 8502
   http  = 8500
   https = -1
-  // dns   = 8600
+  dns   = 53
 }
+
+recursors = ["8.8.8.8"]
 
 ## Centralized configuration
 enable_central_service_config = true
@@ -50,7 +52,6 @@ verify_outgoing        = true
 ## All requests made to a server need to present a certificate 
 ## with server.<dc>.<domain> as SAN
 verify_server_hostname = true
-
 
 ## The configuration used in the sandbox is based on auto_encrypt
 ## This requires only the certificate for the TLS CA and then uses 
@@ -74,13 +75,13 @@ acl {
   enabled        = true
   default_policy = "deny"
   enable_token_persistence = true
-  tokens {
-    ## Should have only minimal permissions to stay in the DC ?
-    agent  = "root"
-    ## This can be the DNS token for the agents serving DNS requests
-    ## But can also be omitted for other ones. ?
-    default  = "root"
-  }
+  // tokens {
+  //   ## Should have only minimal permissions to stay in the DC ?
+  //   agent  = "root"
+  //   ## This can be the DNS token for the agents serving DNS requests
+  //   ## But can also be omitted for other ones. ?
+  //   default  = "root"
+  // }
 }
 
 ## Telemetry options, probably better moving it in a different configuration

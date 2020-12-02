@@ -26,8 +26,9 @@ static_resources:
                 route:
                   cluster: prometheus
               - match:
-                  prefix: "/web"
+                  prefix: "/web/"
                 route:
+                  prefix_rewrite: "/"
                   cluster: web
               - match:
                   prefix: "/"

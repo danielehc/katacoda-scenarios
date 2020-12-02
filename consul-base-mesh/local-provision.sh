@@ -118,7 +118,9 @@ IMAGE_NAME=danielehc/consul-learn-image
 ## Not all combinations are fully supported by Consul. Refer to 
 ## https://www.consul.io/docs/connect/proxies/envoy#supported-versions
 ## to make sure you are using a version that is fully compatible.
-IMAGE_TAG=v1.9.0-v1.16.0
+CONSUL_VERSION=1.9.0
+ENVOY_VERSION=1.16.0
+IMAGE_TAG=v${CONSUL_VERSION}-v${ENVOY_VERSION}
 
 ## [Optional] CUSTOMIZE THE SANDBOX
 ## By modifying the variables IMAGE_NAME and IMAGE_TAG it is possible to 
@@ -219,33 +221,71 @@ docker pull bitnami/prometheus:latest > /dev/null
 # ++-----------------+
 # || Binaries        |
 # ++-----------------+
+## The sandbox requires Consul binary to be installed locally to perform
+## configuration tasks
 log "Installing Binaries Locally"
 
-## The script copies the following binaries in the $BIN_PATH
+# which consul &>/dev/null && {
+#   if [ `consul version | head -1 | awk '{print $2}'` == "v${CONSUL_VERSION}" ]; then
+#     ## If consul is installed and is the same version of the one we use for
+#     ## the sandbox we skip the installation passage.
+#     BIN_PATH=""
+#   fi
+# }
+
+# echo BIN: ${BIN_PATH}
+
+# ## The script copies the following binaries in the $BIN_PATH
+
+# if [ ! -z "${BIN_PATH}" ]; then
+  
+#   # Create bin folder
+#   mkdir -p ${BIN_PATH}
+
+#   case "$(uname -s)" in
+#   Linux*)
+#     echo Linux;;
+#   Darwin*)    
+#     echo Mac;;
+# fi
+
+# unameOut="$(uname -s)"
+# case "${unameOut}" in
+#   Linux*)     
+#     machine=Linux;;
+#   Darwin*)    
+#     machine=Mac;;
+#   CYGWIN*)    
+#     machine=Cygwin;;
+#   MINGW*)     
+#     machine=MinGw;;
+#   *)          
+#     machine="UNKNOWN:${unameOut}";;
+# esac
+# echo ${machine}
+
+# exit 0
 
 ## consul       - Used to interact with the Consul datacenter as an 
 ##                operator from the local node.
 docker run --rm --entrypoint /bin/sh \
   ${IMAGE_NAME}:${IMAGE_TAG} \
-  -c "cat /usr/local/bin/consul" > ${BIN_PATH}consul
-
-${BIN_PATH}consul -autocomplete-install
+  -c "cat /usr/local/bin/consul" > ${BIN_PATH}consul;;
+${BIN_PATH}consul -autocomplete-install;;
 ## envoy        - Useful in case you want to make the local node part of
 ##                service mesh and interact directly with the services
 ##                inside the mesh.
 docker run --rm --entrypoint /bin/sh \
   ${IMAGE_NAME}:${IMAGE_TAG} \
-  -c "cat /usr/local/bin/envoy" > ${BIN_PATH}envoy
-
-
+  -c "cat /usr/local/bin/envoy" > ${BIN_PATH}envoy;;
 ## fake-service - Useful if you want to simulate a service residing outside
 ##                the service mesh and that needs to be monitored with 
 ##                consul-esm and/or accessed using a terminating gateway. 
 docker run --rm --entrypoint /bin/sh \
   ${IMAGE_NAME}:${IMAGE_TAG} \
-  -c "cat /usr/local/bin/fake-service" > ${BIN_PATH}fake-service
+  -c "cat /usr/local/bin/fake-service" > ${BIN_PATH}fake-service;;
+chmod +x ${BIN_PATH}*;;
 
-chmod +x ${BIN_PATH}*
 
 ########## ------------------------------------------------
 header     "GENERATE DYNAMIC CONFIGURATION"
@@ -319,6 +359,7 @@ docker cp ${ASSETS}certs/${DATACENTER}-server-${DOMAIN}-0-key.pem volumes:/serve
 # Client configuration files
 docker cp ${ASSETS}agent-client-secure.hcl volumes:/client/agent-client-secure.hcl
 docker cp ${ASSETS}agent-client-tokens.hcl volumes:/client/agent-client-tokens.hcl
+docker cp ${ASSETS}agent-ui-metrics.hcl volumes:/client/agent-ui-metrics.hcl
 docker cp ${ASSETS}certs/agent-gossip-encryption.hcl volumes:/client/agent-gossip-encryption.hcl
 ## Client Certificates
 docker cp ${ASSETS}certs/${DOMAIN}-agent-ca.pem volumes:/client/consul-agent-ca.pem
@@ -355,6 +396,8 @@ for i in $(seq 1 ${SERVER_NUMBER}); do
     --name=server-$i \
     --hostname=server-$i \
     --label tag=learn \
+    --dns=127.0.0.1 \
+    --dns-search=consul \
     ${IMAGE_NAME}:${IMAGE_TAG} \
     consul agent -server \
       -datacenter=${DATACENTER} \
@@ -367,8 +410,6 @@ for i in $(seq 1 ${SERVER_NUMBER}); do
       -config-file=/etc/consul.d/agent-gossip-encryption.hcl \
       -config-file=/etc/consul.d/agent-server-tokens.hcl
   
-      ## From doc it seems it is not needed
-
   ## Retrieve newly created server IP
   SERVER_IP=`docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' server-$i`
 
@@ -406,6 +447,8 @@ docker run \
   --name=load-balancer \
   --hostname=load-balancer \
   --label tag=learn \
+  --dns=127.0.0.1 \
+  --dns-search=consul \
   ${IMAGE_NAME}:${IMAGE_TAG} \
   consul agent -ui \
     -datacenter=${DATACENTER} \
@@ -415,7 +458,8 @@ docker run \
     -client=0.0.0.0 \
     -config-file=/etc/consul.d/agent-client-secure.hcl \
     -config-file=/etc/consul.d/agent-gossip-encryption.hcl \
-      -config-file=/etc/consul.d/agent-client-tokens.hcl 
+    -config-file=/etc/consul.d/agent-client-tokens.hcl \
+    -config-file=/etc/consul.d/agent-ui-metrics.hcl
 
 # ++-----------------+
 # || Services        |
@@ -430,6 +474,8 @@ docker run \
   --name=db \
   --hostname=db \
   --label tag=learn \
+  --dns=127.0.0.1 \
+  --dns-search=consul \
   ${IMAGE_NAME}:${IMAGE_TAG} \
   consul agent \
     -datacenter=${DATACENTER} \
@@ -449,6 +495,8 @@ docker run \
   --name=api \
   --hostname=api \
   --label tag=learn \
+  --dns=127.0.0.1 \
+  --dns-search=consul \
   ${IMAGE_NAME}:${IMAGE_TAG} \
   consul agent \
     -datacenter=${DATACENTER} \
@@ -471,6 +519,8 @@ docker run \
   --name=web \
   --hostname=web \
   --label tag=learn \
+  --dns=127.0.0.1 \
+  --dns-search=consul \
   ${IMAGE_NAME}:${IMAGE_TAG} \
   consul agent \
     -datacenter=${DATACENTER} \
@@ -497,6 +547,8 @@ docker run \
   --name=ingress-gw \
   --hostname=ingress-gw \
   --label tag=learn \
+  --dns=127.0.0.1 \
+  --dns-search=consul \
   ${IMAGE_NAME}:${IMAGE_TAG} \
   consul agent \
     -datacenter=${DATACENTER} \
@@ -537,6 +589,8 @@ docker run \
   --label tag=learn \
   bitnami/prometheus:latest > /dev/null 2>&1 &
 
+  # --dns=127.0.0.1 \
+  # --dns-search=consul \
 set +x
 
 # Wait for container to settle
@@ -554,6 +608,7 @@ docker exec prometheus sh -c "consul agent \
   -domain=${DOMAIN} \
   -node=prometheus \
   -retry-join=${RETRY_JOIN} \
+  -dns-port=8600 \
   -config-file=/etc/consul.d/agent-client-secure.hcl \
   -config-file=/etc/consul.d/agent-gossip-encryption.hcl \
   -config-file=/etc/consul.d/agent-client-tokens.hcl > /tmp/consul.log 2>&1 &"
@@ -566,11 +621,11 @@ header     "CONSUL - Service Mesh configuration and deploy"
 # || Config          |
 # ++-----------------+
 
-## The recommended approach for configuring COnsul UI and API to be accessed
+## The recommended approach for configuring Consul UI and API to be accessed
 ## by users and operators is to use dedicated Consul agents to server API and
 ## UI requests and to have them behind a reverse proxy tht could terminate
 ## SSL and expose a certificate that is not self signed by Consul CA but is
-## 
+## emitted from a trusted CA like Let's Encrypt.
 
 ## Start LB for Consul UI
 log "Espose Load Balancer on https://localhost:8443"

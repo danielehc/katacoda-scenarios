@@ -17,8 +17,10 @@ ports {
   grpc  = 8502
   http  = 8500
   https = -1
-  // dns   = 53
+  dns   = 53
 }
+
+recursors = ["8.8.8.8"]
 
 ## Centralized configuration
 enable_central_service_config = true
@@ -45,11 +47,11 @@ acl {
   enabled        = true
   default_policy = "deny"
   enable_token_persistence = true
-  tokens {
-    master = "root"
-    agent  = "root"
-    // default  = "root"
-  }
+  // tokens {
+  //   master = "root"
+  //   agent  = "root"
+  //   // default  = "root"
+  // }
 }
 
 telemetry {

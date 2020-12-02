@@ -8,6 +8,6 @@ acl {
     agent  = "root"
     ## This can be the DNS token for the agents serving DNS requests
     ## But can also be omitted for other ones. ?
-    // default  = "root"
+    default  = "root"
   }
 }
