@@ -22,15 +22,6 @@ static_resources:
                 - "*"
               routes:
               - match:
-                  prefix: "/prometheus"
-                route:
-                  cluster: prometheus
-              - match:
-                  prefix: "/web/"
-                route:
-                  prefix_rewrite: "/"
-                  cluster: web
-              - match:
                   prefix: "/"
                 route:
                   cluster: consul-api
@@ -109,20 +100,4 @@ static_resources:
     lb_policy: ROUND_ROBIN
     hosts: [
       { socket_address: { address: 127.0.0.1, port_value: 8500 }}
-    ]
-  - name: prometheus
-    connect_timeout: 5.0s
-    type: STRICT_DNS
-    dns_lookup_family: V4_ONLY
-    lb_policy: ROUND_ROBIN
-    hosts: [
-      { socket_address: { address: 127.0.0.1, port_value: 9090 }}
-    ]
-  - name: web
-    connect_timeout: 5.0s
-    type: STRICT_DNS
-    dns_lookup_family: V4_ONLY
-    lb_policy: ROUND_ROBIN
-    hosts: [
-      { socket_address: { address: 127.0.0.1, port_value: 5000 }}
     ]

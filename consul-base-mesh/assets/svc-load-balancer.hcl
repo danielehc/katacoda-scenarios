@@ -1,22 +1,6 @@
 service {
   name = "load-balancer"
   port = 443
-  connect {
-    sidecar_service {
-      proxy {
-        upstreams = [
-          {
-            destination_name = "prometheus"
-            local_bind_port = 9090
-          },
-          {
-            destination_name = "web"
-            local_bind_port = 5000
-          }
-        ]
-      }
-    }
-  }
   check {
     id = "load-balancer-api-check"
     http = "https://localhost:443"

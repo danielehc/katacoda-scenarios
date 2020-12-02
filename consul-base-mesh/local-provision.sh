@@ -22,6 +22,27 @@ header() {
   echo -e "\e[0m"
 }
 
+
+# Install_from_zip "consul" "<destination>" "https://example.com/consul.zip"
+install_from_zip() {
+  NAME="$1"
+  DESTINATION="$2"
+  DOWNLOAD_URL="$3"
+
+  mkdir -p /tmp
+
+  curl -s -L -o /tmp/${NAME}.zip ${DOWNLOAD_URL}
+
+  if [ $? -ne 0 ]; then
+    echo "Download failed! Exiting."
+    exit 1
+  fi
+
+  unzip -o -d ${DESTINATION} /tmp/${NAME}.zip
+  chmod +x ${DESTINATION}${NAME}
+  rm -rf /tmp/${NAME}.zip
+}
+
 ## Katacoda function
 finish() {
   touch /provision_complete
@@ -31,12 +52,14 @@ finish() {
 ## Prints environment variables to be used to configur local machine
 print_vars() {
 
- echo "export CONSUL_HTTP_ADDR=127.0.0.1:8501"
- echo "export CONSUL_HTTP_TOKEN=\"root\""
- echo "export CONSUL_HTTP_SSL=true"
- echo "export CONSUL_CACERT=${ASSETS}certs/consul-agent-ca.pem"
- echo "export CONSUL_CLIENT_CERT=${ASSETS}certs/dc1-cli-consul-0.pem"
- echo "export CONSUL_CLIENT_KEY=${ASSETS}certs/dc1-cli-consul-0-key.pem"
+echo "export CONSUL_HTTP_ADDR=https://${LB_IP}:443"
+echo "export CONSUL_HTTP_TOKEN=root"
+echo "export CONSUL_HTTP_SSL=true"
+## This is a boolean value (default true) to specify 
+# SSL certificate verification; setting this value to 
+# false is not recommended for production use. 
+# Example for development purposes:
+echo "export CONSUL_HTTP_SSL_VERIFY=false"
 
 }
 
@@ -145,6 +168,8 @@ BIN_PATH="./bin/"
 EXTRA_PATH="../../"
 DNS_PORT="8600"
 
+## Not sure on this
+PATH=`pwd ${BIN_PATH}`/${BIN_PATH}:$PATH
 
 # ++-----------------+
 # || Begin           |
@@ -203,12 +228,6 @@ log "Pulling Docker Images"
 ## differently in the docker run command.
 docker pull ${IMAGE_NAME}:${IMAGE_TAG} > /dev/null
 
-## Pull non default images too.
-## TODO Check best prometheus image
-## TODO Use it as variable when found
-docker pull prom/prometheus:latest > /dev/null
-docker pull bitnami/prometheus:latest > /dev/null
-
 ## DNS Config
 ## log "Setting Consul as DNS"
 ## The setting below can be used on a Ubuntu VM to setup Consul as the main
@@ -225,67 +244,58 @@ docker pull bitnami/prometheus:latest > /dev/null
 ## configuration tasks
 log "Installing Binaries Locally"
 
-# which consul &>/dev/null && {
-#   if [ `consul version | head -1 | awk '{print $2}'` == "v${CONSUL_VERSION}" ]; then
-#     ## If consul is installed and is the same version of the one we use for
-#     ## the sandbox we skip the installation passage.
-#     BIN_PATH=""
-#   fi
-# }
+which consul &>/dev/null && {
+  if [ `consul version | head -1 | awk '{print $2}'` == "v${CONSUL_VERSION}" ]; then
+    ## If consul is installed and is the same version of the one we use for
+    ## the sandbox we skip the installation passage.
+    BIN_PATH=""
+    EXTRA_PATH=""
+  fi
+}
 
-# echo BIN: ${BIN_PATH}
+## The script copies the following binaries in the $BIN_PATH
 
-# ## The script copies the following binaries in the $BIN_PATH
-
-# if [ ! -z "${BIN_PATH}" ]; then
+if [ ! -z "${BIN_PATH}" ] ; then
   
-#   # Create bin folder
-#   mkdir -p ${BIN_PATH}
+  # Create bin folder
+  mkdir -p ${BIN_PATH}
 
-#   case "$(uname -s)" in
-#   Linux*)
-#     echo Linux;;
-#   Darwin*)    
-#     echo Mac;;
-# fi
+  unameOut="$(uname -s)"
 
-# unameOut="$(uname -s)"
-# case "${unameOut}" in
-#   Linux*)     
-#     machine=Linux;;
-#   Darwin*)    
-#     machine=Mac;;
-#   CYGWIN*)    
-#     machine=Cygwin;;
-#   MINGW*)     
-#     machine=MinGw;;
-#   *)          
-#     machine="UNKNOWN:${unameOut}";;
-# esac
-# echo ${machine}
+  case "${unameOut}" in
+    Linux*)
+      log "OS: Linux"
+      
+      docker run --rm --entrypoint /bin/sh \
+        ${IMAGE_NAME}:${IMAGE_TAG} \
+        -c "cat /usr/local/bin/consul" > ${BIN_PATH}consul
 
-# exit 0
+      ## envoy        - Useful in case you want to make the local node part of
+      ##                service mesh and interact directly with the services
+      ##                inside the mesh.
+      docker run --rm --entrypoint /bin/sh \
+        ${IMAGE_NAME}:${IMAGE_TAG} \
+        -c "cat /usr/local/bin/envoy" > ${BIN_PATH}envoy
 
-## consul       - Used to interact with the Consul datacenter as an 
-##                operator from the local node.
-docker run --rm --entrypoint /bin/sh \
-  ${IMAGE_NAME}:${IMAGE_TAG} \
-  -c "cat /usr/local/bin/consul" > ${BIN_PATH}consul;;
-${BIN_PATH}consul -autocomplete-install;;
-## envoy        - Useful in case you want to make the local node part of
-##                service mesh and interact directly with the services
-##                inside the mesh.
-docker run --rm --entrypoint /bin/sh \
-  ${IMAGE_NAME}:${IMAGE_TAG} \
-  -c "cat /usr/local/bin/envoy" > ${BIN_PATH}envoy;;
-## fake-service - Useful if you want to simulate a service residing outside
-##                the service mesh and that needs to be monitored with 
-##                consul-esm and/or accessed using a terminating gateway. 
-docker run --rm --entrypoint /bin/sh \
-  ${IMAGE_NAME}:${IMAGE_TAG} \
-  -c "cat /usr/local/bin/fake-service" > ${BIN_PATH}fake-service;;
-chmod +x ${BIN_PATH}*;;
+      ## fake-service - Useful if you want to simulate a service residing outside
+      ##                the service mesh and that needs to be monitored with 
+      ##                consul-esm and/or accessed using a terminating gateway. 
+      docker run --rm --entrypoint /bin/sh \
+        ${IMAGE_NAME}:${IMAGE_TAG} \
+        -c "cat /usr/local/bin/fake-service" > ${BIN_PATH}fake-service
+      ;;
+    Darwin*)    
+      log  "OS: MacOS"
+      install_from_zip consul ${BIN_PATH} https://releases.hashicorp.com/consul/${CONSUL_VERSION}/consul_${CONSUL_VERSION}_darwin_amd64.zip 
+      ;;
+    *)
+      echo "[ERROR] - OS: ${unameOut} not supported"
+      exit 1;;
+  esac 
 
+  chmod +x ${BIN_PATH}*
+  # ${BIN_PATH}consul -autocomplete-install
+fi
 
 ########## ------------------------------------------------
 header     "GENERATE DYNAMIC CONFIGURATION"
@@ -309,13 +319,15 @@ echo "encrypt = \""$(${BIN_PATH}consul keygen)"\"" > ${ASSETS}certs/agent-gossip
 pushd ${ASSETS}certs > /dev/null
 
 ## Generate CA certificates (consul-agent-ca.pem & consul-agent-ca-key.pem)
-${EXTRA_PATH}${BIN_PATH}consul tls ca create -domain="${DOMAIN}"
+# ${EXTRA_PATH}${BIN_PATH}consul tls ca create -domain="${DOMAIN}"
+consul tls ca create -domain="${DOMAIN}"
 
 ## Generate Server certificates (ideally one per server)
 # ==> Using consul-agent-ca.pem and consul-agent-ca-key.pem
 # ==> Saved dc1-server-consul-0.pem
 # ==> Saved dc1-server-consul-0-key.pem
-${EXTRA_PATH}${BIN_PATH}consul tls cert create -server -domain="${DOMAIN}" -dc="${DATACENTER}"
+# ${EXTRA_PATH}${BIN_PATH}consul tls cert create -server -domain="${DOMAIN}" -dc="${DATACENTER}"
+consul tls cert create -server -domain="${DOMAIN}" -dc="${DATACENTER}"
 
 popd > /dev/null
 
@@ -367,7 +379,6 @@ docker cp ${ASSETS}certs/${DOMAIN}-agent-ca.pem volumes:/client/consul-agent-ca.
 docker cp ${ASSETS}svc-db.hcl volumes:/client/svc-db.hcl
 docker cp ${ASSETS}svc-api.hcl volumes:/client/svc-api.hcl
 docker cp ${ASSETS}svc-web.hcl volumes:/client/svc-web.hcl
-docker cp ${ASSETS}svc-prometheus.hcl volumes:/client/svc-prometheus.hcl
 docker cp ${ASSETS}svc-load-balancer.hcl volumes:/client/svc-load-balancer.hcl
 
 ## Service configuration files
@@ -429,6 +440,8 @@ sleep 5
 ## At this point you should consider creating less privileged tokens for your
 ## client agents and a token for DNS interface.
 
+
+
 ########## ------------------------------------------------
 header     "CONSUL - Starting Client Agents"
 ###### -----------------------------------------------
@@ -442,8 +455,6 @@ log "Starting LB Nodes"
 docker run \
   -d \
   -v client_config:/etc/consul.d \
-  -p 8500:8500 \
-  -p 8443:443 \
   --name=load-balancer \
   --hostname=load-balancer \
   --label tag=learn \
@@ -455,11 +466,15 @@ docker run \
     -domain=${DOMAIN} \
     -node=load-balancer \
     -retry-join=${RETRY_JOIN} \
-    -client=0.0.0.0 \
+    -client=127.0.0.1 \
     -config-file=/etc/consul.d/agent-client-secure.hcl \
     -config-file=/etc/consul.d/agent-gossip-encryption.hcl \
-    -config-file=/etc/consul.d/agent-client-tokens.hcl \
-    -config-file=/etc/consul.d/agent-ui-metrics.hcl
+    -config-file=/etc/consul.d/agent-client-tokens.hcl 
+    
+    # \
+    # -config-file=/etc/consul.d/agent-ui-metrics.hcl
+
+LB_IP=`docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' load-balancer`
 
 # ++-----------------+
 # || Services        |
@@ -484,8 +499,7 @@ docker run \
     -retry-join=${RETRY_JOIN} \
     -config-file=/etc/consul.d/agent-client-secure.hcl \
     -config-file=/etc/consul.d/agent-gossip-encryption.hcl \
-      -config-file=/etc/consul.d/agent-client-tokens.hcl 
-
+    -config-file=/etc/consul.d/agent-client-tokens.hcl 
 
 ## API
 docker run \
@@ -563,56 +577,6 @@ docker run \
 
 sleep 5
 
-# ++-----------------+
-# || Monitoring      |
-# ++-----------------+
-log "Starting Monitoring Infrastructure"
-
-set -x
-ABS_CONF=`pwd ${ASSETS}`
-
-# docker run \
-#   -p 9090:9090 \
-#   -v ${ABS_CONF}/${ASSETS}ext-prometheus.yaml:/etc/prometheus/prometheus.yml \
-#   -v client_config:/etc/consul.d \
-#   --name=prometheus \
-#   --label tag=learn \
-#   prom/prometheus:latest > /dev/null 2>&1 &
-
-
-docker run \
-  -p 9090:9090 \
-  -v ${ABS_CONF}/${ASSETS}ext-prometheus.yaml:/opt/bitnami/prometheus/conf/prometheus.yml \
-  -v client_config:/etc/consul.d \
-  --name=prometheus \
-  --hostname=prometheus \
-  --label tag=learn \
-  bitnami/prometheus:latest > /dev/null 2>&1 &
-
-  # --dns=127.0.0.1 \
-  # --dns-search=consul \
-set +x
-
-# Wait for container to settle
-sleep 2
-
-# Install Consul on Container
-docker cp bin/consul prometheus:/bin/consul
-
-# Install Envoy on Container (trobleshoot...seems not executable nor found)
-docker cp bin/envoy prometheus:/bin/envoy
-
-# Start Consul on Prometheus container
-docker exec prometheus sh -c "consul agent \
-  -datacenter=${DATACENTER} \
-  -domain=${DOMAIN} \
-  -node=prometheus \
-  -retry-join=${RETRY_JOIN} \
-  -dns-port=8600 \
-  -config-file=/etc/consul.d/agent-client-secure.hcl \
-  -config-file=/etc/consul.d/agent-gossip-encryption.hcl \
-  -config-file=/etc/consul.d/agent-client-tokens.hcl > /tmp/consul.log 2>&1 &"
-
 ########## ------------------------------------------------
 header     "CONSUL - Service Mesh configuration and deploy"
 ###### -----------------------------------------------
@@ -628,13 +592,12 @@ header     "CONSUL - Service Mesh configuration and deploy"
 ## emitted from a trusted CA like Let's Encrypt.
 
 ## Start LB for Consul UI
-log "Espose Load Balancer on https://localhost:8443"
+log "Espose Load Balancer on https://${LB_IP}:443"
 docker exec load-balancer sh -c "envoy -c /etc/consul.d/ext-envoy-reverse-proxy.yaml --service-cluster \"targetCluster\" > /tmp/reverse-proxy.log 2>&1 &"
 
 log "Define Environment Variables"
 
-# export CONSUL_HTTP_ADDR=127.0.0.1:8500
-export CONSUL_HTTP_ADDR=https://127.0.0.1:8443
+export CONSUL_HTTP_ADDR=https://${LB_IP}:443
 export CONSUL_HTTP_TOKEN="root"
 export CONSUL_HTTP_SSL=true
 ## This is a boolean value (default true) to specify 
@@ -646,18 +609,27 @@ export CONSUL_HTTP_SSL_VERIFY=false
 sleep 2
 log "Apply Configuration Entries"
 
-## Envoy Proxy Defaults
-${BIN_PATH}consul config write ${ASSETS}config-proxy-defaults.hcl
+# ## Envoy Proxy Defaults
+# ${BIN_PATH}consul config write ${ASSETS}config-proxy-defaults.hcl
 
-${BIN_PATH}consul config write ${ASSETS}config-service-db.hcl
-${BIN_PATH}consul config write ${ASSETS}config-service-api.hcl
-${BIN_PATH}consul config write ${ASSETS}config-service-web.hcl
-${BIN_PATH}consul config write ${ASSETS}config-service-load-balancer.hcl
-${BIN_PATH}consul config write ${ASSETS}config-service-prometheus.hcl
+# ${BIN_PATH}consul config write ${ASSETS}config-service-db.hcl
+# ${BIN_PATH}consul config write ${ASSETS}config-service-api.hcl
+# ${BIN_PATH}consul config write ${ASSETS}config-service-web.hcl
+# ${BIN_PATH}consul config write ${ASSETS}config-service-load-balancer.hcl
+
+# ## Ingress gateway configuration
+# ${BIN_PATH}consul config write ${ASSETS}igw-web.hcl
+
+## Envoy Proxy Defaults
+consul config write ${ASSETS}config-proxy-defaults.hcl
+
+consul config write ${ASSETS}config-service-db.hcl
+consul config write ${ASSETS}config-service-api.hcl
+consul config write ${ASSETS}config-service-web.hcl
+consul config write ${ASSETS}config-service-load-balancer.hcl
 
 ## Ingress gateway configuration
-${BIN_PATH}consul config write ${ASSETS}igw-web.hcl
-${BIN_PATH}consul config write ${ASSETS}igw-load-balancer.hcl
+consul config write ${ASSETS}igw-web.hcl
 
 # ++-----------------+
 # || Deploy          |
@@ -704,21 +676,9 @@ docker exec \
   --env CONSUL_HTTP_TOKEN='root' \
   web sh -c "consul services register /etc/consul.d/svc-web.hcl"
 
-## Register Prometheus service
-docker exec \
-  --env CONSUL_HTTP_ADDR='127.0.0.1:8500' \
-  --env CONSUL_HTTP_TOKEN='root' \
-  prometheus sh -c "consul services register /etc/consul.d/svc-prometheus.hcl" || echo $?
-
 log "Start Envoy sidecar proxies"
 ## Once the services are registered in Consul and the upsytram dependencies are
 ## specified 
-## Start load-balancer sidecar
-docker exec \
-  --env CONSUL_HTTP_ADDR='127.0.0.1:8500' \
-  --env CONSUL_GRPC_ADDR='127.0.0.1:8502' \
-  --env CONSUL_HTTP_TOKEN='root' \
-  load-balancer sh -c "consul connect envoy -sidecar-for load-balancer -admin-bind 0.0.0.0:19002 > /tmp/proxy.log 2>&1 &"
 
 ## Start db sidecar
 docker exec \
@@ -741,13 +701,6 @@ docker exec \
   --env CONSUL_HTTP_TOKEN='root' \
   web sh -c "consul connect envoy -sidecar-for web -admin-bind 0.0.0.0:19001 > /tmp/proxy.log 2>&1 &"
 
-## Start prometheus sidecar
-docker exec \
-  --env CONSUL_HTTP_ADDR='127.0.0.1:8500' \
-  --env CONSUL_GRPC_ADDR='127.0.0.1:8502' \
-  --env CONSUL_HTTP_TOKEN='root' \
-  prometheus sh -c "consul connect envoy -sidecar-for prometheus -admin-bind 0.0.0.0:19001 > /tmp/proxy.log 2>&1 &"
-
 # ++-----------------+
 # || Gateway Config  |
 # ++-----------------+
@@ -757,13 +710,6 @@ docker exec \
   --env CONSUL_GRPC_ADDR='127.0.0.1:8502' \
   --env CONSUL_HTTP_TOKEN='root' \
   ingress-gw sh -c "consul connect envoy -gateway=ingress -register -service ingress-service -address '{{ GetInterfaceIP \"eth0\" }}:8888' -admin-bind 0.0.0.0:19001 > /tmp/proxy_1.log 2>&1 &"
-
-log "Start Ingress Gateway for load-balancer"
-docker exec \
-  --env CONSUL_HTTP_ADDR='127.0.0.1:8500' \
-  --env CONSUL_GRPC_ADDR='127.0.0.1:8502' \
-  --env CONSUL_HTTP_TOKEN='root' \
-  ingress-gw sh -c "consul connect envoy -gateway=ingress -register -service ingress-load-balancer -address '{{ GetInterfaceIP \"eth0\" }}:8889' -admin-bind 0.0.0.0:19002 > /tmp/proxy_2.log 2>&1 &"
 
 ########## ------------------------------------------------
 header     "CONSUL - Configure your local environment"

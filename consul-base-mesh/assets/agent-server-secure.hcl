@@ -6,7 +6,7 @@ connect {
 
 addresses {
   grpc = "127.0.0.1"
-  http = "0.0.0.0"
+  http = "127.0.0.1"
   // http = "127.0.0.1"
   // https = "127.0.0.1"
   dns = "127.0.0.1"
