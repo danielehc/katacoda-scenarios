@@ -22,7 +22,6 @@ header() {
   echo -e "\e[0m"
 }
 
-
 # Install_from_zip "consul" "<destination>" "https://example.com/consul.zip"
 install_from_zip() {
   NAME="$1"
@@ -52,8 +51,8 @@ finish() {
 ## Prints environment variables to be used to configur local machine
 print_vars() {
 
-  echo "export CONSUL_HTTP_ADDR=https://${LB_IP}:443"
-  echo "export CONSUL_HTTP_TOKEN=root"
+  echo "export CONSUL_HTTP_ADDR=https://${SERVER_IP}:443"
+  echo "export CONSUL_HTTP_TOKEN=${CONSUL_HTTP_TOKEN}"
   echo "export CONSUL_HTTP_SSL=true"
   ## This is a boolean value (default true) to specify 
   # SSL certificate verification; setting this value to 
@@ -105,8 +104,6 @@ show_ports() {
   done
 
 }
-
-
 
 # ++-----------------+
 # || Variables       |
@@ -199,7 +196,6 @@ log "Install prerequisites"
 ## the environment once deployed.
 # apt-get install -y apt-utils > /dev/null
 # apt-get install -y unzip curl jq 2>&1 > /dev/null
-
 
 log "Pulling Docker Images"
 
@@ -311,26 +307,6 @@ for i in `seq 1 ${SERVER_NUMBER}`; do
   consul tls cert create -server -domain="${DOMAIN}" -dc="${DATACENTER}" > /dev/null
 done
 
-log "Generating Consul master token"
-## ACL generate root token
-CONSUL_MASTER_TOKEN="root"
-
-tee agent-server-tokens.hcl > /dev/null <<EOF
-## ACL (for now embedded with standard master token)
-acl {
-  tokens {
-    ## [Deprecated] You should properly bootstap ACL in the DC
-    ## Will be removed in a future iteration of the sandbox environment
-    master = "${CONSUL_MASTER_TOKEN}"
-    ## Should have only minimal permissions to stay in the DC ?
-    agent  = "${CONSUL_MASTER_TOKEN}"
-    ## This can be the DNS token for the agents serving DNS requests
-    ## But can also be omitted for other ones. ?
-    default  = "${CONSUL_MASTER_TOKEN}"
-  }
-}
-EOF
-
 popd > /dev/null
 
 ########## ------------------------------------------------
@@ -355,14 +331,14 @@ docker container create \
   -v client_config:/client \
   alpine > /dev/null
 
-log "Copying configuration files" 
+log "Copying server configuration files" 
 ## The sandbox environments provides you with a full set of example files to
 ## be used as an example to generate your own configuration.
 ## TODO - Files should be passed directly at Docker container creation time.
 
 # Server configuration files
 docker cp ${ASSETS}agent-server-secure.hcl volumes:/server/agent-server-secure.hcl
-docker cp ${ASSETS}certs/agent-server-tokens.hcl volumes:/server/agent-server-tokens.hcl
+# docker cp ${ASSETS}certs/agent-server-tokens.hcl volumes:/server/agent-server-tokens.hcl
 docker cp ${ASSETS}certs/agent-gossip-encryption.hcl volumes:/server/agent-gossip-encryption.hcl
 ## Server Certificates
 docker cp ${ASSETS}certs/${DOMAIN}-agent-ca.pem volumes:/server/consul-agent-ca.pem
@@ -376,7 +352,7 @@ docker cp ${ASSETS}certs/${DATACENTER}-server-${DOMAIN}-$i-key.pem volumes:/serv
 
 # Client configuration files
 docker cp ${ASSETS}agent-client-secure.hcl volumes:/client/agent-client-secure.hcl
-docker cp ${ASSETS}agent-client-tokens.hcl volumes:/client/agent-client-tokens.hcl
+# docker cp ${ASSETS}agent-client-tokens.hcl volumes:/client/agent-client-tokens.hcl
 docker cp ${ASSETS}agent-ui-metrics.hcl volumes:/client/agent-ui-metrics.hcl
 docker cp ${ASSETS}certs/agent-gossip-encryption.hcl volumes:/client/agent-gossip-encryption.hcl
 ## Client Certificates
@@ -416,7 +392,7 @@ for i in $(seq 1 ${SERVER_NUMBER}); do
     --dns=127.0.0.1 \
     --dns-search=consul \
     ${IMAGE_NAME}:${IMAGE_TAG} \
-    consul agent -server \
+    consul agent -server -ui \
       -datacenter=${DATACENTER} \
       -domain=${DOMAIN} \
       -node=server-$i \
@@ -424,8 +400,7 @@ for i in $(seq 1 ${SERVER_NUMBER}); do
       -bootstrap-expect=${SERVER_NUMBER} \
       -retry-join=${RETRY_JOIN} \
       -config-file=/etc/consul.d/agent-server-secure.hcl \
-      -config-file=/etc/consul.d/agent-gossip-encryption.hcl \
-      -config-file=/etc/consul.d/agent-server-tokens.hcl > /dev/null 2>&1
+      -config-file=/etc/consul.d/agent-gossip-encryption.hcl > /dev/null 2>&1
   
   ## Retrieve newly created server IP
   SERVER_IP=`docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' server-$i`
@@ -439,67 +414,19 @@ for i in $(seq 1 ${SERVER_NUMBER}); do
 done
 
 ## Simulate the startup time but also give time to slower test machines to run
-## the containers.
-sleep 5
+## the containers and start ACL system
+sleep 7
 
 ## TODO ACL fine tuning
 ## At this point you should consider creating less privileged tokens for your
 ## client agents and a token for DNS interface.
-
-
 ########## ------------------------------------------------
-header     "CONSUL - Service Mesh configuration"
+header     "CONSUL - ACL configuration"
 ###### -----------------------------------------------
-
-# ++-----------------+
-# || Consul API      |
-# ++-----------------+
-
-log "Starting LB Nodes"
-
-docker run \
-  -d \
-  -v client_config:/etc/consul.d \
-  --name=load-balancer \
-  --hostname=load-balancer \
-  --label tag=learn \
-  --dns=127.0.0.1 \
-  --dns-search=consul \
-  ${IMAGE_NAME}:${IMAGE_TAG} \
-  consul agent -ui \
-    -datacenter=${DATACENTER} \
-    -domain=${DOMAIN} \
-    -node=load-balancer \
-    -retry-join=${RETRY_JOIN} \
-    -client=127.0.0.1 \
-    -config-file=/etc/consul.d/agent-client-secure.hcl \
-    -config-file=/etc/consul.d/agent-gossip-encryption.hcl \
-    -config-file=/etc/consul.d/agent-client-tokens.hcl > /dev/null 2>&1
-    
-    # \
-    # -config-file=/etc/consul.d/agent-ui-metrics.hcl
-
-LB_IP=`docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' load-balancer`
-
-sleep 2
-
-# ++-----------------+
-# || Config          |
-# ++-----------------+
-## The recommended approach for configuring Consul UI and API to be accessed
-## by users and operators is to use dedicated Consul agents to server API and
-## UI requests and to have them behind a reverse proxy tht could terminate
-## SSL and expose a certificate that is not self signed by Consul CA but is
-## emitted from a trusted CA like Let's Encrypt.
-
-## Start LB for Consul UI
-log "Espose Load Balancer on https://${LB_IP}:443"
-docker exec load-balancer sh -c "envoy -c /etc/consul.d/ext-envoy-reverse-proxy.yaml --service-cluster \"targetCluster\" > /tmp/reverse-proxy.log 2>&1 &"
 
 log "Define Environment Variables"
 
-export CONSUL_HTTP_ADDR=https://${LB_IP}:443
-export CONSUL_HTTP_TOKEN="root"
+export CONSUL_HTTP_ADDR=https://${SERVER_IP}:443
 export CONSUL_HTTP_SSL=true
 ## This is a boolean value (default true) to specify 
 # SSL certificate verification; setting this value to 
@@ -507,7 +434,53 @@ export CONSUL_HTTP_SSL=true
 # Example for development purposes:
 export CONSUL_HTTP_SSL_VERIFY=false
 
-sleep 2
+log "ACL Bootstrap"
+
+while ! consul acl bootstrap > ${ASSETS}certs/acl-bootstrap.conf
+do
+  echo "Try again"
+  sleep 2
+done
+
+export CONSUL_HTTP_TOKEN=`cat ${ASSETS}/certs/acl-bootstrap.conf | grep SecretID | awk '{print $2}'`
+
+log "Create ACL Policies"
+
+## DNS Policy for default tokens
+consul acl policy create -name "acl-policy-dns" \
+            -description "Policy for DNS endpoints" \
+            -rules @${ASSETS}acl-policy-dns.hcl  > /dev/null 2>&1
+
+## Server Agent policy for server agent token
+consul acl policy create -name "acl-policy-server-node" \
+            -description "Policy for Server nodes" \
+            -rules @${ASSETS}acl-policy-server-node.hcl  > /dev/null 2>&1
+
+log "Create ACL Tokens"
+
+DNS_TOK=`consul acl token create -description "DNS - Default token" \
+                          -policy-name acl-policy-dns | grep SecretID | awk '{print $2}'` 
+
+## Create one agent token per server
+for i in `seq 1 ${SERVER_NUMBER}`; do
+
+  IP_ADDR=`docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' server-$i`
+
+  TOK=`consul acl token create -description "server-$i agent token" \
+                          -policy-name acl-policy-server-node | grep SecretID | awk '{print $2}'` 
+
+  CONSUL_HTTP_ADDR=https://${IP_ADDR}:443 consul acl set-agent-token agent ${TOK}
+  CONSUL_HTTP_ADDR=https://${IP_ADDR}:443 consul acl set-agent-token default ${DNS_TOK}
+
+done
+
+# print_vars
+# exit 0
+
+########## ------------------------------------------------
+header     "CONSUL - Service Mesh configuration"
+###### -----------------------------------------------
+
 log "Apply Configuration Entries"
 
 ## Envoy Proxy Defaults
@@ -524,6 +497,24 @@ consul config write ${ASSETS}igw-web.hcl
 ########## ------------------------------------------------
 header     "CONSUL - Starting Client Agents"
 ###### -----------------------------------------------
+
+
+tee ${ASSETS}certs/agent-client-tokens.hcl << EOF
+## ACL (for now embedded with standard master token)
+acl {
+  tokens {
+    ## Should have only minimal permissions to stay in the DC ?
+    agent  = "${CONSUL_HTTP_TOKEN}"
+    ## This can be the DNS token for the agents serving DNS requests
+    ## But can also be omitted for other ones. ?
+    default  = "${DNS_TOK}"
+  }
+}
+EOF
+
+docker cp ${ASSETS}certs/agent-client-tokens.hcl volumes:/client/agent-client-tokens.hcl
+
+CONSUL_AGENT_TOKEN=${CONSUL_HTTP_TOKEN}
 
 # ++-----------------+
 # || Services        |
@@ -646,29 +637,25 @@ docker exec api sh -c "LISTEN_ADDR=127.0.0.1:9003 NAME=api UPSTREAM_URIS=\"http:
 ## Start WEB
 docker exec web sh -c "LISTEN_ADDR=0.0.0.0:9002 NAME=web UPSTREAM_URIS=\"http://localhost:5000\" fake-service > /tmp/service.log 2>&1 &"
 
-log "Register services and checks in Consul"
-## Register Consul API
-docker exec \
-  --env CONSUL_HTTP_ADDR='127.0.0.1:8500' \
-  --env CONSUL_HTTP_TOKEN='root' \
-  load-balancer sh -c "consul services register /etc/consul.d/svc-load-balancer.hcl"
+set -x
 
+log "Register services and checks in Consul"
 ## Register DB service
 docker exec \
   --env CONSUL_HTTP_ADDR='127.0.0.1:8500' \
-  --env CONSUL_HTTP_TOKEN='root' \
+  --env CONSUL_HTTP_TOKEN="${CONSUL_HTTP_TOKEN}" \
   db sh -c "consul services register /etc/consul.d/svc-db.hcl"
 
 ## Register API service
 docker exec \
   --env CONSUL_HTTP_ADDR='127.0.0.1:8500' \
-  --env CONSUL_HTTP_TOKEN='root' \
+  --env CONSUL_HTTP_TOKEN="${CONSUL_HTTP_TOKEN}" \
   api sh -c "consul services register /etc/consul.d/svc-api.hcl"
 
 ## Register WEB service
 docker exec \
   --env CONSUL_HTTP_ADDR='127.0.0.1:8500' \
-  --env CONSUL_HTTP_TOKEN='root' \
+  --env CONSUL_HTTP_TOKEN="${CONSUL_HTTP_TOKEN}" \
   web sh -c "consul services register /etc/consul.d/svc-web.hcl"
 
 log "Start Envoy sidecar proxies"
@@ -679,21 +666,21 @@ log "Start Envoy sidecar proxies"
 docker exec \
   --env CONSUL_HTTP_ADDR='127.0.0.1:8500' \
   --env CONSUL_GRPC_ADDR='127.0.0.1:8502' \
-  --env CONSUL_HTTP_TOKEN='root' \
+  --env CONSUL_HTTP_TOKEN="${CONSUL_HTTP_TOKEN}" \
   db sh -c "consul connect envoy -sidecar-for db-1 -admin-bind 0.0.0.0:19001 > /tmp/proxy.log 2>&1 &"
 
 ## Start api sidecar
 docker exec \
   --env CONSUL_HTTP_ADDR='127.0.0.1:8500' \
   --env CONSUL_GRPC_ADDR='127.0.0.1:8502' \
-  --env CONSUL_HTTP_TOKEN='root' \
+  --env CONSUL_HTTP_TOKEN="${CONSUL_HTTP_TOKEN}" \
   api sh -c "consul connect envoy -sidecar-for api-1 -admin-bind 0.0.0.0:19001 > /tmp/proxy.log 2>&1 &"
 
 ## Start web sidecar
 docker exec \
   --env CONSUL_HTTP_ADDR='127.0.0.1:8500' \
   --env CONSUL_GRPC_ADDR='127.0.0.1:8502' \
-  --env CONSUL_HTTP_TOKEN='root' \
+  --env CONSUL_HTTP_TOKEN="${CONSUL_HTTP_TOKEN}" \
   web sh -c "consul connect envoy -sidecar-for web -admin-bind 0.0.0.0:19001 > /tmp/proxy.log 2>&1 &"
 
 # ++-----------------+
@@ -703,7 +690,7 @@ log "Start Ingress Gateway for web"
 docker exec \
   --env CONSUL_HTTP_ADDR='127.0.0.1:8500' \
   --env CONSUL_GRPC_ADDR='127.0.0.1:8502' \
-  --env CONSUL_HTTP_TOKEN='root' \
+  --env CONSUL_HTTP_TOKEN="${CONSUL_HTTP_TOKEN}" \
   ingress-gw sh -c "consul connect envoy -gateway=ingress -register -service ingress-service -address '{{ GetInterfaceIP \"eth0\" }}:8888' -admin-bind 0.0.0.0:19001 > /tmp/proxy_1.log 2>&1 &"
 
 ########## ------------------------------------------------

@@ -6,9 +6,9 @@ connect {
 
 addresses {
   grpc = "127.0.0.1"
-  http = "127.0.0.1"
   // http = "127.0.0.1"
-  // https = "127.0.0.1"
+  // http = "0.0.0.0"
+  https = "0.0.0.0"
   dns = "127.0.0.1"
 }
 
@@ -16,7 +16,7 @@ addresses {
 ports {
   grpc  = 8502
   http  = 8500
-  https = -1
+  https = 443
   dns   = 53
 }
 
