@@ -322,7 +322,7 @@ pushd ${ASSETS}certs > /dev/null
 
 ## Generate CA certificates (consul-agent-ca.pem & consul-agent-ca-key.pem)
 # ${EXTRA_PATH}${BIN_PATH}consul tls ca create -domain="${DOMAIN}"
-consul tls ca create -domain="${DOMAIN}"
+consul tls ca create -domain="${DOMAIN}" > /dev/null
 
 ## Generate Server certificates (ideally one per server)
 # ==> Using consul-agent-ca.pem and consul-agent-ca-key.pem
@@ -330,13 +330,14 @@ consul tls ca create -domain="${DOMAIN}"
 # ==> Saved dc1-server-consul-0-key.pem
 # ${EXTRA_PATH}${BIN_PATH}consul tls cert create -server -domain="${DOMAIN}" -dc="${DATACENTER}"
 for i in `seq 1 ${SERVER_NUMBER}`; do
-  consul tls cert create -server -domain="${DOMAIN}" -dc="${DATACENTER}"
+  consul tls cert create -server -domain="${DOMAIN}" -dc="${DATACENTER}" > /dev/null
 done
 
+log "Generating Consul master token"
 ## ACL generate root token
 CONSUL_MASTER_TOKEN="root"
 
-tee agent-server-tokens.hcl <<EOF
+tee agent-server-tokens.hcl > /dev/null <<EOF
 ## ACL (for now embedded with standard master token)
 acl {
   tokens {
@@ -389,8 +390,8 @@ docker cp ${ASSETS}certs/agent-gossip-encryption.hcl volumes:/server/agent-gossi
 docker cp ${ASSETS}certs/${DOMAIN}-agent-ca.pem volumes:/server/consul-agent-ca.pem
 docker cp ${ASSETS}certs/${DOMAIN}-agent-ca-key.pem volumes:/server/consul-agent-ca-key.pem
 
-# for i in `seq 0 $(($SERVER_NUMBER -1))`; do
 i=0
+# for i in `seq 0 $(($SERVER_NUMBER -1))`; do
 docker cp ${ASSETS}certs/${DATACENTER}-server-${DOMAIN}-$i.pem volumes:/server/server-consul.pem
 docker cp ${ASSETS}certs/${DATACENTER}-server-${DOMAIN}-$i-key.pem volumes:/server/server-consul-key.pem
 # done
@@ -467,8 +468,9 @@ sleep 5
 ## At this point you should consider creating less privileged tokens for your
 ## client agents and a token for DNS interface.
 
+
 ########## ------------------------------------------------
-header     "CONSUL - Starting Client Agents"
+header     "CONSUL - Service Mesh configuration"
 ###### -----------------------------------------------
 
 # ++-----------------+
@@ -501,10 +503,50 @@ docker run \
 
 LB_IP=`docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' load-balancer`
 
+sleep 2
+
+# ++-----------------+
+# || Config          |
+# ++-----------------+
+
+## The recommended approach for configuring Consul UI and API to be accessed
+## by users and operators is to use dedicated Consul agents to server API and
+## UI requests and to have them behind a reverse proxy tht could terminate
+## SSL and expose a certificate that is not self signed by Consul CA but is
+## emitted from a trusted CA like Let's Encrypt.
+
 ## Start LB for Consul UI
 log "Espose Load Balancer on https://${LB_IP}:443"
 docker exec load-balancer sh -c "envoy -c /etc/consul.d/ext-envoy-reverse-proxy.yaml --service-cluster \"targetCluster\" > /tmp/reverse-proxy.log 2>&1 &"
 
+log "Define Environment Variables"
+
+export CONSUL_HTTP_ADDR=https://${LB_IP}:443
+export CONSUL_HTTP_TOKEN="root"
+export CONSUL_HTTP_SSL=true
+## This is a boolean value (default true) to specify 
+# SSL certificate verification; setting this value to 
+# false is not recommended for production use. 
+# Example for development purposes:
+export CONSUL_HTTP_SSL_VERIFY=false
+
+sleep 2
+log "Apply Configuration Entries"
+
+## Envoy Proxy Defaults
+consul config write ${ASSETS}config-proxy-defaults.hcl
+
+consul config write ${ASSETS}config-service-db.hcl
+consul config write ${ASSETS}config-service-api.hcl
+consul config write ${ASSETS}config-service-web.hcl
+consul config write ${ASSETS}config-service-load-balancer.hcl
+
+## Ingress gateway configuration
+consul config write ${ASSETS}igw-web.hcl
+
+########## ------------------------------------------------
+header     "CONSUL - Starting Client Agents"
+###### -----------------------------------------------
 
 # ++-----------------+
 # || Services        |
@@ -606,57 +648,6 @@ docker run \
     # -p 8443:443 \
 
 sleep 5
-
-########## ------------------------------------------------
-header     "CONSUL - Service Mesh configuration and deploy"
-###### -----------------------------------------------
-
-# ++-----------------+
-# || Config          |
-# ++-----------------+
-
-## The recommended approach for configuring Consul UI and API to be accessed
-## by users and operators is to use dedicated Consul agents to server API and
-## UI requests and to have them behind a reverse proxy tht could terminate
-## SSL and expose a certificate that is not self signed by Consul CA but is
-## emitted from a trusted CA like Let's Encrypt.
-
-
-log "Define Environment Variables"
-
-export CONSUL_HTTP_ADDR=https://${LB_IP}:443
-export CONSUL_HTTP_TOKEN="root"
-export CONSUL_HTTP_SSL=true
-## This is a boolean value (default true) to specify 
-# SSL certificate verification; setting this value to 
-# false is not recommended for production use. 
-# Example for development purposes:
-export CONSUL_HTTP_SSL_VERIFY=false
-
-sleep 2
-log "Apply Configuration Entries"
-
-# ## Envoy Proxy Defaults
-# ${BIN_PATH}consul config write ${ASSETS}config-proxy-defaults.hcl
-
-# ${BIN_PATH}consul config write ${ASSETS}config-service-db.hcl
-# ${BIN_PATH}consul config write ${ASSETS}config-service-api.hcl
-# ${BIN_PATH}consul config write ${ASSETS}config-service-web.hcl
-# ${BIN_PATH}consul config write ${ASSETS}config-service-load-balancer.hcl
-
-# ## Ingress gateway configuration
-# ${BIN_PATH}consul config write ${ASSETS}igw-web.hcl
-
-## Envoy Proxy Defaults
-consul config write ${ASSETS}config-proxy-defaults.hcl
-
-consul config write ${ASSETS}config-service-db.hcl
-consul config write ${ASSETS}config-service-api.hcl
-consul config write ${ASSETS}config-service-web.hcl
-consul config write ${ASSETS}config-service-load-balancer.hcl
-
-## Ingress gateway configuration
-consul config write ${ASSETS}igw-web.hcl
 
 # ++-----------------+
 # || Deploy          |
