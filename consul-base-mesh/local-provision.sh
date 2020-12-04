@@ -389,10 +389,11 @@ docker cp ${ASSETS}certs/agent-gossip-encryption.hcl volumes:/server/agent-gossi
 docker cp ${ASSETS}certs/${DOMAIN}-agent-ca.pem volumes:/server/consul-agent-ca.pem
 docker cp ${ASSETS}certs/${DOMAIN}-agent-ca-key.pem volumes:/server/consul-agent-ca-key.pem
 
-for i in `seq 0 $(($SERVER_NUMBER -1))`; do
-  docker cp ${ASSETS}certs/${DATACENTER}-server-${DOMAIN}-$i.pem volumes:/server/server-consul.pem
-  docker cp ${ASSETS}certs/${DATACENTER}-server-${DOMAIN}-$i-key.pem volumes:/server/server-consul-key.pem
-done
+# for i in `seq 0 $(($SERVER_NUMBER -1))`; do
+i=0
+docker cp ${ASSETS}certs/${DATACENTER}-server-${DOMAIN}-$i.pem volumes:/server/server-consul.pem
+docker cp ${ASSETS}certs/${DATACENTER}-server-${DOMAIN}-$i-key.pem volumes:/server/server-consul-key.pem
+# done
 
 # Client configuration files
 docker cp ${ASSETS}agent-client-secure.hcl volumes:/client/agent-client-secure.hcl
@@ -465,8 +466,6 @@ sleep 5
 ## TODO ACL fine tuning
 ## At this point you should consider creating less privileged tokens for your
 ## client agents and a token for DNS interface.
-
-
 
 ########## ------------------------------------------------
 header     "CONSUL - Starting Client Agents"
