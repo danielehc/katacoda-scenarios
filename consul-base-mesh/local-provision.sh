@@ -87,25 +87,6 @@ clean_env() {
 
 }
 
-## Purges environment by removing all containers and volumes
-## Use only in case something goes wrong in the provision.
-purge_env() {
-
-  # killall consul
-
-  docker rm -f $(docker ps -aq)
-  docker volume rm $(docker volume ls -q)
-  rm -rf ${ASSETS}certs
-  
-  unset CONSUL_HTTP_ADDR
-  unset CONSUL_HTTP_TOKEN
-  unset CONSUL_HTTP_SSL
-  unset CONSUL_CACERT
-  unset CONSUL_CLIENT_CERT
-  unset CONSUL_CLIENT_KEY
-
-}
-
 ## Prints for each container the ports used
 ## and the process listening on those ports.
 show_ports() {
@@ -117,12 +98,15 @@ show_ports() {
     echo -e "$i - ${CONT_IP}"; 
     echo "======================="; 
     
-    docker exec $i netstat -natp | grep LISTEN; 
+    # docker exec $i netstat -natp | grep LISTEN; 
+    docker exec $i netstat -natp | grep LISTEN | awk '{print $7"\t: "$4}' | sed 's/[0-9]*\///g' | sort ; 
     
     echo ""
   done
 
 }
+
+
 
 # ++-----------------+
 # || Variables       |
@@ -179,11 +163,6 @@ PATH=`pwd ${BIN_PATH}`/${BIN_PATH}:$PATH
 if   [ "$1" == "clean" ]; then
 
   clean_env
-  exit 0
-
-elif [ "$1" == "purge" ]; then
-
-  purge_env
   exit 0
 
 elif [ "$1" == "ports" ]; then
@@ -254,7 +233,6 @@ which consul &>/dev/null && {
 }
 
 ## The script copies the following binaries in the $BIN_PATH
-
 if [ ! -z "${BIN_PATH}" ] ; then
   
   # Create bin folder
@@ -447,7 +425,7 @@ for i in $(seq 1 ${SERVER_NUMBER}); do
       -retry-join=${RETRY_JOIN} \
       -config-file=/etc/consul.d/agent-server-secure.hcl \
       -config-file=/etc/consul.d/agent-gossip-encryption.hcl \
-      -config-file=/etc/consul.d/agent-server-tokens.hcl
+      -config-file=/etc/consul.d/agent-server-tokens.hcl > /dev/null 2>&1
   
   ## Retrieve newly created server IP
   SERVER_IP=`docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' server-$i`
@@ -496,7 +474,7 @@ docker run \
     -client=127.0.0.1 \
     -config-file=/etc/consul.d/agent-client-secure.hcl \
     -config-file=/etc/consul.d/agent-gossip-encryption.hcl \
-    -config-file=/etc/consul.d/agent-client-tokens.hcl 
+    -config-file=/etc/consul.d/agent-client-tokens.hcl > /dev/null 2>&1
     
     # \
     # -config-file=/etc/consul.d/agent-ui-metrics.hcl
@@ -508,7 +486,6 @@ sleep 2
 # ++-----------------+
 # || Config          |
 # ++-----------------+
-
 ## The recommended approach for configuring Consul UI and API to be accessed
 ## by users and operators is to use dedicated Consul agents to server API and
 ## UI requests and to have them behind a reverse proxy tht could terminate
@@ -571,7 +548,7 @@ docker run \
     -retry-join=${RETRY_JOIN} \
     -config-file=/etc/consul.d/agent-client-secure.hcl \
     -config-file=/etc/consul.d/agent-gossip-encryption.hcl \
-    -config-file=/etc/consul.d/agent-client-tokens.hcl 
+    -config-file=/etc/consul.d/agent-client-tokens.hcl > /dev/null 2>&1
 
 ## API
 docker run \
@@ -591,7 +568,7 @@ docker run \
     -retry-join=${RETRY_JOIN} \
     -config-file=/etc/consul.d/agent-client-secure.hcl \
     -config-file=/etc/consul.d/agent-gossip-encryption.hcl \
-    -config-file=/etc/consul.d/agent-client-tokens.hcl 
+    -config-file=/etc/consul.d/agent-client-tokens.hcl > /dev/null 2>&1
      
     #  \
     #  -config-file=/etc/consul.d/svc-api.hcl 
@@ -615,7 +592,7 @@ docker run \
     -retry-join=${RETRY_JOIN} \
     -config-file=/etc/consul.d/agent-client-secure.hcl \
     -config-file=/etc/consul.d/agent-gossip-encryption.hcl \
-    -config-file=/etc/consul.d/agent-client-tokens.hcl 
+    -config-file=/etc/consul.d/agent-client-tokens.hcl > /dev/null 2>&1
      
     #  \
     #  -config-file=/etc/consul.d/svc-web.hcl
@@ -643,7 +620,7 @@ docker run \
     -retry-join=${RETRY_JOIN} \
     -config-file=/etc/consul.d/agent-client-secure.hcl \
     -config-file=/etc/consul.d/agent-gossip-encryption.hcl \
-    -config-file=/etc/consul.d/agent-client-tokens.hcl 
+    -config-file=/etc/consul.d/agent-client-tokens.hcl > /dev/null 2>&1
 
     # -p 8443:443 \
 
