@@ -329,7 +329,28 @@ consul tls ca create -domain="${DOMAIN}"
 # ==> Saved dc1-server-consul-0.pem
 # ==> Saved dc1-server-consul-0-key.pem
 # ${EXTRA_PATH}${BIN_PATH}consul tls cert create -server -domain="${DOMAIN}" -dc="${DATACENTER}"
-consul tls cert create -server -domain="${DOMAIN}" -dc="${DATACENTER}"
+for i in `seq 1 ${SERVER_NUMBER}`; do
+  consul tls cert create -server -domain="${DOMAIN}" -dc="${DATACENTER}"
+done
+
+## ACL generate root token
+CONSUL_MASTER_TOKEN="root"
+
+tee agent-server-tokens.hcl <<EOF
+## ACL (for now embedded with standard master token)
+acl {
+  tokens {
+    ## [Deprecated] You should properly bootstap ACL in the DC
+    ## Will be removed in a future iteration of the sandbox environment
+    master = "${CONSUL_MASTER_TOKEN}"
+    ## Should have only minimal permissions to stay in the DC ?
+    agent  = "${CONSUL_MASTER_TOKEN}"
+    ## This can be the DNS token for the agents serving DNS requests
+    ## But can also be omitted for other ones. ?
+    default  = "${CONSUL_MASTER_TOKEN}"
+  }
+}
+EOF
 
 popd > /dev/null
 
@@ -362,13 +383,16 @@ log "Copying configuration files"
 
 # Server configuration files
 docker cp ${ASSETS}agent-server-secure.hcl volumes:/server/agent-server-secure.hcl
-docker cp ${ASSETS}agent-server-tokens.hcl volumes:/server/agent-server-tokens.hcl
+docker cp ${ASSETS}certs/agent-server-tokens.hcl volumes:/server/agent-server-tokens.hcl
 docker cp ${ASSETS}certs/agent-gossip-encryption.hcl volumes:/server/agent-gossip-encryption.hcl
 ## Server Certificates
 docker cp ${ASSETS}certs/${DOMAIN}-agent-ca.pem volumes:/server/consul-agent-ca.pem
 docker cp ${ASSETS}certs/${DOMAIN}-agent-ca-key.pem volumes:/server/consul-agent-ca-key.pem
-docker cp ${ASSETS}certs/${DATACENTER}-server-${DOMAIN}-0.pem volumes:/server/server-consul-0.pem
-docker cp ${ASSETS}certs/${DATACENTER}-server-${DOMAIN}-0-key.pem volumes:/server/server-consul-0-key.pem
+
+for i in `seq 0 $(($SERVER_NUMBER -1))`; do
+  docker cp ${ASSETS}certs/${DATACENTER}-server-${DOMAIN}-$i.pem volumes:/server/server-consul.pem
+  docker cp ${ASSETS}certs/${DATACENTER}-server-${DOMAIN}-$i-key.pem volumes:/server/server-consul-key.pem
+done
 
 # Client configuration files
 docker cp ${ASSETS}agent-client-secure.hcl volumes:/client/agent-client-secure.hcl
@@ -477,6 +501,11 @@ docker run \
     # -config-file=/etc/consul.d/agent-ui-metrics.hcl
 
 LB_IP=`docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' load-balancer`
+
+## Start LB for Consul UI
+log "Espose Load Balancer on https://${LB_IP}:443"
+docker exec load-balancer sh -c "envoy -c /etc/consul.d/ext-envoy-reverse-proxy.yaml --service-cluster \"targetCluster\" > /tmp/reverse-proxy.log 2>&1 &"
+
 
 # ++-----------------+
 # || Services        |
@@ -593,9 +622,6 @@ header     "CONSUL - Service Mesh configuration and deploy"
 ## SSL and expose a certificate that is not self signed by Consul CA but is
 ## emitted from a trusted CA like Let's Encrypt.
 
-## Start LB for Consul UI
-log "Espose Load Balancer on https://${LB_IP}:443"
-docker exec load-balancer sh -c "envoy -c /etc/consul.d/ext-envoy-reverse-proxy.yaml --service-cluster \"targetCluster\" > /tmp/reverse-proxy.log 2>&1 &"
 
 log "Define Environment Variables"
 

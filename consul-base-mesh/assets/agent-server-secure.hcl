@@ -22,6 +22,14 @@ ports {
 
 recursors = ["8.8.8.8"]
 
+## Disable script checks
+enable_script_checks = false
+
+## Enable local script checks
+## Uncomment in case you need script checks
+## running on the node. Useful for custom health checks
+// enable_local_script_checks = true
+
 ## Centralized configuration
 enable_central_service_config = true
 
@@ -35,8 +43,8 @@ verify_outgoing        = true
 verify_server_hostname = true
 
 ca_file   = "/etc/consul.d/consul-agent-ca.pem"
-cert_file = "/etc/consul.d/server-consul-0.pem"
-key_file  = "/etc/consul.d/server-consul-0-key.pem"
+cert_file = "/etc/consul.d/server-consul.pem"
+key_file  = "/etc/consul.d/server-consul-key.pem"
 
 auto_encrypt {
   allow_tls = true
@@ -54,7 +62,9 @@ acl {
   // }
 }
 
-telemetry {
-  prometheus_retention_time = "24h"
-  disable_hostname= false
-}
+## TODO: Move to different file
+## Telemetry Configuration
+// telemetry {
+//   prometheus_retention_time = "24h"
+//   disable_hostname= false
+// }

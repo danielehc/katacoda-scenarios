@@ -35,6 +35,14 @@ ports {
 
 recursors = ["8.8.8.8"]
 
+## Disable script checks
+enable_script_checks = false
+
+## Enable local script checks
+## Uncomment in case you need script checks
+## running on the node. Useful for custom health checks
+// enable_local_script_checks = true
+
 ## Centralized configuration
 enable_central_service_config = true
 
@@ -44,7 +52,8 @@ data_dir = "/tmp/consul"
 ## TLS Encryption (requires cert files to be present on the client nodes)
 ## Requests incoming that are not RPC (so HTTP and DNS) are not required to 
 ## provide a client certificate to connect. 
-## This permits to access the UI without a client certificate.
+## This permits to access the UI or the REST API without mTLS.
+## WARN: Having the UI and REST API not using TLS to communicate.
 verify_incoming        = false
 verify_incoming_rpc    = true
 ## All requests made by the agent will provide a client certificate.
