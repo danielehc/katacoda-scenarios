@@ -167,6 +167,11 @@ elif [ "$1" == "ports" ]; then
   show_ports
   exit 0
 
+# elif [ "$1" == "env" ]; then
+# ## Does not work in case of restart
+#   print_vars
+#   exit 0
+
 fi
 
 # set -x 
@@ -413,10 +418,6 @@ for i in $(seq 1 ${SERVER_NUMBER}); do
   fi
 done
 
-## Simulate the startup time but also give time to slower test machines to run
-## the containers and start ACL system
-sleep 7
-
 ## TODO ACL fine tuning
 ## At this point you should consider creating less privileged tokens for your
 ## client agents and a token for DNS interface.
@@ -436,10 +437,10 @@ export CONSUL_HTTP_SSL_VERIFY=false
 
 log "ACL Bootstrap"
 
-while ! consul acl bootstrap > ${ASSETS}certs/acl-bootstrap.conf
+while ! consul acl bootstrap > ${ASSETS}certs/acl-bootstrap.conf 2> /dev/null
 do
-  echo "Try again"
-  sleep 2
+  echo "Attempt Failed: trying again..."
+  sleep 5
 done
 
 export CONSUL_HTTP_TOKEN=`cat ${ASSETS}/certs/acl-bootstrap.conf | grep SecretID | awk '{print $2}'`
@@ -489,7 +490,6 @@ consul config write ${ASSETS}config-proxy-defaults.hcl
 consul config write ${ASSETS}config-service-db.hcl
 consul config write ${ASSETS}config-service-api.hcl
 consul config write ${ASSETS}config-service-web.hcl
-consul config write ${ASSETS}config-service-load-balancer.hcl
 
 ## Ingress gateway configuration
 consul config write ${ASSETS}igw-web.hcl
@@ -499,14 +499,10 @@ header     "CONSUL - Starting Client Agents"
 ###### -----------------------------------------------
 
 
-tee ${ASSETS}certs/agent-client-tokens.hcl << EOF
-## ACL (for now embedded with standard master token)
+tee ${ASSETS}certs/agent-client-tokens.hcl > /dev/null << EOF
 acl {
   tokens {
-    ## Should have only minimal permissions to stay in the DC ?
     agent  = "${CONSUL_HTTP_TOKEN}"
-    ## This can be the DNS token for the agents serving DNS requests
-    ## But can also be omitted for other ones. ?
     default  = "${DNS_TOK}"
   }
 }
@@ -637,25 +633,23 @@ docker exec api sh -c "LISTEN_ADDR=127.0.0.1:9003 NAME=api UPSTREAM_URIS=\"http:
 ## Start WEB
 docker exec web sh -c "LISTEN_ADDR=0.0.0.0:9002 NAME=web UPSTREAM_URIS=\"http://localhost:5000\" fake-service > /tmp/service.log 2>&1 &"
 
-set -x
-
 log "Register services and checks in Consul"
 ## Register DB service
 docker exec \
   --env CONSUL_HTTP_ADDR='127.0.0.1:8500' \
-  --env CONSUL_HTTP_TOKEN="${CONSUL_HTTP_TOKEN}" \
+  --env CONSUL_HTTP_TOKEN="${CONSUL_AGENT_TOKEN}" \
   db sh -c "consul services register /etc/consul.d/svc-db.hcl"
 
 ## Register API service
 docker exec \
   --env CONSUL_HTTP_ADDR='127.0.0.1:8500' \
-  --env CONSUL_HTTP_TOKEN="${CONSUL_HTTP_TOKEN}" \
+  --env CONSUL_HTTP_TOKEN="${CONSUL_AGENT_TOKEN}" \
   api sh -c "consul services register /etc/consul.d/svc-api.hcl"
 
 ## Register WEB service
 docker exec \
   --env CONSUL_HTTP_ADDR='127.0.0.1:8500' \
-  --env CONSUL_HTTP_TOKEN="${CONSUL_HTTP_TOKEN}" \
+  --env CONSUL_HTTP_TOKEN="${CONSUL_AGENT_TOKEN}" \
   web sh -c "consul services register /etc/consul.d/svc-web.hcl"
 
 log "Start Envoy sidecar proxies"
@@ -666,21 +660,21 @@ log "Start Envoy sidecar proxies"
 docker exec \
   --env CONSUL_HTTP_ADDR='127.0.0.1:8500' \
   --env CONSUL_GRPC_ADDR='127.0.0.1:8502' \
-  --env CONSUL_HTTP_TOKEN="${CONSUL_HTTP_TOKEN}" \
+  --env CONSUL_HTTP_TOKEN="${CONSUL_AGENT_TOKEN}" \
   db sh -c "consul connect envoy -sidecar-for db-1 -admin-bind 0.0.0.0:19001 > /tmp/proxy.log 2>&1 &"
 
 ## Start api sidecar
 docker exec \
   --env CONSUL_HTTP_ADDR='127.0.0.1:8500' \
   --env CONSUL_GRPC_ADDR='127.0.0.1:8502' \
-  --env CONSUL_HTTP_TOKEN="${CONSUL_HTTP_TOKEN}" \
+  --env CONSUL_HTTP_TOKEN="${CONSUL_AGENT_TOKEN}" \
   api sh -c "consul connect envoy -sidecar-for api-1 -admin-bind 0.0.0.0:19001 > /tmp/proxy.log 2>&1 &"
 
 ## Start web sidecar
 docker exec \
   --env CONSUL_HTTP_ADDR='127.0.0.1:8500' \
   --env CONSUL_GRPC_ADDR='127.0.0.1:8502' \
-  --env CONSUL_HTTP_TOKEN="${CONSUL_HTTP_TOKEN}" \
+  --env CONSUL_HTTP_TOKEN="${CONSUL_AGENT_TOKEN}" \
   web sh -c "consul connect envoy -sidecar-for web -admin-bind 0.0.0.0:19001 > /tmp/proxy.log 2>&1 &"
 
 # ++-----------------+
@@ -690,7 +684,7 @@ log "Start Ingress Gateway for web"
 docker exec \
   --env CONSUL_HTTP_ADDR='127.0.0.1:8500' \
   --env CONSUL_GRPC_ADDR='127.0.0.1:8502' \
-  --env CONSUL_HTTP_TOKEN="${CONSUL_HTTP_TOKEN}" \
+  --env CONSUL_HTTP_TOKEN="${CONSUL_AGENT_TOKEN}" \
   ingress-gw sh -c "consul connect envoy -gateway=ingress -register -service ingress-service -address '{{ GetInterfaceIP \"eth0\" }}:8888' -admin-bind 0.0.0.0:19001 > /tmp/proxy_1.log 2>&1 &"
 
 ########## ------------------------------------------------
