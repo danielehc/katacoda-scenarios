@@ -6,7 +6,7 @@
 
 ## Prints a line on stdout prepended with date and time
 log() {
-  echo "["$(date +"%Y-%d-%d %H:%M:%S")"] - ${@}"
+  echo -e "\033[1m["$(date +"%Y-%d-%d %H:%M:%S")"] - ${@}\033[0m"
 }
 
 ## Prints a header on stdout
@@ -167,14 +167,7 @@ elif [ "$1" == "ports" ]; then
   show_ports
   exit 0
 
-# elif [ "$1" == "env" ]; then
-# ## Does not work in case of restart
-#   print_vars
-#   exit 0
-
 fi
-
-# set -x 
 
 ########## ------------------------------------------------
 header     "PREREQUISITES CHECK"
@@ -208,76 +201,6 @@ log "Pulling Docker Images"
 ## differently in the docker run command.
 docker pull ${IMAGE_NAME}:${IMAGE_TAG} > /dev/null
 
-## DNS Config
-## log "Setting Consul as DNS"
-## The setting below can be used on a Ubuntu VM to setup Consul as the main
-## DNS for the machine. This can be useful for scenarios when Consul DNS interface
-## can be bound on localhost at port 53. This is not a recommended setting and 
-## requires root permissions.
-# echo -en "# Consul DNS Configuration\nnameserver 127.0.0.1\n\n" > /etc/resolvconf/resolv.conf.d/head
-# systemctl restart resolvconf.service
-
-# ++-----------------+
-# || Binaries        |
-# ++-----------------+
-## The sandbox requires Consul binary to be installed locally to perform
-## configuration tasks
-# log "Installing Binaries Locally"
-
-# which consul &>/dev/null && {
-#   if [ `consul version | head -1 | awk '{print $2}'` == "v${CONSUL_VERSION}" ]; then
-#     ## If consul is installed and is the same version of the one we use for
-#     ## the sandbox we skip the installation passage.
-#     BIN_PATH=""
-#     EXTRA_PATH=""
-#   fi
-# }
-
-# ## The script copies the following binaries in the $BIN_PATH
-# if [ ! -z "${BIN_PATH}" ] ; then
-  
-#   # Create bin folder
-#   mkdir -p ${BIN_PATH}
-
-#   unameOut="$(uname -s)"
-
-#   case "${unameOut}" in
-#     Linux*)
-#       log "OS: Linux"
-      
-#       docker run --rm --entrypoint /bin/sh \
-#         ${IMAGE_NAME}:${IMAGE_TAG} \
-#         -c "cat /usr/local/bin/consul" > ${BIN_PATH}consul
-
-#       ## envoy        - Useful in case you want to make the local node part of
-#       ##                service mesh and interact directly with the services
-#       ##                inside the mesh.
-#       docker run --rm --entrypoint /bin/sh \
-#         ${IMAGE_NAME}:${IMAGE_TAG} \
-#         -c "cat /usr/local/bin/envoy" > ${BIN_PATH}envoy
-
-#       ## fake-service - Useful if you want to simulate a service residing outside
-#       ##                the service mesh and that needs to be monitored with 
-#       ##                consul-esm and/or accessed using a terminating gateway. 
-#       docker run --rm --entrypoint /bin/sh \
-#         ${IMAGE_NAME}:${IMAGE_TAG} \
-#         -c "cat /usr/local/bin/fake-service" > ${BIN_PATH}fake-service
-#       ;;
-
-#     Darwin*)    
-#       log  "OS: MacOS"
-#       install_from_zip consul ${BIN_PATH} https://releases.hashicorp.com/consul/${CONSUL_VERSION}/consul_${CONSUL_VERSION}_darwin_amd64.zip 
-#       ;;
-      
-#     *)
-#       echo "[ERROR] - OS: ${unameOut} not supported"
-#       exit 1;;
-#   esac 
-
-#   chmod +x ${BIN_PATH}*
-#   # ${BIN_PATH}consul -autocomplete-install
-# fi
-
 ########## ------------------------------------------------
 header     "GENERATE DYNAMIC CONFIGURATION"
 ###### -----------------------------------------------
@@ -303,7 +226,7 @@ docker exec \
                     cd ./certs; \
                     echo encrypt = '\"$(consul keygen)\"' > agent-gossip-encryption.hcl; \
                     consul tls ca create -domain=\"${DOMAIN}\"; \
-                    for ((i = 1 ; i <= ${SERVER_NUMBER} ; i++)); do consul tls cert create -server -domain=\"${DOMAIN}\" -dc=\"${DATACENTER}\"; done" 
+                    for ((i = 1 ; i <= ${SERVER_NUMBER} ; i++)); do consul tls cert create -server -domain=${DOMAIN} -dc=${DATACENTER}; done" 
 
 ########## ------------------------------------------------
 header     "DISTRIBUTE CONFIGURATION"
@@ -357,14 +280,6 @@ docker cp ${ASSETS}certs/${DOMAIN}-agent-ca.pem volumes:/client/consul-agent-ca.
 docker cp ${ASSETS}svc-db.hcl volumes:/client/svc-db.hcl
 docker cp ${ASSETS}svc-api.hcl volumes:/client/svc-api.hcl
 docker cp ${ASSETS}svc-web.hcl volumes:/client/svc-web.hcl
-docker cp ${ASSETS}svc-load-balancer.hcl volumes:/client/svc-load-balancer.hcl
-
-## Service configuration files
-## These files can be automatically generated using consul-template and 
-## storing data into Consul KV/store. This will make the process easier
-## to automate and prot to other environments.
-docker cp ${ASSETS}ext-envoy-reverse-proxy.yaml volumes:/client/ext-envoy-reverse-proxy.yaml
-
 
 ########## ------------------------------------------------
 header     "CONSUL - Starting Server Agents"
@@ -416,16 +331,6 @@ done
 header     "CONSUL - ACL configuration"
 ###### -----------------------------------------------
 
-log "Define Environment Variables"
-
-# export CONSUL_HTTP_ADDR=https://${SERVER_IP}:443
-# export CONSUL_HTTP_SSL=true
-# ## This is a boolean value (default true) to specify 
-# # SSL certificate verification; setting this value to 
-# # false is not recommended for production use. 
-# # Example for development purposes:
-# export CONSUL_HTTP_SSL_VERIFY=false
-
 log "ACL Bootstrap"
 
 docker exec \
@@ -433,7 +338,7 @@ docker exec \
   --env CONSUL_HTTP_ADDR=https://${SERVER_IP}:443 \
   --env CONSUL_HTTP_SSL=true \
   --env CONSUL_HTTP_SSL_VERIFY=false \
-  operator bash -c "while ! consul acl bootstrap > ./certs/acl-bootstrap.conf 2> /dev/null; do echo \"Attempt Failed: trying again...\"; sleep 5; done"
+  operator bash -c "while ! consul acl bootstrap > ./certs/acl-bootstrap.conf 2> /dev/null; do echo 'ACL system not ready. Retrying...'; sleep 5; done"
 
 export CONSUL_HTTP_TOKEN=`cat ${ASSETS}/certs/acl-bootstrap.conf | grep SecretID | awk '{print $2}'`
 
@@ -445,7 +350,7 @@ docker exec \
   --env CONSUL_HTTP_TOKEN=${CONSUL_HTTP_TOKEN} \
   --env CONSUL_HTTP_SSL=true \
   --env CONSUL_HTTP_SSL_VERIFY=false \
-  operator bash -c "consul acl policy create -name \"acl-policy-dns\" -description \"Policy for DNS endpoints\" -rules @acl-policy-dns.hcl  > /dev/null 2>&1"
+  operator bash -c "consul acl policy create -name 'acl-policy-dns' -description 'Policy for DNS endpoints' -rules @acl-policy-dns.hcl  > /dev/null 2>&1"
 
 ## Server Agent policy for server agent token
 docker exec \
@@ -454,7 +359,7 @@ docker exec \
   --env CONSUL_HTTP_TOKEN=${CONSUL_HTTP_TOKEN} \
   --env CONSUL_HTTP_SSL=true \
   --env CONSUL_HTTP_SSL_VERIFY=false \
-  operator bash -c "consul acl policy create -name \"acl-policy-server-node\" -description \"Policy for Server nodes\" -rules @acl-policy-server-node.hcl  > /dev/null 2>&1"
+  operator bash -c "consul acl policy create -name 'acl-policy-server-node' -description 'Policy for Server nodes' -rules @acl-policy-server-node.hcl  > /dev/null 2>&1"
 
 log "Create ACL Tokens"
 
@@ -464,7 +369,7 @@ docker exec \
   --env CONSUL_HTTP_TOKEN=${CONSUL_HTTP_TOKEN} \
   --env CONSUL_HTTP_SSL=true \
   --env CONSUL_HTTP_SSL_VERIFY=false \
-  operator bash -c "consul acl token create -description \"DNS - Default token\" -policy-name acl-policy-dns > ./certs/acl-dns-token.conf 2> /dev/null"
+  operator bash -c "consul acl token create -description 'DNS - Default token' -policy-name acl-policy-dns > ./certs/acl-dns-token.conf 2> /dev/null"
 
 DNS_TOK=`cat ${ASSETS}certs/acl-dns-token.conf | grep SecretID | awk '{print $2}'` 
 
@@ -517,6 +422,7 @@ docker exec \
   --env CONSUL_HTTP_SSL_VERIFY=false \
   operator bash -c "consul config write config-proxy-defaults.hcl"
 
+## Service defaults
 docker exec \
   -w /assets \
   --env CONSUL_HTTP_ADDR=https://${SERVER_IP}:443 \
@@ -554,7 +460,7 @@ docker exec \
 header     "CONSUL - Starting Client Agents"
 ###### -----------------------------------------------
 
-
+## TODO: Generate different token for client nodes
 tee ${ASSETS}certs/agent-client-tokens.hcl > /dev/null << EOF
 acl {
   tokens {
