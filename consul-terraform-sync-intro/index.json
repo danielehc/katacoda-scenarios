@@ -58,8 +58,10 @@
           { "file": "config-service-api.hcl", "target": "./assets" },
           { "file": "config-service-web.hcl", "target": "./assets" },
           { "file": "svc-api.hcl", "target": "./assets" },
+          { "file": "svc-api-tag.hcl", "target": "./assets" },
           { "file": "svc-web.hcl", "target": "./assets" },
-          { "file": "provision_base.sh", "target": "./" }
+          { "file": "provision_base.sh", "target": "./" },
+          { "file": "cts-config.hcl", "target": "./" }
         ]
     }
     },

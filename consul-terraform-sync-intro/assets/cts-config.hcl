@@ -12,7 +12,7 @@ driver "terraform" {
 consul {
  address = "172.19.0.3:443"
 //  tls {
-//   verify = fasle
+//   verify = false
 //  }
  # tls {
  #   ca_cert = "some_cert"
@@ -21,7 +21,7 @@ consul {
 }
 service {
  name = "api"
- tag = "dne"
+ tag = "cts"
  # namespace = "my-team"
  # datacenter  = "dc1"
  description = "this has 2 instances"
@@ -46,3 +46,4 @@ task {
  source      = "findkim/print/c"
  version     = "0.0.0-alpha"
  services    = ["web", "api"]
+}
