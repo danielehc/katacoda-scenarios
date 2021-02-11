@@ -420,10 +420,10 @@ header     "CONSUL - Configure your local environment"
 docker cp operator:/usr/local/bin/consul /usr/local/bin/consul
 
 ## CTS Client
-  consul agent \
+  consul agent -ui \
     -datacenter=${DATACENTER} \
     -domain=${DOMAIN} \
-    -node=service-2 \
+    -node=cts-node \
     -retry-join=${RETRY_JOIN} \
     -config-file=/assets/agent-client-secure.hcl \
     -config-file=/assets/secrets/agent-gossip-encryption.hcl \
