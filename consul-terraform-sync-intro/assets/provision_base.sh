@@ -427,7 +427,7 @@ consul agent -ui \
   -datacenter=${DATACENTER} \
   -domain=${DOMAIN} \
   -node=cts-node \
-  -bind=172.19.0.1
+  -bind=172.19.0.1 \
   -retry-join=${RETRY_JOIN} \
   -config-file=/assets/agent-client-secure.hcl \
   -config-file=/assets/secrets/agent-gossip-encryption.hcl \

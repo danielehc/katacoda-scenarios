@@ -72,7 +72,7 @@
         "hideHiddenFiles": true,
         "uimessage1": "\u001b[32mOperator node terminal.\u001b[m\r\n",
         "dashboards": [
-            {"name": "Consul UI", "port": 443},
+            {"name": "Consul UI", "port": 1443},
             {"name": "Web UI", "port": 9002}
         ],
         "terminals": [
