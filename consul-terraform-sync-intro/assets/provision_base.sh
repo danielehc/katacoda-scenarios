@@ -431,6 +431,6 @@ consul agent -ui \
   -retry-join=${RETRY_JOIN} \
   -config-file=/assets/agent-client-secure.hcl \
   -config-file=/assets/secrets/agent-gossip-encryption.hcl \
-  -config-file=/assets/secrets/agent-client-tokens.hcl > /dev/null 2>&1
+  -config-file=/assets/secrets/agent-client-tokens.hcl > /tmp/cts-consul.log 2>&1 &
 
 print_vars
