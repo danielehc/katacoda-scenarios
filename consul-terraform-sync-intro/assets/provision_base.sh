@@ -219,6 +219,7 @@ for i in $(seq 1 ${SERVER_NUMBER}); do
     -d \
     -v ${PWD}/assets:/assets \
     --net primary \
+    -p ${i}443:443 \
     --name=server-$i \
     --hostname=server-$i \
     --label tag=learn \
@@ -414,5 +415,18 @@ docker exec \
 ########## ------------------------------------------------
 header     "CONSUL - Configure your local environment"
 ###### -----------------------------------------------
+
+## Copy consul binary locally
+docker cp operator:/usr/local/bin/consul /usr/local/bin/consul
+
+## CTS Client
+  consul agent \
+    -datacenter=${DATACENTER} \
+    -domain=${DOMAIN} \
+    -node=service-2 \
+    -retry-join=${RETRY_JOIN} \
+    -config-file=/assets/agent-client-secure.hcl \
+    -config-file=/assets/secrets/agent-gossip-encryption.hcl \
+    -config-file=/assets/secrets/agent-client-tokens.hcl > /dev/null 2>&1
 
 print_vars
