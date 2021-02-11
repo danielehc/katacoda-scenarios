@@ -416,17 +416,21 @@ docker exec \
 header     "CONSUL - Configure your local environment"
 ###### -----------------------------------------------
 
+## Make config available
+ln -s /root/assets /assets
+
 ## Copy consul binary locally
 docker cp operator:/usr/local/bin/consul /usr/local/bin/consul
 
 ## CTS Client
-  consul agent -ui \
-    -datacenter=${DATACENTER} \
-    -domain=${DOMAIN} \
-    -node=cts-node \
-    -retry-join=${RETRY_JOIN} \
-    -config-file=/assets/agent-client-secure.hcl \
-    -config-file=/assets/secrets/agent-gossip-encryption.hcl \
-    -config-file=/assets/secrets/agent-client-tokens.hcl > /dev/null 2>&1
+consul agent -ui \
+  -datacenter=${DATACENTER} \
+  -domain=${DOMAIN} \
+  -node=cts-node \
+  -bind=172.19.0.1
+  -retry-join=${RETRY_JOIN} \
+  -config-file=/assets/agent-client-secure.hcl \
+  -config-file=/assets/secrets/agent-gossip-encryption.hcl \
+  -config-file=/assets/secrets/agent-client-tokens.hcl > /dev/null 2>&1
 
 print_vars
