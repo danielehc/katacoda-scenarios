@@ -10,7 +10,7 @@ driver "terraform" {
  persist_log = false
 }
 consul {
- address = "172.19.0.3:443"
+ address = "localhost:8500"
 //  tls {
 //   verify = false
 //  }
