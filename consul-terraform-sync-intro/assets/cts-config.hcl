@@ -43,7 +43,7 @@ service {
 task {
  name        = "example"
  description = "example task with one service"
- source      = "findkim/print/c"
- version     = "0.0.0-alpha"
+ source      = "findkim/print/cts"
+ version     = "0.1.0"
  services    = ["web", "api"]
 }
