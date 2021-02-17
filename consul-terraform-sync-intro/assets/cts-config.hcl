@@ -1,9 +1,15 @@
-log_level = "TRACE"
+## Global Config
+log_level = "INFO"
+port = 8558
+
+syslog {}
+
 buffer_period {
- enabled = true
- min     = "5s"
- max     = "15s"
+  enabled = true
+  min = "5s"
+  max = "20s"
 }
+
 driver "terraform" {
  # version = "0.14.0"
  # log         = true
@@ -24,7 +30,7 @@ service {
  tag = "cts"
  # namespace = "my-team"
  # datacenter  = "dc1"
- description = "this has 2 instances"
+ description = "Match only services with a specific tag"
 }
 # task {
 #   name        = "print"
@@ -41,9 +47,9 @@ service {
 #   }
 # }
 task {
- name        = "example"
- description = "example task with one service"
- source      = "findkim/print/cts"
- version     = "0.1.0"
+ name        = "learn-cts-example"
+ description = "Example task with one service"
+ source      = "findkim/print/c"
+ version     = "0.0.0-alpha"
  services    = ["web", "api"]
 }
