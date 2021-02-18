@@ -47,12 +47,13 @@ automation.
 
 ### Access Consul UI
 
-Using the `Consul UI` tab you can also access the Consul UI for the datacenter.
+Using the [Consul UI](https://[[HOST_SUBDOMAIN]]-1443-[[KATACODA_HOST]].environments.katacoda.com/ui) tab you can also access the Consul UI for the datacenter.
 
-To view all the content in the UI you will need to login using a token. You can 
-use the master token for that.
+To view all the content in the UI you will need to login using an ACL token. You 
+can use the master token for that.
 
 `echo $CONSUL_HTTP_TOKEN`{{execute T1}}
+
 
 
 ### Provision [REMOVE]
