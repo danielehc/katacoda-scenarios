@@ -19,7 +19,7 @@ consul {
 # Driver "terraform" block
 driver "terraform" {
  # version = "0.14.0"
-  path = ""
+ # path = ""
   log = false
   persist_log = false
   working_dir = ""

@@ -49,7 +49,7 @@ automation.
 
 Using the `Consul UI` tab you can also access the Consul UI for the datacenter.
 
-To view all the content in the UI you will need to login using a token. YOu can 
+To view all the content in the UI you will need to login using a token. You can 
 use the master token for that.
 
 `echo $CONSUL_HTTP_TOKEN`{{execute T1}}
