@@ -7,7 +7,7 @@ When this phase completes you'll have a consul datacenter with:
 - Two client nodes each one running a service
 - A consul client running on the host and connected to the datacenter
 
-![Consul datacenter base with local client](./assets/consul-datacenter-nia.png)
+![Consul datacenter base with local client](./assets/consul-datacenter.png)
 
 **Example Output**
 

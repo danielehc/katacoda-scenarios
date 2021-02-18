@@ -1,7 +1,7 @@
 service {
   name = "api"
   id = "api-1"
-  tags = ["cts"]
+  tags = ["v1", "cts"]
   port = 9003
   connect {
     sidecar_service {}

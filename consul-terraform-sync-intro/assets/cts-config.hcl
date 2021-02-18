@@ -1,5 +1,5 @@
 ## Global Config
-log_level = "INFO"
+log_level = "DEBUG"
 
 port = 8558
 
