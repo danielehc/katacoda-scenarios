@@ -13,24 +13,39 @@
                 "verify": "provision.verify.sh"
             },
             {
-                "title": "All commands",
+                "title": "Verify environment",
                 "code": "set-env.sh",
                 "text": "step0.md"
             },
             {
-                "title": "Inspect Lab",
+                "title": "Install Consul-Terraform-Sync",
                 "code": "set-env.sh",
                 "text": "step1.md"
             },
             {
-                "title": "Generate Docker Container",
+                "title": "Configure Consul-Terraform-Sync",
                 "code": "set-env.sh",
                 "text": "step2.md"
             },
             {
-                "title": "Run Docker Container",
+                "title": "Inspect Consul-Terraform-Sync configuration",
                 "code": "set-env.sh",
                 "text": "step3.md"
+            },
+            {
+                "title": "Run Consul-Terraform-Sync",
+                "code": "set-env.sh",
+                "text": "step4.md"
+            },
+            {
+                "title": "Check Consul-Terraform-Sync state",
+                "code": "set-env.sh",
+                "text": "step5.md"
+            },
+            {
+                "title": "Trigger task execution",
+                "code": "set-env.sh",
+                "text": "step6.md"
             }
         ],
     "intro": {
@@ -76,8 +91,7 @@
             {"name": "Web UI", "port": 9002}
         ],
         "terminals": [
-            {"name": "server", "target": "host01"},
-            {"name": "client", "target": "host01"}
+            {"name": "cts", "target": "host01"}
         ]
     },
     "backend": {

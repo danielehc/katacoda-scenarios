@@ -1,6 +1,9 @@
+## Export Consul token environment variable
 
+The Consul datacenter is configured to have ACL enabled so you will need a token
+to perform operations.
 
-## Check Environment
+During the deployment we saved the token into a configuration file `consul_env.conf`
 
 `chmod +x provision_base.sh`{{execute T1}}
 
