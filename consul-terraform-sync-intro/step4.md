@@ -8,6 +8,8 @@ with a non-zero status if it encounters an error. After successfully passing
 through once-mode phase, errors will be logged and the process is not expected 
 to exit.
 
+`source consul_env.conf`{{execute T2}}
+
 `consul-terraform-sync -config-file cts-config.hcl`{{execute T2}}
 
 After startup, CTS will run Terraform, and create a folder, named `sync-tasks`, 
@@ -44,5 +46,11 @@ of the configured set of services for the task.
 Consul catalog into the `terraform.tfvars` file.
 
 
-You can check 
+After the task execution the two extra files `addresses.txt` and `web.txt` will 
+be created. They contain the IPs for the services matched by the task.
+
+To get the full amount of data Consul-Terraform-Sync is collecting from Consul
+catalog you can inspect the `terraform.tfvars` file.
+
+`cat sync-tasks/learn-cts-example/terraform.tfvars`{{execute T1}}
 

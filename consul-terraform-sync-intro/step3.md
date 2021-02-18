@@ -17,12 +17,10 @@ Terraform will create a workspace for each task defined in the configuration.
 ```snapshot
 sync-tasks/
 └── learn-cts-example
-    ├── addresses.txt
     ├── main.tf
     ├── terraform.tfvars
     ├── terraform.tfvars.tmpl
-    ├── variables.tf
-    └── web.txt
+    └── variables.tf
 ``` 
 
 From the logs you can confirm that the Consul-Terraform-Sync tools looks for the

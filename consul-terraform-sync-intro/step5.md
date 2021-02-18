@@ -1,3 +1,6 @@
+Aside from the files created in the `sync-tasks` folder, there are other options
+that can help you monitor the state of your Consul-Terraform-Sync daemon.
+
 ### Use the `status` API 
 
 CTS provides the `/status` REST endpoints to share status-related information 
@@ -30,4 +33,9 @@ the Consul KV store as a different state file for each task.
 The default path for the state object is `consul-terraform-sync/terraform-env:task-name`
 with `task-name` being the task identifer appended to the end of the path.
 
-You can check 
+Using the [Consul UI](https://[[HOST_SUBDOMAIN]]-1443-[[KATACODA_HOST]].environments.katacoda.com/ui/dc1/kv/consul-terraform-sync/) tab you can test the key related to the task is created in Consul.
+
+To view all the content in the UI you will need to login using an ACL token. You 
+can use the master token for that.
+
+`echo $CONSUL_HTTP_TOKEN`{{execute T1}}
