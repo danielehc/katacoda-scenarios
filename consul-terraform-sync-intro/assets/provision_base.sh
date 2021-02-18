@@ -40,7 +40,7 @@ print_vars() {
 ## Prints environment variables to be used to configure local machine
 ## for communicating with the local Consul agent
 print_vars_local () {
-  echo "export CONSUL_HTTP_ADDR=httpp://localhosh:8500"
+  echo "export CONSUL_HTTP_ADDR=http://localhost:8500"
   echo "export CONSUL_HTTP_TOKEN=${CONSUL_HTTP_TOKEN}"
 }
 
