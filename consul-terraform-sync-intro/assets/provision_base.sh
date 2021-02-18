@@ -22,7 +22,8 @@ header() {
   echo -e "\033[0m"
 }
 
-## Prints environment variables to be used to configur local machine
+## Prints environment variables to be used to configure local machine
+## for communicating with the server directly
 print_vars() {
 
   echo "export CONSUL_HTTP_ADDR=https://${SERVER_IP}:443"
@@ -34,6 +35,13 @@ print_vars() {
   # Example for development purposes:
   echo "export CONSUL_HTTP_SSL_VERIFY=false"
 
+}
+
+## Prints environment variables to be used to configure local machine
+## for communicating with the local Consul agent
+print_vars_local () {
+  echo "export CONSUL_HTTP_ADDR=httpp://localhosh:8500"
+  echo "export CONSUL_HTTP_TOKEN=${CONSUL_HTTP_TOKEN}"
 }
 
 ## Cleans environment by removing containers and volumes
@@ -433,4 +441,5 @@ consul agent -ui \
   -config-file=/assets/secrets/agent-gossip-encryption.hcl \
   -config-file=/assets/secrets/agent-client-tokens.hcl > /tmp/cts-consul.log 2>&1 &
 
-print_vars
+# print_vars
+print_vars_local | tee consul_env.conf
