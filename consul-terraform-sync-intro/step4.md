@@ -8,7 +8,16 @@ with a non-zero status if it encounters an error. After successfully passing
 through once-mode phase, errors will be logged and the process is not expected 
 to exit.
 
+Move to another terminal, dedicated to Consul-Terraform-Sync and check if the
+token is set in the environment variable.
+
+`echo $CONSUL_HTTP_TOKEN`{{execute T2}}
+
+If the above command returns an empty result, configure the environment 
+variables for the new terminal.
+
 `source consul_env.conf`{{execute T2}}
+
 
 `consul-terraform-sync -config-file cts-config.hcl`{{execute T2}}
 

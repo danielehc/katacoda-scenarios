@@ -23,6 +23,8 @@ sync-tasks/
     └── variables.tf
 ``` 
 
+### Terraform installation
+
 From the logs you can confirm that the Consul-Terraform-Sync tools looks for the
 Terraform binary and in case it does not find it installs it in the current path.
 

@@ -3,6 +3,8 @@
     "icon": "fa-consul",
     "title": "Consul Terraform Sync Introduction",
     "description": "Consul Terraform Sync Introduction",
+    "difficulty": "Beginner",
+    "time": "15-20 minutes",
     "details": {
         "steps": [
             {
@@ -63,9 +65,7 @@
           { "file": "acl-policy-server-node.hcl", "target": "./assets" },
           { "file": "acl-policy-service.hcl", "target": "./assets" },
           { "file": "acl-policy-service-node.hcl", "target": "./assets" },
-          { "file": "agent-client.hcl", "target": "./assets" },
           { "file": "agent-client-secure.hcl", "target": "./assets" },
-          { "file": "agent-server.hcl", "target": "./assets" },
           { "file": "agent-server-secure.hcl", "target": "./assets" },
           { "file": "config-intentions-api.hcl", "target": "./assets" },
           { "file": "config-intentions-default.hcl", "target": "./assets" },
@@ -75,7 +75,6 @@
           { "file": "svc-api.hcl", "target": "./assets" },
           { "file": "svc-api-tag.hcl", "target": "./assets" },
           { "file": "svc-web.hcl", "target": "./assets" },
-          { "file": "provision_base.sh", "target": "./" },
           { "file": "cts-config.hcl", "target": "./" }
         ]
     }
@@ -97,5 +96,6 @@
     "backend": {
         "port": 8080,
         "imageid": "ubuntu"
-    }
+    },
+    "private": true
 }
