@@ -18,6 +18,7 @@ variables for the new terminal.
 
 `source consul_env.conf`{{execute T2}}
 
+Once the environment variables are set you can run Consul-Terraform-Sync.
 
 `consul-terraform-sync -config-file cts-config.hcl`{{execute T2}}
 

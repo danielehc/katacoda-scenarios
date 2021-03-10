@@ -6,7 +6,7 @@ once ran via Terraform, will apply to your infrastructure. Running CTS in
 inspect mode will **apply no changes** to your infrastructure but will exit with
 a non-zero exit status if any error is encountered.
 
-`consul-terraform-sync -config-file cts-config.hcl -inspect true`{{execute T1}}
+`consul-terraform-sync -config-file cts-config.hcl -inspect`{{execute T1}}
 
 This will inspect the configuration for all the tasks in the configuration and
 create the a folder in the current directory, named `/sync-tasks` in which 
