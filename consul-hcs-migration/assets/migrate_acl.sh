@@ -22,10 +22,49 @@ header() {
   echo -e "\033[0m"
 }
 
+ex_port () {
+
+  for id in `consul acl policy list -format json | jq -r '.[].ID' | grep -v 00000000-0000-0000-0000-000000000001`; do
+
+    json_policy=`consul acl policy read -id $id -format json`
+
+    echo `echo $json_policy | jq -r '[.ID, .Name, .Description] | @csv'`
+    echo `echo $json_policy | jq -r '.Rules'`
+
+  done
+
+}
+
 ## STEPS
 
 ## EXPORT
 # 1. Retrieve all the policy definitions. Do a listing and then for each ID perform a read.
+###
+###
+###
+
+# $ consul acl policy list -format json | jq -r '.[].ID'
+# 00000000-0000-0000-0000-000000000001
+# 206b483c-0676-ea69-28b7-1776fd251b9e
+# d12debb6-484f-5dfe-3fa9-13949c2cddc8
+
+# $ consul acl policy list -format json | jq -r '.[].ID' | grep -v 00000000-0000-0000-0000-000000000001
+# 206b483c-0676-ea69-28b7-1776fd251b9e
+# d12debb6-484f-5dfe-3fa9-13949c2cddc8
+
+# jq '.data | map([.displayName, .rank, .value] | join(", ")) | join("\n")'
+# jq -r '.data | map(.ID), map(.Name), map(.Description) | join(", ")'
+
+# map[.ID, .Name, .Description]
+
+# consul acl policy read -id 206b483c-0676-ea69-28b7-1776fd251b9e | grep -oz "Rules.*" | grep -va Rules
+
+# consul acl policy read -id 206b483c-0676-ea69-28b7-1776fd251b9e -format json | jq -r '.Rules'
+# consul acl policy read -id 206b483c-0676-ea69-28b7-1776fd251b9e -format json | jq -r '.ID'
+# consul acl policy read -id 206b483c-0676-ea69-28b7-1776fd251b9e -format json | jq -r '.Name'
+# consul acl policy read -id 206b483c-0676-ea69-28b7-1776fd251b9e -format json | jq -r '.Description'
+
+# consul acl policy read -id 1c822a11-5088-fc55-4335-6ff2662838f5 -format json | jq -r '[.ID, .Name, .Description] | @csv'
 
 # 2. Recreate the policies in the new DC and keep a mapping of old ids to new ids.
 
@@ -43,6 +82,7 @@ header() {
 if   [ "$1" == "export" ]; then
 
   echo "export"
+  ex_port
   exit 0
 
 elif [ "$1" == "import" ]; then
