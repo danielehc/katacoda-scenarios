@@ -445,10 +445,16 @@ consul agent -ui \
 log "Create extra tokens and roles to test export"
 
 consul acl role create -name web-role -description 'web role' -service-identity web
-consul acl role create -name server-role -description 'server role' -service-identity acl-policy-server-node
+consul acl role create -name web-role -description 'web role 1' -service-identity web:dc1
+
+consul acl role create -name server-role -description 'server role' -policy-name acl-policy-server-node
 
 consul acl token create -description "web role token" -role-name web-role
 consul acl token create -description "server role token" -role-name server-role
 
+consul acl token create -description "mixed role token" -role-name server-role -policy-name acl-policy-dns
+consul acl token create -description "mixed role token 2" -role-name server-role -policy-name acl-policy-dns -service-identity web:dc1 -service-identity api
+consul acl token create -description "mixed role token 3" -role-name server-role -policy-name acl-policy-dns -service-identity web:dc1 -service-identity api
+consul acl token create -description "mixed role token 4" -role-name server-role -policy-name acl-policy-dns -service-identity web:dc1 -service-identity web:dc2
 # print_vars
 print_vars_local | tee consul_env.conf
