@@ -26,8 +26,9 @@ create_acl () {
 
   log "Create extra tokens and roles to test export"
 
+  consul acl role create -name dns-role -description 'dns role' -policy-name acl-policy-dns
   consul acl role create -name web-role -description 'web role' -service-identity web
-  consul acl role create -name web-role -description 'web role 1' -service-identity web:dc1
+  consul acl role create -name mixed-role-1 -description 'mixed role 1' -policy-name acl-policy-dns -service-identity web:dc1
 
   consul acl role create -name server-role -description 'server role' -policy-name acl-policy-server-node
 
@@ -59,6 +60,14 @@ ex_port () {
 
   done
 
+  for id in `consul acl role list -format json | jq -r '.[].ID' `; do
+
+    json_policy=`consul acl role read -id $id -format json`
+
+    echo $json_policy | jq -r '[.ID, .Name, .Description] | @csv' >> ${EXP_PATH}/policies.csv
+    echo $json_policy | jq -r '.Rules' > ${EXP_PATH}/policy_$id.hcl
+
+  done
 
 
 }
