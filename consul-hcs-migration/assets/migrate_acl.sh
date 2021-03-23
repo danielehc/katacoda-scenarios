@@ -22,12 +22,30 @@ header() {
   echo -e "\033[0m"
 }
 
+create_acl () {
+
+  log "Create extra tokens and roles to test export"
+
+  consul acl role create -name web-role -description 'web role' -service-identity web
+  consul acl role create -name web-role -description 'web role 1' -service-identity web:dc1
+
+  consul acl role create -name server-role -description 'server role' -policy-name acl-policy-server-node
+
+  consul acl token create -description "web role token" -role-name web-role
+  consul acl token create -description "server role token" -role-name server-role
+
+  consul acl token create -description "mixed role token" -role-name server-role -policy-name acl-policy-dns
+  consul acl token create -description "mixed role token 2" -role-name server-role -policy-name acl-policy-dns -service-identity web:dc1 -service-identity api
+  consul acl token create -description "mixed role token 3" -role-name server-role -policy-name acl-policy-dns -service-identity web:dc1 -service-identity api
+  consul acl token create -description "mixed role token 4" -role-name server-role -policy-name acl-policy-dns -service-identity web:dc1 -service-identity web:dc2
+
+}
+
 ex_port () {
   
   EXP_PATH="./export"
   
   rm -rf $EXP_PATH
-  
   mkdir -p ${EXP_PATH}
   
   touch ${EXP_PATH}/policies.csv
@@ -40,6 +58,8 @@ ex_port () {
     echo $json_policy | jq -r '.Rules' > ${EXP_PATH}/policy_$id.hcl
 
   done
+
+
 
 }
 
@@ -91,6 +111,12 @@ if   [ "$1" == "export" ]; then
 
   echo "export"
   ex_port
+  exit 0
+
+elif [ "$1" == "create_acl" ]; then
+
+  echo "create_acl"
+  create_acl
   exit 0
 
 elif [ "$1" == "import" ]; then
