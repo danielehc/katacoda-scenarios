@@ -23,13 +23,21 @@ header() {
 }
 
 ex_port () {
+  
+  EXP_PATH="./export"
+  
+  rm -rf $EXP_PATH
+  
+  mkdir -p ${EXP_PATH}
+  
+  touch ${EXP_PATH}/policies.csv
 
   for id in `consul acl policy list -format json | jq -r '.[].ID' | grep -v 00000000-0000-0000-0000-000000000001`; do
 
     json_policy=`consul acl policy read -id $id -format json`
 
-    echo `echo $json_policy | jq -r '[.ID, .Name, .Description] | @csv'`
-    echo `echo $json_policy | jq -r '.Rules'`
+    echo $json_policy | jq -r '[.ID, .Name, .Description] | @csv' >> ${EXP_PATH}/policies.csv
+    echo $json_policy | jq -r '.Rules' > ${EXP_PATH}/policy_$id.hcl
 
   done
 
