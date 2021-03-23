@@ -76,6 +76,7 @@
           { "file": "svc-api-tag.hcl", "target": "./assets" },
           { "file": "svc-web.hcl", "target": "./assets" },
           { "file": "provision_base.sh", "target": "./" },
+          { "file": "migrate_acl.sh", "target": "./" },
           { "file": "cts-config.hcl", "target": "./" }
         ]
     }
