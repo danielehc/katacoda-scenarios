@@ -86,6 +86,6 @@
     },
     "backend": {
         "port": 8080,
-        "imageid": "ubuntu"
+        "imageid": "ubuntu:2004"
     }
 }
