@@ -392,6 +392,7 @@ docker run \
   -d \
   -v ${PWD}/assets:/assets \
   --net primary \
+  -p 8200:8200 \
   --name=vault \
   --hostname=vault \
   --label tag=${DK_TAG} \
@@ -603,7 +604,6 @@ for i in $(seq 1 ${SERVER_NUMBER}); do
     --label dc=${DATACENTER} \
     --dns=127.0.0.1 \
     --dns-search=consul \
-    --user=1000:1000 \
     ${IMAGE_NAME}:${IMAGE_TAG} \
     consul agent -server -ui \
       -datacenter=${DATACENTER} \
