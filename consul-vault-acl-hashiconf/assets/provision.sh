@@ -367,6 +367,8 @@ log "Cleaning Environment"
 clean_env
 
 mkdir -p ${ASSETS}secrets
+mkdir -p ${LOGS}
+mkdir -p ${BIN}
 
 log "Pulling Docker Images"
 docker pull ${IMAGE_NAME}:${IMAGE_TAG} > /dev/null
