@@ -1,17 +1,20 @@
+The environment consists of a Vault server and three Consul servers.
 
-First, create a directory to store the logging output of the Vault agent.
+The agents are running as Docker containers but you can consider them as Virtual
+Machines each containing all the binaries necessary for the environment setup.
 
-`mkdir -p ~/log`{{execute T1}}
+The startup should end with a list of environment variables that will help you
+setup your terminal environment.
 
-Next, start the Vault agent. 
+First configure the environment:
 
-`nohup sh -c "vault server -dev -dev-root-token-id="root" -dev-listen-address=0.0.0.0:8200 >~/log/vault.log 2>&1" > ~/log/nohup.log &`{{execute T1}}
+`source ./assets/secrets/consul_env.conf`{{execute T1}}
 
-Finally, to communicate with the Vault agent you will need to set the address and token. 
+`source ./assets/secrets/vault_env.conf`{{execute T1}}
 
-`export VAULT_ADDR='http://127.0.0.1:8200'`{{execute T1}}
+Then you can check the Consul agents using the `consul members` command.
 
-`export VAULT_TOKEN="root"`{{execute T1}}
+`consul members`{{execute T1}}
 
 <div style="background-color:#fcf6ea; color:#866d42; border:1px solid #f8ebcf; padding:1em; border-radius:3px;">
   <p><strong>Warning: </strong>

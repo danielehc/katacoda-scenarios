@@ -305,6 +305,9 @@ IMAGE_TAG=v${CONSUL_VERSION}-v${ENVOY_VERSION}
 
 VAULT_VERSION="latest"
 
+# If set to true it will use Vault for Conncect CA and ACL tokens
+USE_VAULT="true"
+
 # --- ENVIRONMENT ---
 
 ## ## Docker tag for resources
@@ -552,7 +555,6 @@ EOF
 fi
 
 log "Configure CA for service mesh"
-USE_VAULT="true"
 
 if [ "${USE_VAULT}" == "true" ] ; then
   echo "Using Vault as CA"
@@ -625,6 +627,14 @@ for i in $(seq 1 ${SERVER_NUMBER}); do
   ## Retrieve newly created server IP
   SERVER_IP=`docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' server-$i`
 
+  # If we are using Vault we will set Vault to resolve
+  # server.${DATACENTER}.${DOMAIN} to ${SERVER_IP}
+  if [ "$i" == "1" ] && [ "${USE_VAULT}" == "true" ]; then
+    # log "Setting basic DNS for Vault"
+    vault_exec vault $VAULT_ADDR $VAULT_TOKEN \
+      "echo -en \"${SERVER_IP}\tserver.${DATACENTER}.${DOMAIN}\n\" >> /etc/hosts"
+  fi
+
   ## Generate the retry-join string
   if [ -z "${RETRY_JOIN}" ]; then 
     RETRY_JOIN=${SERVER_IP};
@@ -643,12 +653,34 @@ log "ACL Bootstrap"
 
 ## Tries to bootstrap the ACL system until it succeds
 op_exec operator ${SERVER_IP}:443 "" \
-  "while ! consul acl bootstrap > ./secrets/acl-bootstrap.conf 2> /dev/null; do echo 'ACL system not ready. Retrying...'; sleep 5; done"
+  "while ! consul acl bootstrap -format=json > ./secrets/acl-bootstrap.conf 2> /dev/null; do echo 'ACL system not ready. Retrying...'; sleep 5; done"
 
 ## Exports the Bootstrap Token
-export CONSUL_HTTP_TOKEN=`cat ${ASSETS}/secrets/acl-bootstrap.conf | grep SecretID | awk '{print $2}'`
+export CONSUL_HTTP_TOKEN=`cat ${ASSETS}/secrets/acl-bootstrap.conf | jq -r ".SecretID"`
+
+print_vars consul | tee ${ASSETS}secrets/consul_env.conf
+print_vars vault  | tee ${ASSETS}secrets/vault_env.conf
+
+# Only for katacoda. Copy binaries locally.
+# docker cp operator:/usr/local/bin/consul /usr/local/bin/consul
+# docker cp vault:/bin/vault /usr/local/bin/vault
+
+## Only for katacoda, completes the provision
+# finish
+
+exit 0
 
 log "Create ACL Policies"
+
+USE_VAULT="true"
+
+if [ "${USE_VAULT}" == "true" ] ; then
+  echo "Using Vault Consul Secrets Engine for ACLs"
+else
+
+
+fi
+
 
 ## DNS Policy for default tokens
 op_exec operator ${SERVER_IP}:443 ${CONSUL_HTTP_TOKEN} \
