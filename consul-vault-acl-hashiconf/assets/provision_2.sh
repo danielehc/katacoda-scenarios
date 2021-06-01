@@ -664,7 +664,9 @@ op_exec operator ${SERVER_IP}:443 "" \
 ## Exports the Bootstrap Token
 export CONSUL_HTTP_TOKEN=`cat ${ASSETS}/secrets/acl-bootstrap.conf | jq -r ".SecretID"`
 
+echo ""
 print_vars consul | tee ${ASSETS}secrets/consul_env.conf
+echo ""
 print_vars vault  | tee ${ASSETS}secrets/vault_env.conf
 
 # Only for katacoda. Copy binaries locally.

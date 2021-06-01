@@ -41,7 +41,13 @@
                 "title": "Apply token to remaining servers",
                 "code": "set-env.sh",
                 "text": "step5.md"
+            },
+            {
+                "title": "Generate short lived tokens",
+                "code": "set-env.sh",
+                "text": "step6.md"
             }
+            
         ],
     "intro": {
         "text": "intro.md",
