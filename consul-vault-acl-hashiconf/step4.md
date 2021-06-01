@@ -1,6 +1,6 @@
 You can verify the Consul server started correctly by checking the logs.
 
-`cat ~/log/consul.log`{{execute T1}}
+`cat ./logs/consul-server-1-*`{{execute T1}}
 
 In the logs you should get some warning lines similar to the following:
 
@@ -15,22 +15,27 @@ These warnings signal that Consul started properly but it cannot communicate wit
 
 Next, create a Consul token using the existing Vault token:
 
-`vault read consul/creds/consul-server-role | tee consul.server`{{execute T1}}
+`vault read consul/creds/consul-server-role \
+  -format=json | tee ./assets/secrets/acl-vault-consul_server.json`{{execute T1}}
 
 Example output:
 
 ```
-Key                Value
----                -----
-lease_id           consul/creds/consul-server-role/bHDVG24vCO8BJ90ONjxrbKP6
-lease_duration     768h
-lease_renewable    true
-accessor           2b9bb86a-d632-ea28-3890-7d1e0690ff57
-local              false
-token              5ea5eadc-807d-68c2-e47f-a1ac37e906b7
+{
+  "request_id": "b540feba-6d57-17f4-5ded-c7070ee02a46",
+  "lease_id": "consul/creds/consul-server-role/nPjDLMwng5aWFXFzw02J1fY5",
+  "lease_duration": 2764800,
+  "renewable": true,
+  "data": {
+    "accessor": "90d594cd-1cf5-bd48-a968-8cb26cc10bcb",
+    "local": false,
+    "token": "b9487f69-d9c9-727e-f246-40f8dd47317d"
+  },
+  "warnings": null
+}
 ```
 
-`export CONSUL_SERVER_ACCESSOR=$(cat consul.server  | grep accessor  | awk '{print $2}')`{{execute T1}}
+`export CONSUL_SERVER_ACCESSOR=$( cat ./assets/secrets/acl-vault-consul_server.json | jq -r ".data.accessor")`{{execute T1}}
 
 Verify that the token is created correctly in Consul by
 looking it up by its accessor:
@@ -38,13 +43,13 @@ looking it up by its accessor:
 `consul acl token read -id ${CONSUL_SERVER_ACCESSOR}`{{execute T1}}
 
 ```
-AccessorID:       2b9bb86a-d632-ea28-3890-7d1e0690ff57
-SecretID:         5ea5eadc-807d-68c2-e47f-a1ac37e906b7
-Description:      Vault consul-server-role token 1598547759570180867
+AccessorID:       90d594cd-1cf5-bd48-a968-8cb26cc10bcb
+SecretID:         b9487f69-d9c9-727e-f246-40f8dd47317d
+Description:      Vault consul-server-role token 1622564602570393827
 Local:            false
-Create Time:      2020-08-27 17:02:39.572006543 +0000 UTC
+Create Time:      2021-06-01 16:23:26.614088212 +0000 UTC
 Policies:
-   6fa2c574-6951-51db-310a-672e328f2aba - consul-servers
+   1c5a6748-dd49-8a8a-3a99-6f6b685fb642 - consul-servers
 ```
 
 Any user or process with access to Vault can now obtain
@@ -87,25 +92,14 @@ For this lab you saved the token inside the `consul.server` file.
 
 You can retrieve it and store it in an environment variable.
 
-`export CONSUL_SERVER_TOKEN=$(cat consul.server  | grep token  | awk '{print $2}')`{{execute T1}}
+`export CONSUL_SERVER_TOKEN=$(cat ./assets/secrets/acl-vault-consul_server.json | jq -r ".data.token")`{{execute T1}}
 
 Finally, you can apply the token to the server as its `agent` token.
 
-`consul acl set-agent-token agent $(cat consul.server  | grep token  | awk '{print $2}')`{{execute T1}}
+`consul acl set-agent-token agent $CONSUL_SERVER_TOKEN`{{execute T1}}
 
 You should receive the following output:
 
 ```plaintext
 ACL token "agent" set successfully
-```
-
-Once the token is applied you can check once more the Consul logs and verify that the warning lines are not being logged anymore.
-
-`cat ~/log/consul.log`{{execute T1}}
-
-```
-...
-[INFO]  agent: Updated agent's ACL token: token=agent
-[INFO]  agent: Synced node info
-...
 ```

@@ -287,8 +287,8 @@ spin_service() {
 SERVER_NUMBER=3
 
 ## Define datacenter and domain for the sandbox Consul DC
-DATACENTER="one"
-DOMAIN="mesh"
+DATACENTER="dc1"
+DOMAIN="consul"
 
 # --- DOCKER IMAGE ---
 
@@ -610,6 +610,7 @@ for i in $(seq 1 ${SERVER_NUMBER}); do
     --label dc=${DATACENTER} \
     --dns=127.0.0.1 \
     --dns-search=consul \
+    --user $(id -u):$(id -g) \
     ${IMAGE_NAME}:${IMAGE_TAG} \
     consul agent -server -ui \
       -datacenter=${DATACENTER} \

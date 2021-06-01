@@ -1,4 +1,4 @@
-# consul-server-policy.hcl
+# acl-policy-server-node.hcl
 node_prefix "server-" {
   policy = "write"
 }

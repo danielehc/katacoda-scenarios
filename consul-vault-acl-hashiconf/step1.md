@@ -16,18 +16,21 @@ The secrets engine requires a management token, with unrestricted privileges, to
 
 First, create a management token in Consul:
 
-`consul acl token create -policy-name=global-management | tee consul.management`{{execute T1}}
+`consul acl token create \
+    -policy-name=global-management \
+    -format=json | tee ./assets/secrets/acl_management.json`{{execute T1}}
 
 Export the management token as an environment variable:
 
-`export CONSUL_MGMT_TOKEN=$(cat consul.management  | grep SecretID  | awk '{print $2}')`{{execute T1}}
+`export CONSUL_MGMT_TOKEN=$(cat ./assets/secrets/acl_management.json | jq -r ".SecretID")`{{execute T1}}
 
 Once you have the Consul secret backend enabled,
 configure access with Consul's address and management token:
 
 `vault write consul/config/access \
-    address=${CONSUL_HTTP_ADDR} \
-    token=${CONSUL_MGMT_TOKEN}`{{execute T1}}
+    address=https://server.dc1.consul:443 \
+    token=${CONSUL_MGMT_TOKEN} \
+    ca_cert=@./assets/secrets/consul-agent-ca.pem`{{execute T1}}
 
 Example output:
 

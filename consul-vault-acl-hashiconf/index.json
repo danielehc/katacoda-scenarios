@@ -36,6 +36,11 @@
                 "title": "Obtain and test Consul token",
                 "code": "set-env.sh",
                 "text": "step4.md"
+            },
+            {
+                "title": "Apply token to remaining servers",
+                "code": "set-env.sh",
+                "text": "step5.md"
             }
         ],
     "intro": {

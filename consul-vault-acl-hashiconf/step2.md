@@ -3,7 +3,7 @@
 
 Once the ACL system is initialized, if you check Consul logs again you should find some warnings in your logs:
 
-`cat ~/log/consul.log`{{execute T1}}
+`cat ./logs/consul-server-1-*`{{execute T1}}
 
 ```
  [WARN]  agent: Node info update blocked by ACLs: node=c19d6af9-760b-a3cc-bbdd-b4f7209a79de accessorID=00000000-0000-0000-0000-000000000002
@@ -20,7 +20,7 @@ For the scope of this lab you are going to create a policy that will permit serv
 
 This policy will be used by Vault when creating tokens for Consul.
 
-Open the `server_policy.hcl`{{open}} file to review the policy.
+Open the `acl-policy-server-node.hcl`{{open}} file to review the policy.
 
 ```hcl
 # consul-server-policy.hcl
@@ -39,7 +39,7 @@ Create the policy with the `consul acl` command.
 
 `consul acl policy create \
   -name consul-servers \
-  -rules @server_policy.hcl`{{execute T1}}
+  -rules @./assets/acl-policy-server-node.hcl`{{execute T1}}
 
 Once the policy is created you need to associate it to a token in order to use it.  
 
