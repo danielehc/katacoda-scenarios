@@ -2,7 +2,7 @@ There are a few components that need to be added to the environment; we are
 adding them now. Wait for the complete message and then move to the
 next step.
 
-The provision will enn with the following message:
+The provision will end with the following message:
 
 ```
 Complete!  Move on to the next step.
