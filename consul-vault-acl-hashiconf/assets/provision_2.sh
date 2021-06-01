@@ -107,11 +107,12 @@ print_vars() {
       echo "export CONSUL_HTTP_ADDR=https://${SERVER_IP}:443"
       echo "export CONSUL_HTTP_TOKEN=${CONSUL_HTTP_TOKEN}"
       echo "export CONSUL_HTTP_SSL=true"
+      echo "export CONSUL_CACERT=./assets/secrets/consul-agent-ca.pem"
       ## This is a boolean value (default true) to specify 
       # SSL certificate verification; setting this value to 
       # false is not recommended for production use. 
       # Example for development purposes:
-      echo "export CONSUL_HTTP_SSL_VERIFY=false"
+      # echo "export CONSUL_HTTP_SSL_VERIFY=false"
   
     elif [ "$1" == "vault" ]; then
 
