@@ -70,7 +70,8 @@
             { "file": "svc-api.hcl", "target": "./assets" },
             { "file": "svc-api-tag.hcl", "target": "./assets" },
             { "file": "svc-web.hcl", "target": "./assets" },
-            { "file": "provision.sh", "target": "./" }
+            { "file": "provision.sh", "target": "./" },
+            { "file": "provision_2.sh", "target": "./" }
         ]
     }
     },
