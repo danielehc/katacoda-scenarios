@@ -677,8 +677,6 @@ docker cp vault:/bin/vault /usr/local/bin/vault
 ## Only for katacoda, completes the provision
 finish
 
-finish
-
 EOFSRSLY
 
 chmod +x /tmp/provision.sh
