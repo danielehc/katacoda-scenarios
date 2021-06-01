@@ -274,7 +274,7 @@ cont_exec() {
 }
 
 spin_service() {
-  echo pippo
+  echo "test"
 }
 
 # ++-----------------+
@@ -298,9 +298,13 @@ DOMAIN="mesh"
 ## application (/usr/local/bin/fake-service) that will be used to simulate a
 ## three-tier application scenario.
 IMAGE_NAME=danielehc/consul-learn-image
-# CONSUL_VERSION=1.9.4-ent
-CONSUL_VERSION=${CONSUL_VERSION:="1.9.5"}
-ENVOY_VERSION=${ENVOY_VERSION:="1.16.2"}
+
+# CONSUL_VERSION=${CONSUL_VERSION:="1.9.5"}
+# ENVOY_VERSION=${ENVOY_VERSION:="1.16.2"}
+# IMAGE_TAG=v${CONSUL_VERSION}-v${ENVOY_VERSION}
+
+CONSUL_VERSION=${CONSUL_VERSION:="1.10.0-beta3"}
+ENVOY_VERSION=${ENVOY_VERSION:="1.18.2"}
 IMAGE_TAG=v${CONSUL_VERSION}-v${ENVOY_VERSION}
 
 VAULT_VERSION="latest"
