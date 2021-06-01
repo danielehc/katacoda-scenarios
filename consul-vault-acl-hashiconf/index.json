@@ -1,6 +1,8 @@
 {
     "pathwayTitle": "Generate Consul Tokens with HashiCorp Vault",
-    "icon": "fa-vault",
+    "difficulty": "Intermediate",
+    "icon": "fa-consul",
+    "time": "20 minutes",
     "title": "Generate Consul Tokens with HashiCorp Vault",
     "description": "Generate Consul Tokens with HashiCorp Vault",
     "details": {
@@ -69,9 +71,7 @@
             { "file": "agent-server-secure.hcl", "target": "./assets" },
             { "file": "agent-server-connect.hcl", "target": "./assets" },
             { "file": "svc-api-no-check.hcl", "target": "./assets/svc-api.hcl" },
-            { "file": "svc-web-no-check.hcl", "target": "./assets/svc-web.hcl" },
-            { "file": "provision.sh", "target": "./" },
-            { "file": "provision_2.sh", "target": "./" }
+            { "file": "svc-web-no-check.hcl", "target": "./assets/svc-web.hcl" }
         ]
     }
     },

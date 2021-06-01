@@ -4,18 +4,16 @@ In this hands-on lab, you deployed a secure Consul datacenter using
 Vault to generate and manage ACL tokens.
 
 The lab guided you through the steps necessary to deploy Consul
-with ACL enabled to verify identity of your server nodes and assign them necessary permissions.
+with ACL enabled to verify identity of your server nodes and assign them 
+necessary permissions.
 
 Specifically, you:
-- Started a Vault dev instance
-- Started a Consul datacenter with ACL enabled
-- Bootstrapped ACLs in Consul
-- Created a Consul policy for servers
-- Enabled Consul secrets engine in Vault
 - Created a management token for Vault
+- Enabled Consul secrets engine in Vault
+- Created a Consul policy for servers
 - Created a Vault role to map Consul policy
 - Created a Vault token associated with the role
-- Verified the token was present in Consul and applied it to the agent
+- Verified the token was present in Consul and applied it to the agents
 
 ## Next Steps
 
