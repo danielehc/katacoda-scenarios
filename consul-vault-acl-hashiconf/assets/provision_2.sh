@@ -112,7 +112,7 @@ print_vars() {
       # SSL certificate verification; setting this value to 
       # false is not recommended for production use. 
       # Example for development purposes:
-      # echo "export CONSUL_HTTP_SSL_VERIFY=false"
+      echo "export CONSUL_HTTP_SSL_VERIFY=false"
   
     elif [ "$1" == "vault" ]; then
 
