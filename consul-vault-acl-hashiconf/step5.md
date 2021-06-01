@@ -11,7 +11,7 @@ First create a new token for the `server-1` node:
 
 Then setup your environment to reach the correct node:
 
-`export SERVER_IP=`docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' server-1`
+`export SERVER_IP=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' server-1)`{{execute T1}}
 
 `export CONSUL_HTTP_ADDR="https://${SERVER_IP}:443"`{{execute T1}}
 
@@ -32,7 +32,7 @@ First create a new token for the `server-2` node:
 
 Then setup your environment to reach the correct node:
 
-`export SERVER_IP=`docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' server-2`
+`export SERVER_IP=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' server-2)`{{execute T1}}
 
 `export CONSUL_HTTP_ADDR="https://${SERVER_IP}:443"`{{execute T1}}
 
